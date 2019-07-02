@@ -23,8 +23,8 @@ const users = [
 const siteConfig = {
   title: 'IOV',
   tagline: 'Welcome to IOV docs!',
-  url: 'https://iov-one.github.io',
-  baseUrl: '/docs/',
+  url: "http://docs.iov.one",
+  baseUrl: "/",
 
   // Used for publishing and more
   projectName: 'docs',

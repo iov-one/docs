@@ -22,7 +22,7 @@ const users = [
 
 const siteConfig = {
   title: 'IOV',
-  tagline: 'Welcome to IOV docs!',
+  tagline: 'Welcome to IOV travis test docs!',
   url: 'https://iov-one.github.io',
   baseUrl: '/docs/',
 

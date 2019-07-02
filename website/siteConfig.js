@@ -25,7 +25,7 @@ const siteConfig = {
   tagline: 'Welcome to IOV docs!',
   url: "http://docs.iov.one",
   baseUrl: "/",
-
+  cname: 'docs.iov.one',
   // Used for publishing and more
   projectName: 'docs',
   organizationName: 'iov-one',

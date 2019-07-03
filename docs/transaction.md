@@ -6,26 +6,26 @@ For the beginning, check out the *proto* files and have an idea what are they an
 
 ## Protocol buffers
 ---
-Lets start with explaining what is protobuf and how to use them:
+Let's start with explaining what is protobuf and how to use them:
 
 > Protocol Buffers (a.k.a., protobuf) are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data.
 
 This line is from [protobuf github repo](https://github.com/protocolbuffers/protobuf)
 
-In a nutshell, protobuf is a really effective and easy to use communications protocol. In order to use it you have to define your protoc definitions(*.proto*) and then compile them to a language  you desired which protocol buffers [supports](https://developers.google.com/protocol-buffers/docs/tutorials). After these steps you are ready to use the high tech comms in your software.
+In a nutshell, protobuf is a effective and easy to use communication protocol. To use it you have to define your protoc definitions(*.proto*) and then compile them to a language you desired which protocol buffers [supports](https://developers.google.com/protocol-buffers/docs/tutorials). After these steps, you are ready to use the high tech comms in your software.
 
 
 ### Weave proto definitions
 
-_Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/master/spec/proto) for easy access and usage. I encourage you to dive in _weave/spec/proto_ and have a vague idea how *weave codec* files are defined and structered.
+_Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/master/spec/proto) for easy access and usage. I encourage you to dive in _weave/spec/proto_ and have a vague idea of how *weave codec* files are defined and structered.
 
 ## Weave/Tx (Transactions)
 ---
 Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/cmd/bnsd/app/codec.proto).
 
-All you need to connect to `BNS` or any `weave` based blockhain is using this `tx codec`.
+All you need to connect to `BNS` or any `weave` based blockchain is using this `tx codec`.
 
-On the first line of the `codec` you will see
+On the first line of the `codec`, you will see
 ```proto
 syntax = "proto3";
 ```
@@ -36,7 +36,7 @@ Next is the package this codec belongs to is defined
 package bnsd;
 ```
 
-Every codec  message that will be used to interacting with `bnsd` is boiled down to this codec file via *imports*
+Every codec message that will be used to interacting with `bnsd` is boiled down to this codec file via *imports*
 
 ```proto
 import "cmd/bnsd/x/username/codec.proto";
@@ -97,7 +97,7 @@ message Tx {
 
 ## Communicating with Weave/bnsd
 ---
-In order to have required tools to communicate and send transactions to _weave/bnsd_ you have to follow these steps
+To have required tools to communicate and send transactions to _weave/bnsd_ you have to follow these steps
 
 ### 1 - Import _bnsd_ protobuf definitios  
 - Download [spec/proto/cmd/bnsd/app/codec.proto](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/cmd/bnsd/app/codec.proto) under _spec_ folder on your project's root.
@@ -115,7 +115,7 @@ In order to have required tools to communicate and send transactions to _weave/b
 
 ### 4 - Compile _.proto_ definitions
 - If you are using _IOV/prototool_ run `docker run --rm --user=$(shell id -u):$(shell id -g) -v $(shell pwd):/work iov1/prototool:v0.2.2 prototool generate`
-- Or instead of messing around with long protoc build scripts, include and parameterise this script in your build tool or script such as [weave-starter-kit/Makefile](https://github.com/iov-one/weave-starter-kit/blob/master/Makefile)
+- Or instead of messing around with long protoc build scripts, include and parameterize this script in your build tool or script such as [weave-starter-kit/Makefile](https://github.com/iov-one/weave-starter-kit/blob/master/Makefile)
 
 ### 5 - Import compiled files in your project
 - After all these steps, now you have your _weave/bnsd_ compiled protobuf files. import and make your dreams come true.

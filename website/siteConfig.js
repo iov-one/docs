@@ -32,8 +32,8 @@ const siteConfig = {
   favicon: 'img/favicon.ico',
 
   colors: {
-    primaryColor: '#1f6e50',
-    secondaryColor: '#154d38',
+    primaryColor: '#5AB3A5',
+    secondaryColor: '#62C2B3',
   },
   /*
   fonts: {

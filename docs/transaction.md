@@ -1,26 +1,26 @@
 # Weave transactions
 
-_Weave/BNS_ uses protobuf for handling communications
+_Weave/BNS_ uses protobuf for handling communications.
 
 For the beginning, check out the *proto* files and have an idea what are they and how they look like.
 
 ## Protocol buffers
----
+
 Let's start with explaining what is protobuf and how to use them:
 
 > Protocol Buffers (a.k.a., protobuf) are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data.
 
 This line is from [protobuf github repo](https://github.com/protocolbuffers/protobuf)
 
-In a nutshell, protobuf is a effective and easy to use communication protocol. To use it define protoc definitions(*.proto*) and then compile them to a desired language which protocol buffers [supports](https://developers.google.com/protocol-buffers/docs/tutorials). After these steps, high tech comms is ready to use the in your software.
+In a nutshell, protobuf is an effective and easy to use serialization format. To use it define protoc definitions(*.proto*) and then compile them to the desired language which protocol buffers [supports](https://developers.google.com/protocol-buffers/docs/tutorials). After these steps, high tech comms is ready to be used in your software.
 
 
 ### Weave proto definitions
 
-_Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/master/spec/proto) for easy access and usage. Dive in _weave/spec/proto_ and have a vague idea of how *weave codec* files are defined and structered.
+_Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/master/spec/proto) for easy access and usage. Dive in _weave/spec/proto_ and have a vague idea of how *weave codec* files are defined and structured.
 
 ## Weave/Tx (Transactions)
----
+
 Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/cmd/bnsd/app/codec.proto).
 
 All the required _proto_ files for connecting to `BNS` or any `weave` based blockchain is using this `tx codec`.
@@ -96,11 +96,11 @@ message Tx {
 `oneof sum` in the _tx message_ means, one of the messages will be sent to *bnsd*. *reference:* [developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
 
 ## Communicating with Weave/bnsd
----
-To have required tools to communicate and send transactions to _weave/bnsd_, follow these steps
+
+To have the required tools to communicate and send transactions to _weave/bnsd_, follow these steps.
 
 ### 1 - Import _bnsd_ protobuf definitios  
-- Download [spec/proto/cmd/bnsd/app/codec.proto](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/cmd/bnsd/app/codec.proto) under _spec_ folder on project's root.
+- Copy whole [weave/spec/proto/](https://github.com/iov-one/weave/tree/master/spec/proto) into the repo, as the imports should refer to local files.
 
 ### 2 - Install your preferred language-specific protoc plugin
 > We recommend using [uber/prototool](https://github.com/uber/prototool) or better [IOV/prototool-docker](https://github.com/iov-one/prototool-docker). Import _prototool-docker_ directly from [docker hub](https://hub.docker.com/r/iov1/prototool)

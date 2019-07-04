@@ -19,7 +19,7 @@ const siteConfig = {
   organizationName: 'iov-one',
 
   headerLinks: [
-    {doc: 'doc1', label: 'Docs'},
+    {doc: 'intro', label: 'Docs'},
   //  {doc: 'doc4', label: 'API'},
     {page: 'help', label: 'Help'},
   ],

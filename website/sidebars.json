@@ -1,8 +1,15 @@
 {
   "docs": {
-    "Docusaurus": ["doc1"],
-    "First Category": ["doc2"],
-    "Second Category": ["doc3"]
+    "Introduction": ["intro"],
+    "Weave": [
+      {
+        "type": "subcategory",
+        "label": "Weave API specifications",
+        "ids": [
+          "weave/weave-api-spec/weave-transaction-spec"
+        ]
+      }
+    ]
   },
   "docs-other": {
     "First Category": ["doc4", "doc5"]

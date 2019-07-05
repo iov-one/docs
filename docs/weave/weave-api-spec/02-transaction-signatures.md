@@ -19,9 +19,9 @@ Conditions format defined as `(extension, type, data)` in general.
 
 Condition with __ed25519__ public key signature could be represented as `("sigs", "ed25519", <address>)`. 
 
-Here is the basic golang presentation of condition 
+Here is the basic Go presentation of condition 
 
-`condition := sprintf("%s/%s/%X", extension, type, data)` where __condition__ looks something like `cond:sigs/ed25519/636f6e646974696f6e64617461`.
+`condition := fmt.Sprintf("%s/%s/%X", extension, type, data)` where __condition__ looks something like `cond:sigs/ed25519/636f6e646974696f6e64617461`.
 
 ## Signing transactions
 
@@ -35,12 +35,11 @@ Signature input body format is:
 
 - **version** is the current way to prefix the bytes. Its current value is `00000000 11001010 11111110 00000000`. As hex `0, 0xCA, 0xFE, 0`. Please refer to [iov-one/weave/sigs/SignCodeV1](https://github.com/iov-one/weave/blob/v0.18.0/x/sigs/controller.go#L14).
 
-After this arbitrary bytes put together, this is then prehashed with __sha512__ before fed into
-the public key signing/verification step. This step is applied in order to guarantee signing could be done by a ledger. 
+After this arbitrary bytes put together, this is then prehashed with __sha512__ before fed into the public key signing/verification step. This step is applied to guarantee signing could be done by a ledger.
 
 After having the hashed transaction and signed with the wallet's **ed25519** private key, you have your **signed transaction** at your will.
 
-Weave signing algorithm basic representation:
+Weave signing algorithm pseudocode:
 ```
 chainID = "bns-hugnet"
 versionAsHex = 0, 0xCA, 0xFE, 0

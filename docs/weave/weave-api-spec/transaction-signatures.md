@@ -4,30 +4,30 @@ title: Transaction signitures
 sidebar_label: Transaction signatures 
 ---
 
-In this section, we will explain how to sign **Weave transactions**.
+In this section, we will explain how to sign __transactions__.
 
 ## Authentication and Authorization
 
-General overview of definitions on this section:
+To execute desired actions and state changes on weave based blockchains, every transaction must be validated, authenticated and then authorized to perform the action. In the realm of blockchains this is achieved by using signatures.
 
-- *Authentication* defines who is requesting this transaction. 
+Weave uses `ed25519` signing algorithm to achieve this important feature. 
+After following the steps in [Weave transactions](transaction.md), created **Tx** must be signed. But first Weave *conditions* role in signing must be explained.
 
-- *Authorization* determines if the necessary conditions to assume the required *permission* to execute the action.
+[//]: # (TODO move readthedocs documentation to this project and give references here)
 
-- *Permission* is the right to perform a specific type of action, like send tokens from an account, or release an escrow. These permissions can be assigned to an individual, but more general to a *Condition*.
+Conditions format defined as `(extension, type, data)` in general. 
 
-- *Conditions* define what checks a transaction must fulfill to be able to access given permission. They must be serializable and can be stored along with an object.
+Condition with __ed25519__ public key signature could be represented as `("sigs", "ed25519", <address>)`. 
 
-The simplest example to cover all definitions is “who can transfer money out of an account”. In many blockchains, they hash the __public key__ and use that to form an __address__. Then this address is used as a __primary key__ to an account balance. A user can send tokens to any address, and if I have signed with a public key, which hashes to the address of this account, then I can __authorize__ payments out of the account. In this case, the *signature* is __authentication__, we must have transfer __permission__ on this account, and the __condition__ is the presence of a signature with a public key that hashes to the account’s address.
+Here is the basic golang presentation of condition 
 
-## Serialization
-Conditions format defined as `(extension, type, data)` in general. __ed25519__ public key signature could be represented as `("sigs", "ed25519", <address>)` and theoretically __sha256__ hashlock could be as `("hash", "sha256", <hash>)`. 
+`condition := sprintf("%s/%s/%X", extension, type, data)` where __condition__ looks something like `cond:sigs/ed25519/636f6e646974696f6e64617461`.
 
 ## Signing transactions
 
 After the steps in [Weave transactions](transaction.md) is followed, created **Tx** is ready to be signed to be authenticated and authorized by *Weave/bnsd*. 
 
-Signature body format is:
+Signature input body format is:
 
 | version     | len(chainID)     | chainID          | nonce                 | signBytes                  |
 |--------:    |--------------    |--------------    |-------------------    |------------------------    |
@@ -40,3 +40,21 @@ the public key signing/verification step. This step is applied in order to guara
 
 After having the hashed transaction and signed with the wallet's **ed25519** private key, you have your **Signed transaction** at your will.
 
+Weave signing algorithm basic representation:
+```
+chainID = "bns-hugnet"
+versionAsHex = 0, 0xCA, 0xFE, 0
+nonce = 100
+tx = weave.Tx
+
+chainIDBytes = toBytes(chainID)
+versionAsBtyes = toBytes(versionAsHes) = 00000000110010101111111000000000
+nonceBytes = toBigEndianBytes(nonce)
+serializedTx = toBytes(tx)
+
+inSig = append(chainIDBytes, versionAsBytes, nonceBytes, serializedTx)
+
+midSig = sha512(inSig)
+
+signature= wallet.ed25519.private.sign(midSig)
+``` 

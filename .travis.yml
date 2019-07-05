@@ -10,7 +10,7 @@ cache:
   yarn: true
 
 script:
-  - cd website && yarn build
+  - cd website && yarn install && yarn build
 
 deploy:
   provider: script

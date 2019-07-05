@@ -17,11 +17,17 @@ const siteConfig = {
   cname: 'docs.iov.one',
   projectName: 'docs',
   organizationName: 'iov-one',
+  
+  algolia: {
+    apiKey: 'f305686cd1b020159501fba70bbc662a',
+    indexName: 'iov-docs',
+  },
 
   headerLinks: [
     {doc: 'doc1', label: 'Docs'},
   //  {doc: 'doc4', label: 'API'},
     {page: 'help', label: 'Help'},
+    { search: true },
   ],
 
   users,

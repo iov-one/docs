@@ -25,7 +25,7 @@ Here is the basic golang presentation of condition
 
 ## Signing transactions
 
-After the steps in [Weave transactions](transaction.md) is followed, created **Tx** is ready to be signed to be authenticated and authorized by *Weave/bnsd*. 
+After the steps in [Weave transactions](transaction.md) are followed, created **Tx** is ready to be signed to be authenticated and authorized by *Weave/bnsd*. 
 
 Signature input body format is:
 

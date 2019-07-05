@@ -38,7 +38,7 @@ Signature input body format is:
 After this arbitrary bytes put together, this is then prehashed with __sha512__ before fed into
 the public key signing/verification step. This step is applied in order to guarantee signing could be done by a ledger. 
 
-After having the hashed transaction and signed with the wallet's **ed25519** private key, you have your **Signed transaction** at your will.
+After having the hashed transaction and signed with the wallet's **ed25519** private key, you have your **signed transaction** at your will.
 
 Weave signing algorithm basic representation:
 ```
@@ -56,5 +56,5 @@ inSig = append(chainIDBytes, versionAsBytes, nonceBytes, serializedTx)
 
 midSig = sha512(inSig)
 
-signature= wallet.ed25519.private.sign(midSig)
+signature = wallet.ed25519.private.sign(midSig)
 ``` 

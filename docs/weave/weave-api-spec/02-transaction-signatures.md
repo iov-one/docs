@@ -1,6 +1,6 @@
 ---
 id: tx-sign-spec
-title: Transaction signitures 
+title: Transaction signatures 
 sidebar_label: Transaction signatures 
 ---
 

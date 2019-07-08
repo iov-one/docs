@@ -47,7 +47,7 @@ nonce = 100
 tx = weave.Tx
 
 chainIDBytes = toBytes(chainID)
-versionAsBtyes = toBytes(versionAsHes) = 00000000110010101111111000000000
+versionAsBytes = toBytes(versionAsHes) = 00000000110010101111111000000000
 nonceBytes = toBigEndianBytes(nonce)
 serializedTx = toBytes(tx)
 

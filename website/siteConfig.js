@@ -8,16 +8,16 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'IOV',
+  title: '',
   tagline: 'Welcome to IOV docs!',
-  
+
   url: "http://docs.iov.one",
   baseUrl: "/",
 
   cname: 'docs.iov.one',
   projectName: 'docs',
   organizationName: 'iov-one',
-  
+
   algolia: {
     apiKey: 'f305686cd1b020159501fba70bbc662a',
     indexName: 'iov-docs',
@@ -32,8 +32,8 @@ const siteConfig = {
 
   users,
 
-  headerIcon: 'img/favicon.ico',
-  footerIcon: 'img/favicon.ico',
+  headerIcon: 'img/logo.png',
+  footerIcon: false,
   favicon: 'img/favicon.ico',
 
   colors: {

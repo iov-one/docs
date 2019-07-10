@@ -1,6 +1,10 @@
 {
   "docs": {
     "Introduction": ["intro"],
+    "Validator": [
+      "validator/setup",
+      "validator/troubleshooter"
+    ],
     "Weave": [
       {
         "type": "subcategory",

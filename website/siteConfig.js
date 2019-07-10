@@ -63,6 +63,8 @@ const siteConfig = {
 
   onPageNav: 'separate',
 
+  docsSideNavCollapsible: true,
+
   cleanUrl: true,
 
   // Open Graph and Twitter card images.

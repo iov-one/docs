@@ -8,7 +8,7 @@ In this section querying weave for data will be explained. Before diving into th
 
 ## Buckets
 
-Buckets are the structures that enables accessing and writing to __Key-Value__ database in an organized and controlled manner. Buckets stores the data as well as the indexes, secondary indexes that refer to the data.
+Buckets are the structures that enable accessing and writing to __Key-Value__ database in an organized and controlled manner. Buckets stores the data as well as the indexes, secondary indexes that refer to the data.
 
 ### Accessing buckets
 
@@ -23,7 +23,7 @@ curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "
 
 ### Bucket paths
 
-Every bucket registed under Weave is accessed using __paths__. On the example curl command above given path parameter says the bucket wanted to be accessed is the tokens bucket. 
+Every bucket registered under Weave is accessed using __paths__. On the example curl command above given path parameter says the bucket wanted to be accessed is the tokens bucket. 
 
 Here are the major bucket paths registered under BNSD:
 

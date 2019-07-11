@@ -13,7 +13,7 @@ Buckets are the structures that enable accessing and writing to __Key-Value__ da
 ### Accessing buckets
 
 [//]: # (TODO give reference to weave/tendermint or abci documentation)
-As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
+As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query actually you do the call to tendermint's abci protocol. For more info about underlyings refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
 
 Via running the JSON-RPC/HTTP call below, __hugnet__ testnet could be queried so you can see an example response.
 
@@ -23,23 +23,9 @@ curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "
 
 ### Bucket paths
 
-Every bucket registered under Weave is accessed using __paths__. On the example curl command above given path parameter says the bucket wanted to be accessed is the tokens bucket. 
+Every bucket registered under Weave is accessed using __paths__. On the example curl command above given path parameter says the bucket wanted to be accessed is the tokens bucket.
 
-Here are the major bucket paths registered under BNSD:
-
-| Bucket           | Path          | Reference                                                                                                     |
-|------------------|---------------|---------------------------------------------------------------------------------------------------------------|
-| __Cash__             | `wallets`     | [weave/x/cash/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/cash/handler.go#L14)                   |
-| __Sigs__             | `auth`        | [weave/x/sigs/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/sigs/decorator.go#L19)                                |
-| __MultiSig__         | `contracts`   | [weave/x/multisig/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/multisig/handlers.go#L22)          |
-| __Atomic swaps__     | `aswaps`      | [weave/x/aswaps/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/handler.go#L34)                |
-| __Escrow__           | `escrows`     | [weave/x/escrow/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/escrow/handler.go#L35)               |
-| __Governance__       | *See reference* | [weave/x/gov/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/handler.go#L27...L30)               |
-| __Payment channels__ | `paychans`    | [weave/x/paychan/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/paychan/handler.go#L20)             |
-| __Distribution__     | `revenues`    | [weave/x/distribution/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/distribution/handler.go#L20)   |
-| __Currency__         | `tokens`      | [weave/x/currency/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/currency/handler.go#L13)           |
-| __Validators__       | `validators`  | [weave/x/validators/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/validators/handler.go#L22)       |
-| __Anti-spam__        | `minfee`      | [weave/x/msgfee/antispam_query](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/antispam_query.go#L29) |
+Some available bucket paths: `/wallets`, `/auth`, `/aswaps` ...
 
 ## Indexes
 
@@ -69,3 +55,37 @@ Another way to access data is using __secondary indexes__. Via secondary indexes
 There might be cases which all the data with index that begins with prefix. `wallets`
 
 - Path: ``/wallets?prefix``, Data: ``0123456789`` (hex) -> db.Iterator(``0123456789``, ``012345678A``)
+  - `wallets` are queried for the accounts starting with from `0123456789` to `012345678A`
+
+## Responses
+
+Since weave queries routed to tendermint abci protocol, tendermint enforces responses to be in `key/value` format. Reference: [tendermint/abci-spec#query](https://tendermint.readthedocs.io/en/v0.21.0/abci-spec.html#query).
+
+```bash
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "CBC76ADED2C9DB439DB4C8D714CF26" } }' https://bns.davenet.iov.one/
+```
+
+When the curl command above executed, this response will be received:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": "foobar321",
+  "result": {
+    "response": {
+      "key": "ChljYXNoOsvHat7SydtDnbTI1xTPJtrlIpqR",
+      "value": "ChAKAggBEgoIlZrvOhoDSU9W",
+      "height": "2506"
+    }
+  }
+}
+```
+
+Since the request is with prefix, meaning multiple values will be returned.
+
+### Parsing responses
+
+The `key` and `value` values here are encoded with [ResultSet](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/app/results.proto#L5-L9). In order to decode ResultSet, import protobuf definition as mentioned in [docs/weave/transaction](https://github.com/iov-one/docs/blob/master/docs/weave/weave-api-spec/01-transaction.md#L102). You can take a look at [iov-core](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L674-L679) implementation.
+
+__Important:__ Every key must include the buckets name as prefix
+

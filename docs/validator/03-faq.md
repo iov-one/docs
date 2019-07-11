@@ -14,4 +14,4 @@ IOV runs validators with higher voting_power so that the chain doesn't get halte
 
 ## How do I create an address for IOV tokens?
 
-At the time of writing, you need to use [iov-core](https://github.com/iov-one/iov-core/blob/3bbcf3c07679f2a0b09db3bf26dd59cc8de17f78/packages/iov-core/README.md).  In the near future you'll be able to use a web app as your wallet that'll be able to register names and send tokens.
+At the time of writing, you need to use [iov-core](https://github.com/iov-one/iov-core/blob/3bbcf3c07679f2a0b09db3bf26dd59cc8de17f78/packages/iov-core/README.md).  In the near future you'll be able to use a web app as your wallet that'll be able to create and address, register names, and send tokens.

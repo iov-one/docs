@@ -2,9 +2,9 @@
   "docs": {
     "Introduction": ["intro"],
     "Validator": [
-      "validator/faq",
       "validator/setup",
-      "validator/troubleshooter"
+      "validator/troubleshooter",
+      "validator/faq"
     ],
     "Weave": [
       {

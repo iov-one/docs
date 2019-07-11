@@ -15,10 +15,10 @@ Buckets are the structures that enable accessing and writing to __Key-Value__ da
 [//]: # (TODO give reference to weave/tendermint or abci documentation)
 As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
 
-Via running the JSON-RPC/HTTP call below, __hugnet__ testnet could be queried for retrieving all the tokens registered under `tokens` bucket:
+Via running the JSON-RPC/HTTP call below, __hugnet__ testnet could be queried so you can see an example response.
 
 ``` bash
-curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/tokens?prefix", "data": "" } }' https://bns.hugnet.iov.one/
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/tokens", "data": "" } }' https://bns.hugnet.iov.one/
 ```
 
 ### Bucket paths
@@ -41,11 +41,31 @@ Here are the major bucket paths registered under BNSD:
 | __Validators__       | `validators`  | [weave/x/validators/handler](https://github.com/iov-one/weave/blob/v0.18.0/x/validators/handler.go#L22)       |
 | __Anti-spam__        | `minfee`      | [weave/x/msgfee/antispam_query](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/antispam_query.go#L29) |
 
-### Indexes
-For accessing the data resides inside buckets indexes are used. E.g.  to access wallet with primary index `00CAFE00`__(hex)__, call has to be made to `/wallets` path with index as data.
+## Indexes
+
+### Primary indexes
+
+For accessing the data resides inside buckets, indexes are used. E.g.  to access wallet with primary index `00CAFE00`__(hex)__, call has to be made to `/wallets` path with index as data.
 
 ```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "00CAFE00" } }' https://bns.antnet.iov.one/
 ```
 
-### Constructing paths 
+- Path: ``/``, Data: ``0123456789`` (hex) -> db.Get(``0123456789``)
+  - Queries made to root (`/`) are direct queries to the key-value db without an index.
+
+- Path: ``/wallets``, Data: ``00CAFE00`` (hex) -> wallets.Get(``00CAFE00``)
+  - `wallets` are queried for the account with address `00CAFE00`.
+
+### Secondary indexes
+
+Another way to access data is using __secondary indexes__. Via secondary indexes data could have multiple ways to be accessed. E.g. wallets are registered under a name so there might be some use cases for accessing them with names. `/wallets` + `/name` = `/wallets/name` indicates that bucket will be queried using name index that will be sent in the data field.
+
+- Path: ``/wallets/name``, Data: "John" (raw): wallets.Index("name").Get("John")
+  - `wallets` are queried for the account with name `John`.
+
+### Prefixes
+
+There might be cases which all the data with index that begins with prefix. `wallets`
+
+- Path: ``/wallets?prefix``, Data: ``0123456789`` (hex) -> db.Iterator(``0123456789``, ``012345678A``)

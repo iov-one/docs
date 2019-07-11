@@ -25,7 +25,6 @@ const siteConfig = {
 
   headerLinks: [
     {doc: 'intro', label: 'Docs'},
-  //  {doc: 'doc4', label: 'API'},
     {page: 'help', label: 'Help'},
     { search: true },
   ],
@@ -62,6 +61,8 @@ const siteConfig = {
   scripts: ['https://buttons.github.io/buttons.js'],
 
   onPageNav: 'separate',
+
+  docsSideNavCollapsible: true,
 
   cleanUrl: true,
 

@@ -1,11 +1,10 @@
 ---
 id: setup
-title: Validator Setup
+title: Validator setup
 sidebar_label: Setup
 ---
 
 This document is a work in progress.
-
 
 ```sh
 # get docker images
@@ -46,4 +45,5 @@ docker run \
       --p2p.seeds=08b73c11b3209f2044945a56555d867be7b003b4@34.76.70.139:26656 \
       --proxy_app="unix:///tendermint/app.sock"
 ```
+
 At this point you're running a full-node that can be examined at `http://localhost:16657/status`.  More to come...

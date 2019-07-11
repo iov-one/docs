@@ -2,6 +2,7 @@
   "docs": {
     "Introduction": ["intro"],
     "Validator": [
+      "validator/rewards",
       "validator/setup",
       "validator/troubleshooter",
       "validator/faq"

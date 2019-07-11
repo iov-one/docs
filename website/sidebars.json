@@ -3,7 +3,8 @@
     "Introduction": ["intro"],
     "Validator": [
       "validator/setup",
-      "validator/troubleshooter"
+      "validator/troubleshooter",
+      "validator/faq"
     ],
     "Weave": [
       {

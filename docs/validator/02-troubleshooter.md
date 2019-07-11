@@ -1,7 +1,7 @@
 ---
-id: troubleshooting
-title: Troubleshooting
-sidebar_label: Troubleshooting
+id: troubleshooter
+title: Troubleshooter
+sidebar_label: Troubleshooter
 ---
 
 ## Common errors

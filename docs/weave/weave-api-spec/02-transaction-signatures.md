@@ -11,7 +11,7 @@ In this section, we will explain how to sign __transactions__.
 To execute desired actions and state changes on weave based blockchains, every transaction must be validated, authenticated and then authorized to perform the action. In the realm of blockchains this is achieved by using signatures.
 
 Weave uses `ed25519` signing algorithm to achieve this important feature.
-After following the steps in [Weave transactions](transaction.md), created **Tx** must be signed. But first Weave *conditions* role in signing must be explained.
+After following the steps in [Weave transactions](weave-transaction-spec), created **Tx** must be signed. But first Weave *conditions* role in signing must be explained.
 
 [//]: # (TODO move readthedocs documentation to this project and give references here)
 
@@ -24,8 +24,6 @@ Here is the basic Go presentation of condition
 `condition := fmt.Sprintf("%s/%s/%X", extension, type, data)` where __condition__ looks something like `sigs/ed25519/636f6e646974696f6e64617461`.
 
 ## Signing transactions
-
-After the steps in [Weave transactions](transaction.md) are followed, created **Tx** is ready to be signed to be authenticated and authorized by *Weave/bnsd*.
 
 Signature input body format is:
 

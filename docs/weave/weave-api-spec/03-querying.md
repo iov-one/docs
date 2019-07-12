@@ -12,8 +12,8 @@ Buckets are the structures that enable accessing and writing to __Key-Value__ da
 
 ### Accessing buckets
 
-[//]: # (TODO give reference to Weave/tendermint or abci documentation)
-As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query actually you do the call to tendermint's abci protocol. For more info about underlyings refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
+[//]: # (TODO give reference to Weave/tendermint or ABCI documentation)
+As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query actually you do the call to tendermint's `ABCI` protocol. For more info about underlyings refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
 
 Via running the JSON-RPC/HTTP call below, __hugnet__ testnet could be queried so you can see an example response.
 
@@ -63,7 +63,7 @@ There might be cases which all the data with index that begins with prefix. `wal
 
 ## Responses
 
-Since Weave queries routed to tendermint abci protocol, tendermint enforces responses to be in `key/value` format. Reference: [tendermint/abci-spec#query](https://tendermint.readthedocs.io/en/v0.21.0/abci-spec.html#query).
+Since Weave queries routed to tendermint ABCI protocol, tendermint enforces responses to be in `key/value` format. Reference: [tendermint/abci-spec#query](https://tendermint.readthedocs.io/en/v0.21.0/abci-spec.html#query).
 
 ```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "CBC76ADED2C9DB439DB4C8D714CF26" } }' https://bns.davenet.iov.one/

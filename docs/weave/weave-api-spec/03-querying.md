@@ -23,7 +23,8 @@ curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "
 
 ### Bucket paths
 
-Every bucket registered under Weave is accessed using __paths__. On the example curl command above given path parameter says the bucket wanted to be accessed is the tokens bucket.
+A bucket data can be queried using that bucket unique path to identify it.
+The above curl command is reading username Token entity using */tokens* path.
 
 Some available bucket paths: `/wallets`, `/auth`, `/aswaps` ...
 

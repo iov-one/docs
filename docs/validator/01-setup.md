@@ -12,12 +12,12 @@ This document is not for beginners.  It assumes that you know how to setup a sen
 This document assumes that docker is up and running on your system and user `iov` in groups `iov` and `docker` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
-sudo su # make life easier for the next 90 lines
+sudo su # make life easier for the next 100 lines
 
 cd /etc/systemd/system
 
 # create an environment file for the IOV Name Service services
-cat <<'EOS' > iovns.env
+cat <<EOS > iovns.env
 # directories
 DIR_TM=/tendermint
 DIR_WORK=/home/iov/davenet
@@ -42,6 +42,10 @@ IMAGE_TM_OPTS="\
 
 # socket
 SOCK_TM=iovns.sock
+
+# uid/gid
+IOV_GID=$(id iov -g)
+IOV_UID=$(id iov -u)
 EOS
 
 # create iovns.service
@@ -58,6 +62,8 @@ Group=iov
 EnvironmentFile=/etc/systemd/system/iovns.env
 ExecStart=docker run $DOCKER_IOVNS_OPTS \
    --cidfile=${DIR_WORK}/${FILE_CID_IOVNS} \
+   --read-only \
+   --user=${IOV_UID}:${IOV_GID} \
    --volume=${DIR_WORK}:${DIR_TM} \
    ${IMAGE_IOVNS} \
       -home=${DIR_TM} \
@@ -88,6 +94,8 @@ Group=iov
 EnvironmentFile=/etc/systemd/system/iovns.env
 ExecStart=docker run "$DOCKER_TM_OPTS" \
    --cidfile=${DIR_WORK}/${FILE_CID_TM} \
+   --read-only \
+   --user=${IOV_UID}:${IOV_GID} \
    --volume=${DIR_WORK}:${DIR_TM} \
    ${IMAGE_TM} node \
       --proxy_app="unix://${DIR_TM}/${SOCK_TM}" \
@@ -116,11 +124,11 @@ mkdir -p ${DIR_WORK}
 cd ${DIR_WORK}
 
 # initialize tendermint
-docker run --rm --user=$(id -u iov) -v ${DIR_WORK}:${DIR_TM} ${IMAGE_TM} init
+docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_TM} init
 curl --fail https://bns.davenet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
 
 # initialize IOV Name Service (bnsd)
-docker run --rm -v ${DIR_WORK}:${DIR_TM} ${IMAGE_IOVNS} -home=${DIR_TM} init -i | grep initialised
+docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_IOVNS} -home=${DIR_TM} init -i | grep initialised
 
 exit # iov
 

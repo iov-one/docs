@@ -99,7 +99,7 @@ __Important:__ Every key must include the bucket's name as prefix. As you can se
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/cmd/bnsd/x/username/model.go#L73): `username:`
   - `/usernames` -> takes `id` as data, returns [bnsd/x/username/username.Token](https://github.com/iov-one/weave/blob/master/cmd/bnsd/x/username/codec.proto#L7-L26)
   - `/usernames?prefix` -> takes prefix as data, returns `ResultSet`
-  - 
+
 - __Cash__
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/cash/model.go#L18): `cash:`
   - `/wallets` -> takes `id`(8 bytes), returns [x/cash.Set](https://github.com/iov-one/weave/blob/v0.18.0/x/cash/codec.proto#L11-L14) by id

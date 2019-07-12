@@ -60,7 +60,7 @@ ExecStart=docker run $DOCKER_IOVNS_OPTS \
    --cidfile=${DIR_WORK}/${FILE_CID_IOVNS} \
    --volume=${DIR_WORK}:${DIR_TM} \
    ${IMAGE_IOVNS} \
-      -home=${DIR_WORK} \
+      -home=${DIR_TM} \
       start \
       -bind="unix://${DIR_TM}/${SOCK_TM}" \
       $IMAGE_IOVNS_OPTS

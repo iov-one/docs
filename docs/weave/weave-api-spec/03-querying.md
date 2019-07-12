@@ -50,6 +50,10 @@ Another way to access data is using __secondary indexes__. Via secondary indexes
 - Path: ``/wallets/name``, Data: "John" (raw): wallets.Index("name").Get("John")
   - `wallets` are queried for the account with name `John`.
 
+### Multikey indexes
+
+There might be some cases where one index have multiple values. Multikeys exists for this purpose. Query response will be multiple values instead of one.
+
 ### Prefixes
 
 There might be cases which all the data with index that begins with prefix. `wallets`
@@ -160,4 +164,28 @@ __Important:__ Every key must include the bucket's name as prefix. As you can se
   - `/minfee` -> takes `id` (8 bytes) returns [x/msgfee.MsgFee](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/codec.proto#L9-L16)
   - `/minfee?prefix` -> takes prefix as data, returns `ResultSet`
 
-
+- __Governance__
+  - __Electorate__
+    - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L17): `electorate:`
+    - `/electorate` -> takes `id` (8 bytes), returns [x/gov.Electorate](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L9-L24)
+    - `/electorate?prefix` -> takes prefix as data, returns `ResultSet`
+  - __Elector__
+    - Elector is a multikey index of electorate
+    - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L18): `elector:`
+    - `/electorate/elector` -> takes `id` (8 bytes), returns [x/gov.Elector](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L24-L32)
+    - `/electorate/elector?prefix` -> takes prefix as data, returns `ResultSet`
+  - __Election rules__
+    - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L51): `electnrule:`
+    - `/electionRule` -> takes `id` (8 bytes), returns [x/gov.ElectionRule](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L33-L63)
+    - `/electionRules?prefix` -> takes prefix as data, returns `ResultSet`
+  - __Proposal__
+    - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L77): `proposal:`
+    - `/proposal` -> takes `id` (8 bytes), returns [x/gov.Proposal](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L78-L116)
+    - `/proposal?prefix` -> takes prefix as data, returns `ResultSet`
+  - __Vote__
+    - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L186): `vote:`
+    - `/vote` -> takes `id` (8 bytes), returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)
+    - `/vote?prefix` -> takes prefix as data, returns `ResultSet`
+    - `/vote/proposal` -> takes `id` (8 bytes), returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)
+    -- `/vote/elector` -> takes `id` (8 bytes), returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)
+    - `/vote/elector?prefix` -> takes prefix as data, returns `ResultSet` `/vote/proposal?prefix` -> takes prefix as data, returns `ResultSet`

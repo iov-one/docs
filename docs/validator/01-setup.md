@@ -6,18 +6,20 @@ sidebar_label: Setup
 
 This document is not for beginners.  It assumes that you know how to setup a sentry node architecture for Tendermint nodes.
 
+> IOV does not recommend using docker in production; however, it can be used to start building your validator's quality score on our testnet if you so choose.
+
 
 ## Systemd for running a sentry node or validator
 
 This document assumes that docker is up and running on your system and user `iov` in groups `iov` and `docker` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
-sudo su # make life easier for the next 100 lines
+sudo su # make life easier for the next ~100 lines
 
 cd /etc/systemd/system
 
 # create an environment file for the IOV Name Service services
-cat <<EOS > iovns.env
+cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories
 DIR_TM=/tendermint
 DIR_WORK=/home/iov/davenet
@@ -46,10 +48,10 @@ SOCK_TM=iovns.sock
 # uid/gid
 IOV_GID=$(id iov -g)
 IOV_UID=$(id iov -u)
-EOS
+__EOF_IOVNS_ENV__
 
 # create iovns.service
-cat <<'EOS' > iovns.service
+cat <<'__EOF_IOVNS_SERVICE__' > iovns.service
 [Unit]
 Description=IOV Name Service
 After=network-online.target
@@ -72,16 +74,18 @@ ExecStart=docker run $DOCKER_IOVNS_OPTS \
       $IMAGE_IOVNS_OPTS
 ExecStop=sh -c "docker stop $(cat ${DIR_WORK}/${FILE_CID_IOVNS})"
 ExecStopPost=rm -fv ${DIR_WORK}/${FILE_CID_IOVNS}
+#Restart=on-failure
+#RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns
 
 [Install]
 WantedBy=multi-user.target
-EOS
+__EOF_IOVNS_SERVICE__
 
 # create iovns-tm.service
-cat <<'EOS' > iovns-tm.service
+cat <<'__EOF_IOVNS_TM_SERVICE__' > iovns-tm.service
 [Unit]
 Description=Tendermint for IOV Name Service
 After=iovns.service
@@ -102,13 +106,15 @@ ExecStart=docker run "$DOCKER_TM_OPTS" \
       $IMAGE_TM_OPTS
 ExecStop=sh -c "docker stop $(cat ${DIR_WORK}/${FILE_CID_TM})"
 ExecStopPost=rm -fv ${DIR_WORK}/${FILE_CID_TM}
+#Restart=on-failure
+#RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns-tm
 
 [Install]
 WantedBy=multi-user.target
-EOS
+__EOF_IOVNS_TM_SERVICE__
 
 systemctl daemon-reload
 exit # root
@@ -143,7 +149,7 @@ At this point you're running a full-node that can be examined at `http://localho
 
 > The most important file from the procedure above is `/etc/systemd/system/iovns.env`.  It defines docker image versions and options, directories that allow the `iovns.service` and `iovns-tm.service` to communicate with each other, and IOV Name Service and tendermint options.
 
-Using `/etc/systemd/system/iovns.env` rather than specifying values directly in the service files obviates the need to do `systemctl daemon-reload` on every option change.  Most values in `/etc/systemd/system/iovns.env` are self explanatory; however, there are a few of note:
+Using `/etc/systemd/system/iovns.env`, rather than specifying values directly in the service files, obviates the need to do `systemctl daemon-reload` on every option change.  Most values in `/etc/systemd/system/iovns.env` are self explanatory; however, there are a few of note:
   - for IOV Name Service
     - `IMAGE_IOVNS_OPTS` allows you to customize the anti-spam fee, etc.
   - for Tendermint
@@ -174,7 +180,7 @@ There are a lot more tendermint configuration options available than those shown
 
 ### Validator configuration
 
-As mentioned, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `p2p.*` options and `priv_validator_laddr` if you're using an HSM.  Change `/etc/systemd/system/iovns.env` so that the node gossips with its sentry node(s) only, ie set **`p2p.pex=false`** and add an explicit list of `p2p.persistent_peers`.  Obtain the sentry node ids (**p2p.persistent_peers**) by executing `curl -s http://localhost:16657/status | jq -r .result.node_info.id` **on each sentry node**.  You know the IP and PORT of the nodes, so include them appropriately.
+As mentioned, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `p2p.*` options and `priv_validator_laddr` if you're using an HSM.  Change `/etc/systemd/system/iovns.env` so that the node gossips with its sentry node(s) only, ie set **`p2p.pex=false`** and add an explicit list of `p2p.persistent_peers`.  Obtain the sentry node ids for `p2p.persistent_peers` by executing `curl -s http://localhost:16657/status | jq -r .result.node_info.id` **on each sentry node**.  You know the IP and PORT of the nodes, so include them appropriately.
 
 ```sh
 IMAGE_TM_OPTS="\
@@ -188,4 +194,4 @@ IMAGE_TM_OPTS="\
 
 ## Light-up the validator
 
-Once your sentry nodes and validator are sync'ed then the final step to becoming a validator is to submit your validator's pub_key to IOV.  **On your validator node**, execute `curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value` and reply to the ticket that was issued to you when you applied for the validator program with the resulting 44 character pub_key.  (There's no `create-validator` command like in Cosmos; validators are added via governance, which is just IOV on the testnet, for the moment.)
+Once your sentry nodes and validator are sync'ed then the final step to becoming a validator is to submit your validator's pub_key to IOV.  **On your validator node**, execute `curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value` and reply with the resulting 44 character pub_key to the ticket that was issued to you when you applied for the validator program.  (There's no `create-validator` command like in Cosmos; validators are added via governance, which is just IOV on the testnet, for the moment.)

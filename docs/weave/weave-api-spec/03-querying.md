@@ -4,27 +4,28 @@ title: Querying Weave
 sidebar_label: Querying Weave
 ---
 
-In this section querying Weave for data will be explained. Before diving into the details, Weave internals such as __buckets__ and __paths__ must be explained.
+In this section querying Weave for data will be explained. Before diving into the details, Weave internals such as **buckets** and **paths** must be explained.
 
 ## Buckets
 
-Buckets are the structures that enable accessing and writing to __Key-Value__ database in an organized and controlled manner. Buckets stores the data as well as the indexes, secondary indexes that refer to the data.
+Buckets are the structures that enable accessing and writing to **Key-Value** database in an organized and controlled manner. Buckets stores the data as well as the indexes, secondary indexes that refer to the data.
 
 ### Accessing buckets
 
-[//]: # (TODO give reference to Weave/tendermint or ABCI documentation)
+[//]: # 'TODO give reference to Weave/tendermint or ABCI documentation'
+
 As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query actually you do the call to tendermint's `ABCI` protocol. For more info about underlyings refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
 
-Via running the JSON-RPC/HTTP call below, __hugnet__ testnet could be queried so you can see an example response.
+Via running the JSON-RPC/HTTP call below, **hugnet** testnet could be queried so you can see an example response.
 
-``` bash
+```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/tokens", "data": "" } }' https://bns.hugnet.iov.one/
 ```
 
 ### Bucket paths
 
 A bucket data can be queried using that bucket unique path to identify it.
-The above curl command is reading username Token entity using */tokens* path.
+The above curl command is reading username Token entity using _/tokens_ path.
 
 Some available bucket paths: `/wallets`, `/auth`, `/aswaps` ...
 
@@ -32,25 +33,26 @@ Some available bucket paths: `/wallets`, `/auth`, `/aswaps` ...
 
 ### Primary indexes
 
-For accessing the data resides inside buckets, indexes are used. E.g.  to access wallet with primary index `00CAFE00`__(hex)__, call has to be made to `/wallets` path with index as data.
+For accessing the data resides inside buckets, indexes are used. E.g. to access wallet with primary index `00CAFE00`**(hex)**, call has to be made to `/wallets` path with index as data.
 
-[//]: # (TODO change testnet urls to mainnet after it is launched)
+[//]: # 'TODO change testnet urls to mainnet after it is launched'
 
 ```bash
-curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "00CAFE00" } }' https://bns.antnet.iov.one/
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "C1721181E83376EF978AA4A9A38A5E27C08C7BB2" } }' https://bns.antnet.iov.one/
 ```
 
-- Path: ``/``, Data: ``0123456789`` (hex) -> db.Get(``0123456789``)
+- Path: `/`, Data: `0123456789` (hex) -> db.Get(`0123456789`)
+
   - Queries made to root (`/`) are direct queries to the key-value db without an index.
 
-- Path: ``/wallets``, Data: ``00CAFE00`` (hex) -> wallets.Get(``00CAFE00``)
+- Path: `/wallets`, Data: `00CAFE00` (hex) -> wallets.Get(`00CAFE00`)
   - `wallets` are queried for the account with address `00CAFE00`.
 
 ### Secondary indexes
 
-Another way to access data is using __secondary indexes__. Via secondary indexes data could have multiple ways to be accessed. E.g. wallets are registered under a name so there might be some use cases for accessing them with names. `/wallets` + `/name` = `/wallets/name` indicates that bucket will be queried using name index that will be sent in the data field.
+Another way to access data is using **secondary indexes**. Via secondary indexes data could have multiple ways to be accessed. E.g. wallets are registered under a name so there might be some use cases for accessing them with names. `/wallets` + `/name` = `/wallets/name` indicates that bucket will be queried using name index that will be sent in the data field.
 
-- Path: ``/wallets/name``, Data: "John" (raw): wallets.Index("name").Get("John")
+- Path: `/wallets/name`, Data: `4A6F686E` (raw: `John`): wallets.Index("name").Get("John")
   - `wallets` are queried for the account with name `John`.
 
 ### Multikey indexes
@@ -62,8 +64,9 @@ There might be some cases where one index have multiple values. Multikeys exists
 There might be cases which all the data with index that begins with prefix. `wallets`
 
 - Queries that made using prefix without a data field would result as listing all the objects saved under the bucket
+
   - E.g. query below will return all the wallets saved under wallet bucket in [ResultSet](#Responses) response format
-  
+
     ```bash
     curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query",
     "params": { "path": "/wallets?prefix", "data": "" } }' \
@@ -78,7 +81,7 @@ There might be cases which all the data with index that begins with prefix. `wal
       https://bns.davenet.iov.one/
     ```
 
-- Path: ``/wallets?prefix``, Data: ``0123456789`` (hex) -> db.Iterator(``0123456789``, ``012345678A``)
+- Path: `/wallets?prefix`, Data: `0123456789` (hex) -> db.Iterator(`0123456789`, `012345678A`)
   - `wallets` are queried for the accounts starting with from `0123456789` to `012345678A`
 
 ## Responses
@@ -105,107 +108,137 @@ When the curl command above executed, this response will be received:
 }
 ```
 
+### Empty result or not found
+
+For non-existent objects Weave returns the current block height. Such as:
+
+```bash
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321",
+"method": "abci_query", "params": { "path": "/wallets?prefix", "data": "0123456789" } }' \
+https://bns.antnet.iov.one/
+```
+
+Response will be:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": "foobar321",
+  "result": {
+    "response": {
+      "height": "11272" <--- current block height
+    }
+  }
+}
+```
+
 Since the request is with prefix, meaning multiple values will be returned.
 
 ### Parsing responses
 
-The `key` and `value` values here are encoded with [ResultSet](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/app/results.proto#L5-L9). In order to decode ResultSet, import protobuf definition as mentioned in [docs/weave/transaction](https://github.com/iov-one/docs/blob/master/docs/weave/weave-api-spec/01-transaction.md#L102). You can take a look at [iov-core](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L674-L679) implementation.
+The `key` and `value` values here are encoded with [ResultSet](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/app/results.proto#L5-L9). In order to decode ResultSet, import protobuf definition as mentioned in [docs/weave/transaction](https://github.com/iov-one/docs/blob/v0.18.0/docs/weave/weave-api-spec/01-transaction.md#L102). You can take a look at [iov-core](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L674-L679) implementation.
 
-__Important:__ Every key must include the bucket's name as prefix. As you can see on [iov-core/iov-bns](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L159-L177) and [iov-core/iov-bns/bnsconnection/getAccount](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L341) every key field in the ResultSet must begin with `cash:`
+**Important:** Every key will include the bucket's name as prefix. As you can see on [iov-core/iov-bns](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L159-L177) and [iov-core/iov-bns/bnsconnection/getAccount](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L341) every key field in the ResultSet must begin with `cash:`
 
 ## Available bucket paths by package name
 
-- __Username__
+- **Username**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/cmd/bnsd/x/username/model.go#L73): `username:`
-  - `/usernames` -> takes `id` as data, returns [bnsd/x/username/username.Token](https://github.com/iov-one/weave/blob/master/cmd/bnsd/x/username/codec.proto#L7-L26)
-  - `/usernames?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/usernames` -> returns [bnsd/x/username/username.Token](https://github.com/iov-one/weave/blob/v0.18.0/cmd/bnsd/x/username/codec.proto#L7-L26) by `id`(8 bytes) or empty result
+  - `/usernames?prefix` -> returns 1 or more `Token` that begin with that prefix
 
-- __Cash__
+- **Cash**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/cash/model.go#L18): `cash:`
-  - `/wallets` -> takes `id`(8 bytes), returns [x/cash.Set](https://github.com/iov-one/weave/blob/v0.18.0/x/cash/codec.proto#L11-L14) by id
-  - `/wallets?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/wallets` -> returns [x/cash.Set](https://github.com/iov-one/weave/blob/v0.18.0/x/cash/codec.proto#L11-L14) by `id` (8 bytes) or empty result
+  - `/wallets?prefix` -> returns 1 or more `Set` that begin with that prefix
 
-- __Sigs__
+- **Sigs**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/sigs/model.go#L117): `sigs:`
-  - `/auth` -> takes address `id`(8 bytes) returns [x/sigs.UserData](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/x/sigs/codec.proto#L13-L17) by id
-  - `/auth?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/auth` -> returns [x/sigs.UserData](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/x/sigs/codec.proto#L13-L17) by `id`(8 bytes) or empty result
+  - `/auth?prefix` -> returns 1 or more `UserData` that begin with that prefix
 
-- __Multisig__
+- **Multisig**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/multisig/model.go#L86): `multisig:`
-  - `/contracts` -> takes `id`(8 bytes) returns [x/multisig.Contract](https://github.com/iov-one/weave/blob/v0.18.0/x/multisig/codec.proto#L8-L21)
-  - `/contracts?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/contracts` -> returns [x/multisig.Contract](https://github.com/iov-one/weave/blob/v0.18.0/x/multisig/codec.proto#L8-L21) by `id` (8 bytes) or empty result
+  - `/contracts?prefix` -> returns 1 or more `Contract` that begin with that prefix
 
-- __Atomic swaps__
+- **Atomic swaps**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/model.go#L85): `swap:`
-  - `/aswaps` -> takes `id`(8 bytes) returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/master/x/aswap/codec.proto#L9-L29)
-  - `/aswaps/source` -> takes `source` as secondary index (8 bytes) returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/master/x/aswap/codec.proto#L9-L29)
-  - `/aswaps/destination` -> takes `destination` as secondary index (8 bytes) returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/master/x/aswap/codec.proto#L9-L29)
-  - `/aswaps/preimage_hash` -> takes `preimage_hash` as secondary index (8 bytes) returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/master/x/aswap/codec.proto#L9-L29)
-  - `/aswaps?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/aswaps` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `id` (8 bytes) or empty result
+  - `/aswaps/source` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `source`(20 bytes address) as secondary index or empty result
+  - `/aswaps/destination` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `destination`(20 bytes address) as secondary index or empty result
+  - `/aswaps/preimage_hash` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `preimage_hash`(32 bytes) as secondary index or empty result
+  - `/aswaps?prefix` -> returns 1 or more `Swap` that begin with that prefix
 
-- __Escrow__
+- **Escrow**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/escrow/model.go#L113): `escrow:`
-  - `/escrows` -> takes `id`(8 bytes) returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/master/x/escrow/codec.proto#L9-L28)
-  - `/escrows/source` -> takes `source` as secondary index (8 bytes) returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/master/x/escrow/codec.proto#L9-L28)
-  - `/escrows/destination` -> takes `destination` as secondary index (8 bytes) returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/master/x/escrow/codec.proto#L9-L28)
-  - `/escrows/arbiter` -> takes `/arbiter` as secondary index (8 bytes) returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/master/x/escrow/codec.proto#L9-L28)
-  - `/escrows?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/escrows` -> returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/v0.18.0/x/escrow/codec.proto#L9-L28) by `id`(8 bytes) or empty result
+  - `/escrows/source` -> returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/v0.18.0/x/escrow/codec.proto#L9-L28) by `source`(20 bytes address) as secondary index or empty result
+  - `/escrows/destination` -> returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/v0.18.0/x/escrow/codec.proto#L9-L28) by `destination`(20 bytes address) as secondary index or empty result
+  - `/escrows/arbiter` -> returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/v0.18.0/x/escrow/codec.proto#L9-L28) by `arbiter` (20 bytes address) as secondary index
+  - `/escrows?prefix` -> returns 1 or more `Escrow` that begin with that prefix
 
-- __Governance__
-  - Electorates
-    - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L17): `electorate:`
-    - `electorates` takes `id`(8 bytes) returns [x/gov.Electorate](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L9-L23)
-    - `electorates/elector`
+- **Payment channels**
 
-- __Payment channels__
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/paychan/model.go#L67): `paychan:`
-  - `/paychans` -> takes `id`(8 bytes) returns [x/paychan.PaymentChannel](https://github.com/iov-one/weave/blob/v0.18.0/x/paychan/codec.proto#L10-L36)
-  - `/paychans?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/paychans` -> returns [x/paychan.PaymentChannel](https://github.com/iov-one/weave/blob/v0.18.0/x/paychan/codec.proto#L10-L36) by `id`(8 bytes) or empty result
+  - `/paychans?prefix` -> returns 1 or more `PaymentChannel` that begin with that prefix
 
-- __Distribution__
+- **Distribution**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/distribution/model.go#L110): `revenue:`
-  - `/revenues` -> takes `id`(8 bytes) returns [x/distribution](https://github.com/iov-one/weave/blob/master/x/v0.18.0/codec.proto#L8-L34)
-  - `/revenues?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/revenues` -> returns [x/distribution.Revenue](https://github.com/iov-one/weave/blob/v0.18.0/x/distribution/codec.proto#L8-L20) by `id`(8 bytes) or empty result
+  - `/revenues?prefix` -> returns 1 or more `Revenue` that begin with that prefix
 
-- __Currency__
+- **Currency**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/currency/model.go#L55): `tokeninfo:`
-  - `/tokens` -> takes `id`(8 bytes) returns [x/currency.TokenInfo](https://github.com/iov-one/weave/blob/v0.18.0/x/currency/codec.proto#L7-L12)
-  - `/tokens?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/tokens` -> returns [x/currency.TokenInfo](https://github.com/iov-one/weave/blob/v0.18.0/x/currency/codec.proto#L7-L12) by `id`(8 bytes) or empty result
+  - `/tokens?prefix` -> returns 1 or more `TokenInfo` that begin with that prefix
 
-- __Validators__
+- **Validators**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/validators/model.go#L16): `uvalid:`
-  - `/validators` -> takes `id`(8 bytes) returns [x/validators.Accounts](https://github.com/iov-one/weave/blob/v0.18.0/x/validators/codec.proto#L14-L18)
-  - `/validators?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/validators` -> returns [x/validators.Accounts](https://github.com/iov-one/weave/blob/v0.18.0/x/validators/codec.proto#L14-L18) by `id`(8 bytes) or empty result
+  - `/validators?prefix` -> returns 1 or more `Accounts` that begin with that prefix
 
-- __Anti spam__
+- **Anti spam**
+
   - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/model.go#L48): `msgfee:`
-  - `/msgfee` -> takes `id` (8 bytes) returns [x/msgfee.MsgFee](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/codec.proto#L9-L16)
-  - `/msgfee?prefix` -> takes prefix as data, returns `ResultSet`
-  - `/minfee` -> takes `id` (8 bytes) returns [x/msgfee.MsgFee](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/codec.proto#L9-L16)
-  - `/minfee?prefix` -> takes prefix as data, returns `ResultSet`
+  - `/msgfee` -> returns [x/msgfee.MsgFee](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/codec.proto#L9-L16) by `id`(8 bytes) or empty result
+  - `/msgfee?prefix` -> returns 1 or more `MsgFee` that begin with that prefix
+  - `/minfee` -> returns [x/msgfee.MsgFee](https://github.com/iov-one/weave/blob/v0.18.0/x/msgfee/codec.proto#L9-L16) by `id`(8 bytes) or empty result
+  - `/minfee?prefix` -> returns 1 or more `MsgFee` that begin with that prefix
 
-- __Governance__
-  - __Electorate__
+- **Governance**
+  - **Electorate**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L17): `electorate:`
-    - `/electorate` -> takes `id` (8 bytes), returns [x/gov.Electorate](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L9-L24)
-    - `/electorate?prefix` -> takes prefix as data, returns `ResultSet`
-  - __Elector__
+    - `/electorate` -> returns [x/gov.Electorate](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L9-L24)) by `id`(8 bytes) or empty result
+    - `/electorate?prefix` -> returns 1 or more `Electorate` that begin with that prefix
+  - **Elector**
     - Elector is a multikey index of electorate
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L18): `elector:`
-    - `/electorate/elector` -> takes `id` (8 bytes), returns [x/gov.Elector](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L24-L32)
-    - `/electorate/elector?prefix` -> takes prefix as data, returns `ResultSet`
-  - __Election rules__
+    - `/electorate/elector` -> returns [x/gov.Elector](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L24-L32)) by `id`(8 bytes) or empty result
+    - `/electorate/elector?prefix` -> returns 1 or more `Elector` that begin with that prefix
+  - **Election rules**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L51): `electnrule:`
-    - `/electionRule` -> takes `id` (8 bytes), returns [x/gov.ElectionRule](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L33-L63)
-    - `/electionRules?prefix` -> takes prefix as data, returns `ResultSet`
-  - __Proposal__
+    - `/electionRule` -> returns [x/gov.ElectionRule](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L33-L63)) by `id`(8 bytes) or empty result
+    - `/electionRules?prefix` -> returns 1 or more `ElectionRule` that begin with that prefix
+  - **Proposal**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L77): `proposal:`
-    - `/proposal` -> takes `id` (8 bytes), returns [x/gov.Proposal](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L78-L116)
-    - `/proposal?prefix` -> takes prefix as data, returns `ResultSet`
-  - __Vote__
+    - `/proposal` -> returns [x/gov.Proposal](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L78-L116)) by `id`(8 bytes) or empty result
+    - `/proposal?prefix` -> returns 1 or more `Proposal` that begin with that prefix
+  - **Vote**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L186): `vote:`
-    - `/vote` -> takes `id` (8 bytes), returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)
-    - `/vote?prefix` -> takes prefix as data, returns `ResultSet`
-    - `/vote/proposal` -> takes `id` (8 bytes), returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)
-    -- `/vote/elector` -> takes `id` (8 bytes), returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)
-    - `/vote/elector?prefix` -> takes prefix as data, returns `ResultSet` `/vote/proposal?prefix` -> takes prefix as data, returns `ResultSet`
+    - `/vote` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)) by `id`(8 bytes) or empty result
+    - `/vote?prefix` -> returns 1 or more `Vote` that begin with that prefix
+    - `/vote/proposal` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)) by `id`(8 bytes) or empty result
+    - `/vote/proposal?prefix` -> returns 1 or more `Vote` that begin with that prefix
+      -- `/vote/elector` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)) by `id`(8 bytes) or empty result
+    - `/vote/elector?prefix` -> returns 1 or more `Vote` that begin with that prefix

@@ -61,7 +61,7 @@ There might be some cases where one index has multiple values. Multikeys exists 
 
 ### Prefixes
 
-There might be cases which all the data with index that begins with prefix. `wallets`
+There might be cases where all the data with has the same index prefix wanted to be retrieved. For this purpose you can do prefix searches using `?prefix` endpoints
 
 - Queries that made using prefix without a data field would result as listing all the objects saved under the bucket
 

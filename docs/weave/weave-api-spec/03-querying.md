@@ -172,7 +172,7 @@ The `key` and `value` values here are encoded with [ResultSet](https://github.co
   - `/aswaps` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `id` (8 bytes) or empty result
   - `/aswaps/source` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `source`(20 bytes address) as secondary index or empty result
   - `/aswaps/destination` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `destination`(20 bytes address) as secondary index or empty result
-  - `/aswaps/preimage_hash` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `preimage_hash`(32 bytes) as secondary index or empty result
+  - `/aswaps/preimage_hash` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.18.0/x/aswap/codec.proto#L9-L29) by `preimage_hash`(32 bytes sha256 hash) as secondary index or empty result
   - `/aswaps?prefix` -> returns 1 or more `Swap` that begin with that prefix
 
 - **Escrow**

@@ -219,7 +219,7 @@ The `key` and `value` values here are encoded with [ResultSet](https://github.co
 - **Governance**
   - **Electorate**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L17): `electorate:`
-    - `/electorate` -> returns [x/gov.Electorate](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L9-L24)) by `id`(8 bytes) or empty result
+    - `/electorate` -> returns [x/gov.Electorate](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L9-L24) by `id`(8 bytes) or empty result
     - `/electorate?prefix` -> returns 1 or more `Electorate` that begin with that prefix
   - **Elector**
     - Elector is a multikey index of electorate

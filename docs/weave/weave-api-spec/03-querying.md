@@ -224,21 +224,21 @@ The `key` and `value` values here are encoded with [ResultSet](https://github.co
   - **Elector**
     - Elector is a multikey index of electorate
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L18): `elector:`
-    - `/electorate/elector` -> returns [x/gov.Elector](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L24-L32)) by `id`(8 bytes) or empty result
+    - `/electorate/elector` -> returns [x/gov.Elector](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L24-L32) by `elector`(20 bytes address) or empty result
     - `/electorate/elector?prefix` -> returns 1 or more `Elector` that begin with that prefix
   - **Election rules**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L51): `electnrule:`
-    - `/electionRule` -> returns [x/gov.ElectionRule](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L33-L63)) by `id`(8 bytes) or empty result
+    - `/electionRule` -> returns [x/gov.ElectionRule](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L33-L63) by `id`(8 bytes) or empty result
     - `/electionRules?prefix` -> returns 1 or more `ElectionRule` that begin with that prefix
   - **Proposal**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L77): `proposal:`
-    - `/proposal` -> returns [x/gov.Proposal](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L78-L116)) by `id`(8 bytes) or empty result
+    - `/proposal` -> returns [x/gov.Proposal](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L78-L116) by `id`(8 bytes) or empty result
     - `/proposal?prefix` -> returns 1 or more `Proposal` that begin with that prefix
   - **Vote**
     - [key prefix](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/bucket.go#L186): `vote:`
-    - `/vote` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)) by `id`(8 bytes) or empty result
+    - `/vote` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179) by `id`(8 bytes) or empty result
     - `/vote?prefix` -> returns 1 or more `Vote` that begin with that prefix
-    - `/vote/proposal` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)) by `id`(8 bytes) or empty result
+    - `/vote/proposal` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179) by `id`(8 bytes) or empty result
     - `/vote/proposal?prefix` -> returns 1 or more `Vote` that begin with that prefix
-      -- `/vote/elector` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179)) by `id`(8 bytes) or empty result
+      -- `/vote/elector` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.18.0/x/gov/codec.proto#L169-L179) by `id`(8 bytes) or empty result
     - `/vote/elector?prefix` -> returns 1 or more `Vote` that begin with that prefix

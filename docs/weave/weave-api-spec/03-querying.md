@@ -14,7 +14,7 @@ Buckets are the structures that enable accessing and writing to **Key-Value** da
 
 [//]: # 'TODO give reference to Weave/tendermint or ABCI documentation'
 
-As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query actually you do the call to tendermint's `ABCI` protocol. For more info about underlyings refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
+As mentioned in the previous sections, Weave uses tender mint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query you do the call to tendermint's `ABCI` protocol. For more info about underlying refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
 
 Via running the JSON-RPC/HTTP call below, **hugnet** testnet could be queried so you can see an example response.
 
@@ -35,7 +35,7 @@ Some available bucket paths: `/wallets`, `/auth`, `/aswaps` ...
 
 For accessing the data resides inside buckets, indexes are used. E.g. to access wallet with primary index `00CAFE00`**(hex)**, call has to be made to `/wallets` path with index as data.
 
-[//]: # 'TODO change testnet urls to mainnet after it is launched'
+[//]: # 'TODO change testnet URLs to mainnet after it is launched'
 
 ```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "C1721181E83376EF978AA4A9A38A5E27C08C7BB2" } }' https://bns.antnet.iov.one/
@@ -43,21 +43,21 @@ curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "
 
 - Path: `/`, Data: `0123456789` (hex) -> db.Get(`0123456789`)
 
-  - Queries made to root (`/`) are direct queries to the key-value db without an index.
+  - Queries made to root (`/`) are direct queries to the key-value DB without an index.
 
 - Path: `/wallets`, Data: `00CAFE00` (hex) -> wallets.Get(`00CAFE00`)
   - `wallets` are queried for the account with address `00CAFE00`.
 
 ### Secondary indexes
 
-Another way to access data is using **secondary indexes**. Via secondary indexes data could have multiple ways to be accessed. E.g. wallets are registered under a name so there might be some use cases for accessing them with names. `/wallets` + `/name` = `/wallets/name` indicates that bucket will be queried using name index that will be sent in the data field.
+Another way to access data is using **secondary indexes**. Via secondary indexes, data could have multiple ways to be accessed. E.g. wallets are registered under a name so there might be some use cases for accessing them with names. `/wallets` + `/name` = `/wallets/name` indicates that bucket will be queried using name index that will be sent in the data field.
 
 - Path: `/wallets/name`, Data: `4A6F686E` (raw: `John`): wallets.Index("name").Get("John")
   - `wallets` are queried for the account with name `John`.
 
 ### Multikey indexes
 
-There might be some cases where one index have multiple values. Multikeys exists for this purpose. Query response will be multiple values instead of one.
+There might be some cases where one index has multiple values. Multikeys exists for this purpose. Query response will be multiple values instead of one.
 
 ### Prefixes
 
@@ -118,7 +118,7 @@ curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321",
 https://bns.antnet.iov.one/
 ```
 
-Response will be:
+The response will be:
 
 ```json
 {

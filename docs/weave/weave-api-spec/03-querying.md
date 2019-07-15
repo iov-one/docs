@@ -34,6 +34,8 @@ Some available bucket paths: `/wallets`, `/auth`, `/aswaps` ...
 
 For accessing the data resides inside buckets, indexes are used. E.g.  to access wallet with primary index `00CAFE00`__(hex)__, call has to be made to `/wallets` path with index as data.
 
+[//]: # (TODO change testnet urls to mainnet after it is launched)
+
 ```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "00CAFE00" } }' https://bns.antnet.iov.one/
 ```

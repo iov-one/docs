@@ -52,7 +52,7 @@ curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "
 
 Another way to access data is using **secondary indexes**. Via secondary indexes, data could have multiple ways to be accessed. E.g. wallets are registered under a name so there might be some use cases for accessing them with names. `/wallets` + `/name` = `/wallets/name` indicates that bucket will be queried using name index that will be sent in the data field.
 
-- Path: `/wallets/name`, Data: `4A6F686E` (raw: `John`): wallets.Index("name").Get("John")
+- Path: `/wallets/name`, Data: `4A6F686E` (raw: `John`): wallets.Index("name").Get("4A6F686E")
   - `wallets` are queried for the account with name `John`.
 
 ### Multikey indexes

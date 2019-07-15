@@ -61,6 +61,23 @@ There might be some cases where one index have multiple values. Multikeys exists
 
 There might be cases which all the data with index that begins with prefix. `wallets`
 
+- Queries that made using prefix without a data field would result as listing all the objects saved under the bucket
+  - E.g. query below will return all the wallets saved under wallet bucket in [ResultSet](#Responses) response format
+  
+    ```bash
+    curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query",
+    "params": { "path": "/wallets?prefix", "data": "" } }' \
+    https://bns.davenet.iov.one/
+    ```
+
+  - E.g. query below will return all the tokens saved under token bucket in again ResultSet.
+
+    ```bash
+      curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query",
+      "params": { "path": "/tokens?prefix", "data": "" } }' \
+      https://bns.davenet.iov.one/
+    ```
+
 - Path: ``/wallets?prefix``, Data: ``0123456789`` (hex) -> db.Iterator(``0123456789``, ``012345678A``)
   - `wallets` are queried for the accounts starting with from `0123456789` to `012345678A`
 

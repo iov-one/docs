@@ -8,13 +8,13 @@ In this section querying Weave for data will be explained. Before diving into th
 
 ## Buckets
 
-Buckets are the structures that enable accessing and writing to **Key-Value** database in an organized and controlled manner. Buckets stores the data as well as the indexes, secondary indexes that refer to the data.
+Buckets are the structures that enable accessing and writing to **Key-Value** database in an organized and controlled manner. Buckets stores the data as well as the [indexes](#Primary-indexes), [secondary indexes](#Secondary-indexes) that enables you to access the data.
 
 ### Accessing buckets
 
 [//]: # 'TODO give reference to Weave/tendermint or ABCI documentation'
 
-As mentioned in the previous sections, Weave uses tender mint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query you do the call to tendermint's `ABCI` protocol. For more info about underlying refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
+As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query you do the call to tendermint's `ABCI` protocol. For more info about underlying refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
 
 Via running the JSON-RPC/HTTP call below, **hugnet** testnet could be queried so you can see an example response.
 

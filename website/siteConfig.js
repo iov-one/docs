@@ -19,8 +19,8 @@ const siteConfig = {
   organizationName: 'iov-one',
 
   algolia: {
-    apiKey: 'f305686cd1b020159501fba70bbc662a',
-    indexName: 'iov-docs',
+    apiKey: '8dc8128a9091306e7bbd0effdaa5241a',
+    indexName: 'iov',
   },
 
   headerLinks: [

@@ -11,7 +11,7 @@ This document is not for beginners.  It assumes that you know how to setup a sen
 
 ## Systemd for running a sentry node or validator
 
-This document assumes that `docker`, `jq`, and `which` are installed on your system, and user `iov` in groups `iov` and `docker` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
+This document assumes that `curl`, `docker`, `jq`, and `which` are installed on your system, and user `iov` in groups `iov` and `docker` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
 sudo su # make life easier for the next ~100 lines
@@ -22,7 +22,7 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories
 DIR_TM=/tendermint
-DIR_WORK=/home/iov/davenet
+DIR_WORK=/home/iov/kissnet
 
 # docker options
 DOCKER_IOVNS_OPTS="--rm"
@@ -33,12 +33,12 @@ FILE_CID_IOVNS=iovns.cid
 FILE_CID_TM=iovns-tm.cid
 
 # images
-IMAGE_IOVNS=iov1/bnsd:v0.18.0
+IMAGE_IOVNS=iov1/bnsd:v0.19.0
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=iov1/tendermint:v0.31.5
 IMAGE_TM_OPTS="\
 --moniker='moniker' \
---p2p.persistent_peers='08b73c11b3209f2044945a56555d867be7b003b4@34.76.70.139:26656' \
+--p2p.persistent_peers='cc10fde0979d8ccad0cae135ef78227377dda833@34.76.5.242:26656' \
 --rpc.unsafe=false \
 "
 
@@ -139,7 +139,7 @@ cd ${DIR_WORK}
 
 # initialize tendermint
 docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_TM} init
-curl --fail https://bns.davenet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
+curl --fail https://bns.kissnet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
 
 # initialize IOV Name Service (bnsd)
 docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_IOVNS} -home=${DIR_TM} init -i | grep initialised
@@ -177,7 +177,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.persistent_peers='08b73c11b3209f2044945a56555d867be7b003b4@34.76.70.139:26656' \
+--p2p.persistent_peers='cc10fde0979d8ccad0cae135ef78227377dda833@34.76.5.242:26656' \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

@@ -50,8 +50,16 @@ IOV_GID=$(id iov -g)
 IOV_UID=$(id iov -u)
 __EOF_IOVNS_ENV__
 
+chgrp iov iovns.env
+chmod g+r iovns.env
+
+# deal with inconsistent systemd PATH among distributions
+export CAT=$(which --skip-alias cat)
+export DOCKER=$(which --skip-alias docker)
+export RM=$(which --skip-alias rm)
+
 # create iovns.service
-DOCKER=$(which docker) && cat <<'__EOF_IOVNS_SERVICE__' | sed 's@__DOCKER__@'"$DOCKER"'@g' > iovns.service
+cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' > iovns.service
 [Unit]
 Description=IOV Name Service
 After=network-online.target
@@ -72,8 +80,8 @@ ExecStart=__DOCKER__ run $DOCKER_IOVNS_OPTS \
       start \
       -bind="unix://${DIR_TM}/${SOCK_TM}" \
       $IMAGE_IOVNS_OPTS
-ExecStop=sh -c "__DOCKER__ stop $(cat ${DIR_WORK}/${FILE_CID_IOVNS})"
-ExecStopPost=rm -fv ${DIR_WORK}/${FILE_CID_IOVNS}
+ExecStop=sh -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_IOVNS})"
+ExecStopPost=__RM__ -fv ${DIR_WORK}/${FILE_CID_IOVNS}
 #Restart=on-failure
 #RestartSec=3
 StandardError=journal
@@ -85,7 +93,7 @@ WantedBy=multi-user.target
 __EOF_IOVNS_SERVICE__
 
 # create iovns-tm.service
-DOCKER=$(which docker) && cat <<'__EOF_IOVNS_TM_SERVICE__' | sed 's@__DOCKER__@'"$DOCKER"'@g' > iovns-tm.service
+cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' > iovns-tm.service
 [Unit]
 Description=Tendermint for IOV Name Service
 After=iovns.service
@@ -104,8 +112,8 @@ ExecStart=__DOCKER__ run "$DOCKER_TM_OPTS" \
    ${IMAGE_TM} node \
       --proxy_app="unix://${DIR_TM}/${SOCK_TM}" \
       $IMAGE_TM_OPTS
-ExecStop=sh -c "__DOCKER__ stop $(cat ${DIR_WORK}/${FILE_CID_TM})"
-ExecStopPost=rm -fv ${DIR_WORK}/${FILE_CID_TM}
+ExecStop=sh -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_TM})"
+ExecStopPost=__RM__ -fv ${DIR_WORK}/${FILE_CID_TM}
 #Restart=on-failure
 #RestartSec=3
 StandardError=journal

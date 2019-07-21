@@ -38,7 +38,7 @@ IMAGE_IOVNS_OPTS=""
 IMAGE_TM=iov1/tendermint:v0.31.5
 IMAGE_TM_OPTS="\
 --moniker='moniker' \
---p2p.persistent_peers='cc10fde0979d8ccad0cae135ef78227377dda833@34.76.5.242:26656' \
+--p2p.persistent_peers='0c6730943a65220cb165805e3382b20d4c9562a2@35.240.44.48:26656' \
 --rpc.unsafe=false \
 "
 
@@ -177,7 +177,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.persistent_peers='cc10fde0979d8ccad0cae135ef78227377dda833@34.76.5.242:26656' \
+--p2p.persistent_peers='0c6730943a65220cb165805e3382b20d4c9562a2@35.240.44.48:26656' \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

@@ -16,10 +16,12 @@ Buckets are the structures that enable accessing and writing to **Key-Value** da
 
 As mentioned in the previous sections, Weave uses tendermint as consensus engine thus queries are made to data store via `abci_queries`. Therefore when you make a query you do the call to tendermint's `ABCI` protocol. For more info about underlying refer to [tendermint/abciquery](https://tendermint.com/rpc/#abciquery).
 
-Via running the JSON-RPC/HTTP call below, **hugnet** testnet could be queried so you can see an example response.
+Via running the JSON-RPC/HTTP call below, **kissnet** testnet could be queried so you can see an example response.
 
 ```bash
-curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/tokens", "data": "" } }' https://bns.hugnet.iov.one/
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321",
+"method": "abci_query", "params": { "path": "/escrows/source", "data": "0000000000000000000000000000000000000000" } }' \
+https://bns.kissnet.iov.one/
 ```
 
 ### Bucket paths
@@ -38,7 +40,7 @@ For accessing the data resides inside buckets, indexes are used. E.g. to access 
 [//]: # 'TODO change testnet URLs to mainnet after it is launched'
 
 ```bash
-curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "C1721181E83376EF978AA4A9A38A5E27C08C7BB2" } }' https://bns.antnet.iov.one/
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "CBC76ADED2C9DB439DB4C8D714CF26DAE5229A91" } }' https://bns.kissnet.iov.one/
 ```
 
 - Path: `/`, Data: `0123456789` (hex) -> db.Get(`0123456789`)
@@ -70,7 +72,7 @@ There might be cases where all the data with has the same index prefix wanted to
     ```bash
     curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query",
     "params": { "path": "/wallets?prefix", "data": "" } }' \
-    https://bns.davenet.iov.one/
+    https://bns.kissnet.iov.one/
     ```
 
   - E.g. query below will return all the tokens saved under token bucket in again ResultSet.
@@ -78,7 +80,7 @@ There might be cases where all the data with has the same index prefix wanted to
     ```bash
       curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query",
       "params": { "path": "/tokens?prefix", "data": "" } }' \
-      https://bns.davenet.iov.one/
+      https://bns.kissnet.iov.one/
     ```
 
 - Path: `/wallets?prefix`, Data: `0123456789` (hex) -> db.Iterator(`0123456789`, `012345678A`)
@@ -89,7 +91,7 @@ There might be cases where all the data with has the same index prefix wanted to
 Since Weave queries routed to tendermint ABCI protocol, tendermint enforces responses to be in `key/value` format. Reference: [tendermint/abci-spec#query](https://tendermint.readthedocs.io/en/v0.21.0/abci-spec.html#query).
 
 ```bash
-curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "CBC76ADED2C9DB439DB4C8D714CF26" } }' https://bns.davenet.iov.one/
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "CBC76ADED2C9DB439DB4C8D714CF26" } }' https://bns.kissnet.iov.one/
 ```
 
 When the curl command above executed, this response will be received:
@@ -102,7 +104,7 @@ When the curl command above executed, this response will be received:
     "response": {
       "key": "ChljYXNoOsvHat7SydtDnbTI1xTPJtrlIpqR",
       "value": "ChAKAggBEgoIlZrvOhoDSU9W",
-      "height": "2506"
+      "height": "529"
     }
   }
 }
@@ -115,7 +117,7 @@ For non-existent objects Weave returns the current block height. Such as:
 ```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321",
 "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "0123456789" } }' \
-https://bns.antnet.iov.one/
+https://bns.kissnet.iov.one/
 ```
 
 The response will be:
@@ -126,7 +128,7 @@ The response will be:
   "id": "foobar321",
   "result": {
     "response": {
-      "height": "11272" <--- current block height
+      "height": "527" <--- current block height
     }
   }
 }

@@ -9,6 +9,7 @@
     ],
     "Weave": [
       "weave/welcome",
+      "weave/blockchain",
       {
         "type": "subcategory",
         "label": "Tutorial",

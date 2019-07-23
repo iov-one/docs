@@ -34,43 +34,43 @@ Light client proofs, custom token issuance and support for IBC (Inter Blockchain
 
 ## Basic Blockchain Terminology
 
-If you are new to blockchains (or Tendermint), this is a crash course in just enough theory to follow the rest of the setup. [Read all](weave/02-blockchain.md)
+If you are new to blockchains (or Tendermint), this is a crash course in just enough theory to follow the rest of the setup. [Read all](weave/design/01-blockchain.md)
 
 ### Immutable Event Log
 
-If you are coming from working on typical databases, you can think of the blockchain as an immutable [transaction log](https://en.wikipedia.org/wiki/Transaction_log) . If you have worked with [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) you can consider a block as a set of events that can always be replayed to create a [materialized view](https://docs.microsoft.com/en-us/azure/architecture/patterns/materialized-view) . Maybe you have a more theoretical background and recognize that a blockchain is a fault tolerant form of [state machine replication](https://en.wikipedia.org/wiki/State_machine_replication#Ordering_Inputs) . [Read more](weave/02-blockchain.md#immutable-event-log)
+If you are coming from working on typical databases, you can think of the blockchain as an immutable [transaction log](https://en.wikipedia.org/wiki/Transaction_log) . If you have worked with [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) you can consider a block as a set of events that can always be replayed to create a [materialized view](https://docs.microsoft.com/en-us/azure/architecture/patterns/materialized-view) . Maybe you have a more theoretical background and recognize that a blockchain is a fault tolerant form of [state machine replication](https://en.wikipedia.org/wiki/State_machine_replication#Ordering_Inputs) . [Read more](weave/design/01-blockchain.md#immutable-event-log)
 
 ### General Purpose Computer
 
-Ethereum pioneered the second generation of blockchain, where they realized that we didn't have to limit ourselves to handling payments, but actually have a general purpose state machine. [Read more](weave/02-blockchain.md#general-purpose-computer)
+Ethereum pioneered the second generation of blockchain, where they realized that we didn't have to limit ourselves to handling payments, but actually have a general purpose state machine. [Read more](weave/design/01-blockchain.md#general-purpose-computer)
 
 ### Next Generation
 
-Since that time, many groups are working on "next generation" solutions that take the learnings of Ethereum and attempt to build a highly scalable and secure blockchain that can run general purpose programs. [Read more](weave/02-blockchain.md#next-generation)
+Since that time, many groups are working on "next generation" solutions that take the learnings of Ethereum and attempt to build a highly scalable and secure blockchain that can run general purpose programs. [Read more](weave/design/01-blockchain.md#next-generation)
 
 ### Eventual finality
 
-All Proof-of-Work systems use eventual finality, where the resource cost of creating a block is extremely high. After many blocks are gossiped, the longest chain of blocks has the most work invested in it, and thus is the true chain. [Read more](weave/03-consensus.md#eventual-finality)
+All Proof-of-Work systems use eventual finality, where the resource cost of creating a block is extremely high. After many blocks are gossiped, the longest chain of blocks has the most work invested in it, and thus is the true chain. [Read more](weave/design/02-consensus.md#eventual-finality)
 
 ### Immediate finality
 
-An alternative approach used to guarantee constency comes out of academic research into Byzantine Fault Tolerance from the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) . [Read more](weave/03-consensus.md#immediate-finality)
+An alternative approach used to guarantee constency comes out of academic research into Byzantine Fault Tolerance from the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) . [Read more](weave/design/02-consensus.md#immediate-finality)
 
 ### Authentication
 
-One interesting attribute of blockchains is that there are no trusted nodes, and all transactions are publically visible and can be copied. [Read more](weave/04-authentication.md)
+One interesting attribute of blockchains is that there are no trusted nodes, and all transactions are publically visible and can be copied. [Read more](weave/design/03-authentication.md)
 
 ### Upgrading the state machine
 
-Of course, during the lifetime of the blockchain, we will want to update the software and expand functionality. However, the new software must also be able to re-run all transactions since genesis. [Read more](weave/05-state.md#upgrading-the-state-machine)
+Of course, during the lifetime of the blockchain, we will want to update the software and expand functionality. However, the new software must also be able to re-run all transactions since genesis. [Read more](weave/design/04-state.md#upgrading-the-state-machine)
 
 ### UTXO vs Account Model
 
-There are two main models used to store the current state. The main model for bitcoin and similar chains is called UTXO, or Unspent transaction output. The account model creates one account per public key address and stores the information there. [Read more](weave/05-state.md#utxo-vs-account-model)
+There are two main models used to store the current state. The main model for bitcoin and similar chains is called UTXO, or Unspent transaction output. The account model creates one account per public key address and stores the information there. [Read more](weave/design/04-state.md#utxo-vs-account-model)
 
 ### Merkle Proofs
 
-Merkle trees are like binary trees, but hash the children at each level. This allows us to provide a [proof as a chain of hashes](https://www.certificate-transparency.org/log-proofs-work). [Read more](weave/05-state.md#merkle-proofs)
+Merkle trees are like binary trees, but hash the children at each level. This allows us to provide a [proof as a chain of hashes](https://www.certificate-transparency.org/log-proofs-work). [Read more](weave/design/04-state.md#merkle-proofs)
 
 Running an Existing Application
 -------------------------------

@@ -16,7 +16,7 @@
       },
       {
         "type": "subcategory",
-        "label": "Weave API specifications",
+        "label": "API specifications",
         "ids": [
           "weave/weave-api-spec/weave-transaction-spec",
           "weave/weave-api-spec/tx-sign-spec",

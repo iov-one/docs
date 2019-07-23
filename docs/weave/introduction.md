@@ -1,4 +1,8 @@
-# Welcome to IOV Weave's documentation
+---
+id: introduction
+title: Welcome to IOV Weave's documentation
+sidebar_label: Introduction
+---
 
 ![image](assets/weave-logo.jpg)
 

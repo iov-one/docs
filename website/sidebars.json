@@ -10,6 +10,7 @@
     "Weave": [
       "weave/welcome",
       "weave/blockchain",
+      "weave/consensus",
       {
         "type": "subcategory",
         "label": "Tutorial",

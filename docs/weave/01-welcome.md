@@ -34,19 +34,19 @@ Light client proofs, custom token issuance and support for IBC (Inter Blockchain
 
 ## Basic Blockchain Terminology
 
-If you are new to blockchains (or Tendermint), this is a crash course in just enough theory to follow the rest of the setup. [Read all](basics/blockchain.html)
+If you are new to blockchains (or Tendermint), this is a crash course in just enough theory to follow the rest of the setup. [Read all](weave/02-blockchain.md)
 
 ### Immutable Event Log
 
-If you are coming from working on typical databases, you can think of the blockchain as an immutable [transaction log](https://en.wikipedia.org/wiki/Transaction_log) . If you have worked with [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) you can consider a block as a set of events that can always be replayed to create a [materialized view](https://docs.microsoft.com/en-us/azure/architecture/patterns/materialized-view) . Maybe you have a more theoretical background and recognize that a blockchain is a fault tolerant form of [state machine replication](https://en.wikipedia.org/wiki/State_machine_replication#Ordering_Inputs) . [Read more](basics/blockchain.html#immutable-event-log)
+If you are coming from working on typical databases, you can think of the blockchain as an immutable [transaction log](https://en.wikipedia.org/wiki/Transaction_log) . If you have worked with [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) you can consider a block as a set of events that can always be replayed to create a [materialized view](https://docs.microsoft.com/en-us/azure/architecture/patterns/materialized-view) . Maybe you have a more theoretical background and recognize that a blockchain is a fault tolerant form of [state machine replication](https://en.wikipedia.org/wiki/State_machine_replication#Ordering_Inputs) . [Read more](weave/02-blockchain.md#immutable-event-log)
 
 ### General Purpose Computer
 
-Ethereum pioneered the second generation of blockchain, where they realized that we didn't have to limit ourselves to handling payments, but actually have a general purpose state machine. [Read more](basics/blockchain.html#general-purpose-computer)
+Ethereum pioneered the second generation of blockchain, where they realized that we didn't have to limit ourselves to handling payments, but actually have a general purpose state machine. [Read more](weave/02-blockchain.md#general-purpose-computer)
 
 ### Next Generation
 
-Since that time, many groups are working on "next generation" solutions that take the learnings of Ethereum and attempt to build a highly scalable and secure blockchain that can run general purpose programs. [Read more](basics/blockchain.html#next-generation)
+Since that time, many groups are working on "next generation" solutions that take the learnings of Ethereum and attempt to build a highly scalable and secure blockchain that can run general purpose programs. [Read more](weave/02-blockchain.md#next-generation)
 
 ### Eventual finality
 

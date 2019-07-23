@@ -36,7 +36,7 @@ weave.Metadata metadata = 1;
 
 `weave.Metadata` allows you to use *Migration* extension. Migration extension allows upgrading the code on chain without any downtime. This will be explained in more detail in further sections.
 
-Second one is how the magic `ID` field works. This will be explained in [Models](#Models) section.
+Second one is how the magic `ID` field works. This will be explained in [Models](weave/tutorial/04-models.md) section.
 
 ## Message definitions
 

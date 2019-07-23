@@ -6,7 +6,7 @@ sidebar_label: Models
 
 > [PR#6](https://github.com/iov-one/tutorial/pull/6): _Create models_
 
-We defined our state in [codec section](weave/tutorial/codec). In order to use models in weave we have to wrap our model with some functionalities and enforce it is a **morm.Model**
+We defined our state in [codec section](weave/tutorial/02-codec.md). In order to use models in weave we have to wrap our model with some functionalities and enforce it is a **morm.Model**
 
 Ensure our `OrderBook` fulfills morm.Model. This is just a helper so the compiler will complain loudly here if you forget to implement a method. Guaranteeing it *I am trying to implement this interface*.
 

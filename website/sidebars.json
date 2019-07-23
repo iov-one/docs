@@ -11,6 +11,36 @@
       "weave/welcome",
       {
         "type": "subcategory",
+        "label": "Basics",
+        "ids": [
+          "weave/basics/blockchain",
+          "weave/basics/consensus",
+          "weave/basics/authentication",
+          "weave/basics/state"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Design",
+        "ids": [
+          "weave/design/overview",
+          "weave/design/extension",
+          "weave/design/transaction-flow",
+          "weave/design/permissions",
+          "weave/design/queries"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Configuration",
+        "ids": [
+          "weave/configuration/application",
+          "weave/configuration/tendermint",
+          "weave/configuration/validators"
+        ]
+      },
+      {
+        "type": "subcategory",
         "label": "Tutorial",
         "ids": [
           "weave/tutorial/overview",
@@ -18,7 +48,6 @@
           "weave/tutorial/messages",
           "weave/tutorial/models",
           "weave/tutorial/buckets"
-          
         ]
       },
       {

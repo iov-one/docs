@@ -23,6 +23,7 @@
         "type": "subcategory",
         "label": "Design",
         "ids": [
+          "weave/design/overview",
           "weave/design/extension"
         ]
       },

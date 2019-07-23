@@ -58,7 +58,7 @@ An alternative approach used to guarantee constency comes out of academic resear
 
 ### Authentication
 
-One interesting attribute of blockchains is that there are no trusted nodes, and all transactions are publically visible and can be copied. [Read more](basics/authentication.html)
+One interesting attribute of blockchains is that there are no trusted nodes, and all transactions are publically visible and can be copied. [Read more](weave/04-authentication.md)
 
 ### Upgrading the state machine
 

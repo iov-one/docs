@@ -55,7 +55,7 @@ const siteConfig = {
   copyright: `Copyright © ${new Date().getFullYear()} IOV`,
 
   highlight: {
-    theme: 'default',
+    theme: 'atom-one-light',
   },
 
   scripts: ['https://buttons.github.io/buttons.js'],

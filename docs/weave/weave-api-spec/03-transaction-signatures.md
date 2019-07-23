@@ -1,7 +1,7 @@
 ---
 id: tx-sign-spec
-title: Transaction signatures
-sidebar_label: Transaction signatures
+title: Transaction Signatures
+sidebar_label: Transaction Signatures
 ---
 
 In this section, we will explain how to sign __transactions__.

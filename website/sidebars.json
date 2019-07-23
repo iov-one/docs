@@ -12,6 +12,7 @@
       "weave/blockchain",
       "weave/consensus",
       "weave/authentication",
+      "weave/state",
       {
         "type": "subcategory",
         "label": "Tutorial",

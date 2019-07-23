@@ -24,7 +24,8 @@
         "label": "Design",
         "ids": [
           "weave/design/overview",
-          "weave/design/extension"
+          "weave/design/extension",
+          "weave/design/transaction-flow"
         ]
       },
       {

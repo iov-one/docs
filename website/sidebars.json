@@ -26,7 +26,8 @@
           "weave/design/overview",
           "weave/design/extension",
           "weave/design/transaction-flow",
-          "weave/design/permissions"
+          "weave/design/permissions",
+          "weave/design/queries"
         ]
       },
       {

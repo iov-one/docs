@@ -62,15 +62,15 @@ One interesting attribute of blockchains is that there are no trusted nodes, and
 
 ### Upgrading the state machine
 
-Of course, during the lifetime of the blockchain, we will want to update the software and expand functionality. However, the new software must also be able to re-run all transactions since genesis. [Read more](basics/state.html#upgrading-the-state-machine)
+Of course, during the lifetime of the blockchain, we will want to update the software and expand functionality. However, the new software must also be able to re-run all transactions since genesis. [Read more](weave/05-state.md#upgrading-the-state-machine)
 
 ### UTXO vs Account Model
 
-There are two main models used to store the current state. The main model for bitcoin and similar chains is called UTXO, or Unspent transaction output. The account model creates one account per public key address and stores the information there. [Read more](basics/state.html#utxo-vs-account-model)
+There are two main models used to store the current state. The main model for bitcoin and similar chains is called UTXO, or Unspent transaction output. The account model creates one account per public key address and stores the information there. [Read more](weave/05-state.md#utxo-vs-account-model)
 
 ### Merkle Proofs
 
-Merkle trees are like binary trees, but hash the children at each level. This allows us to provide a [proof as a chain of hashes](https://www.certificate-transparency.org/log-proofs-work). [Read more](basics/state.html#merkle-proofs)
+Merkle trees are like binary trees, but hash the children at each level. This allows us to provide a [proof as a chain of hashes](https://www.certificate-transparency.org/log-proofs-work). [Read more](weave/05-state.md#merkle-proofs)
 
 Running an Existing Application
 -------------------------------

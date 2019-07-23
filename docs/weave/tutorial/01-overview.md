@@ -1,6 +1,6 @@
 ---
-id: introduction
-title: Weave tutorial
+id: overview
+title: Tutorial Overview
 sidebar_label: Overview
 ---
 

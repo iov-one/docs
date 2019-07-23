@@ -13,7 +13,7 @@
         "type": "subcategory",
         "label": "Tutorial",
         "ids": [
-          "weave/tutorial/introduction",
+          "weave/tutorial/overview",
           "weave/tutorial/codec"
         ]
       },

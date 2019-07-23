@@ -23,7 +23,8 @@
         "type": "subcategory",
         "label": "Configuration",
         "ids": [
-          "weave/configuration/application"
+          "weave/configuration/application",
+          "weave/configuration/tendermint"
         ]
       },
       {

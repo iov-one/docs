@@ -24,9 +24,7 @@ The summary is that everything is executed sequentially and deterministically, a
 
 To understand this design, you should first understand what an ABCI application is and how that level blockchain abstraction works. ABCI is the interface between the tendermint daemon and the state machine that processes the transactions, something akin to wsgi as the interface between apache/nginx and a django application.
 
-> There is an
-
-[in-depth reference](https://tendermint.readthedocs.io/en/master/app-development.html) to the ABCI protocol, but in short, an ABCI application is a state machine that responds to messages sent from one client (the tendermint consensus engine). It is run in parallel on every node, and they must all run the same set of transactions (what was included in the blocks), and then verify they have the same result (merkle root).
+> There is an [in-depth reference](https://tendermint.readthedocs.io/en/master/app-development.html) to the ABCI protocol, but in short, an ABCI application is a state machine that responds to messages sent from one client (the tendermint consensus engine). It is run in parallel on every node, and they must all run the same set of transactions (what was included in the blocks), and then verify they have the same result (merkle root).
 
 The main messages that you need to be concerned with are:
 

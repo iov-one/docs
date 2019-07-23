@@ -21,6 +21,13 @@
       },
       {
         "type": "subcategory",
+        "label": "Configuration",
+        "ids": [
+          "weave/configuration/application"
+        ]
+      },
+      {
+        "type": "subcategory",
         "label": "Tutorial",
         "ids": [
           "weave/tutorial/overview",

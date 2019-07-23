@@ -8,6 +8,7 @@
       "validator/faq"
     ],
     "Weave": [
+      "weave/introduction",
       {
         "type": "subcategory",
         "label": "Tutorial",

@@ -50,11 +50,11 @@ Since that time, many groups are working on "next generation" solutions that tak
 
 ### Eventual finality
 
-All Proof-of-Work systems use eventual finality, where the resource cost of creating a block is extremely high. After many blocks are gossiped, the longest chain of blocks has the most work invested in it, and thus is the true chain. [Read more](basics/consensus.html#eventual-finality)
+All Proof-of-Work systems use eventual finality, where the resource cost of creating a block is extremely high. After many blocks are gossiped, the longest chain of blocks has the most work invested in it, and thus is the true chain. [Read more](weave/03-consensus.md#eventual-finality)
 
 ### Immediate finality
 
-An alternative approach used to guarantee constency comes out of academic research into Byzantine Fault Tolerance from the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) . [Read more](basics/consensus.html#immediate-finality)
+An alternative approach used to guarantee constency comes out of academic research into Byzantine Fault Tolerance from the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) . [Read more](weave/03-consensus.md#immediate-finality)
 
 ### Authentication
 

@@ -24,7 +24,8 @@
         "label": "Configuration",
         "ids": [
           "weave/configuration/application",
-          "weave/configuration/tendermint"
+          "weave/configuration/tendermint",
+          "weave/configuration/validators"
         ]
       },
       {

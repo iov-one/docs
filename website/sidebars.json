@@ -9,10 +9,16 @@
     ],
     "Weave": [
       "weave/welcome",
-      "weave/blockchain",
-      "weave/consensus",
-      "weave/authentication",
-      "weave/state",
+      {
+        "type": "subcategory",
+        "label": "Design principles",
+        "ids": [
+          "weave/design/blockchain",
+          "weave/design/consensus",
+          "weave/design/authentication",
+          "weave/design/state"
+        ]
+      },
       {
         "type": "subcategory",
         "label": "Tutorial",

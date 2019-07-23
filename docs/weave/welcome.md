@@ -1,7 +1,7 @@
 ---
-id: introduction
+id: welcome 
 title: Welcome to IOV Weave's documentation
-sidebar_label: Introduction
+sidebar_label: Welcome
 ---
 
 ![image](assets/weave-logo.jpg)

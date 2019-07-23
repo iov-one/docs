@@ -8,11 +8,17 @@
       "validator/faq"
     ],
     "Weave": [
-      "weave/introduction",
+      "weave/welcome",
       {
         "type": "subcategory",
         "label": "Tutorial",
         "ids": [
+          "weave/tutorial/overview",
+          "weave/tutorial/codec",
+          "weave/tutorial/messages",
+          "weave/tutorial/models",
+          "weave/tutorial/buckets"
+          
         ]
       },
       {

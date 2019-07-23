@@ -4,6 +4,8 @@ title: Tendermint
 sidebar_label: Tendermint 
 ---
 
+## !! Warning this document is out of date. Will be updated in future !!
+
 Tendermint docs provide a [brief introduction](https://tendermint.com/docs/introduction/) to the tendermint cli. By default all files are writen to the `~/.tendermint` directory, unless you override that with a different "HOME" directory by providing `TMHOME=xyz` or `tendermint --home=xyz`.
 
 When you call `tendermint init`, it generates a `config` and `data` directory under the "HOME" dir. `data` will contain all blockchain state as well as the application state. `config` will contain configuration files. There are three main files to look at:

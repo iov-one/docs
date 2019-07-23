@@ -14,7 +14,8 @@
         "label": "Tutorial",
         "ids": [
           "weave/tutorial/overview",
-          "weave/tutorial/codec"
+          "weave/tutorial/codec",
+          "weave/tutorial/messages"
         ]
       },
       {

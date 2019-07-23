@@ -21,6 +21,13 @@
       },
       {
         "type": "subcategory",
+        "label": "Design",
+        "ids": [
+          "weave/design/extension"
+        ]
+      },
+      {
+        "type": "subcategory",
         "label": "Configuration",
         "ids": [
           "weave/configuration/application",

@@ -15,7 +15,10 @@
         "ids": [
           "weave/tutorial/overview",
           "weave/tutorial/codec",
-          "weave/tutorial/messages"
+          "weave/tutorial/messages",
+          "weave/tutorial/models",
+          "weave/tutorial/buckets"
+          
         ]
       },
       {

@@ -10,3 +10,5 @@ First of all to understand weave design philosophy and for the sake of programmi
 This documents purpose is to teach you how to make your own weave modules.
 Tutorial content is richened with PR discussions of [weave tutorial](https://github.com/iov-one/tutorial/). If you follow the PR reviews you can have a clear understanding of how to design your own module and implement a blockchain app using weave piece by piece.
 And you can see how the development flow works and what are the issues you should have on your mind while moving forward.
+
+Whenever you have questions in your mind about the internals check out [Weave]("https://github.com/iov-one/weave) source code. It is very well documented. Please feel free to add [issues](https://github.com/iov-one/weave/issues) if you think there is something under documented or confusing.

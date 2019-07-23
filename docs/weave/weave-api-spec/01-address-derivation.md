@@ -1,7 +1,7 @@
 ---
 id: address-derivation 
-title: Addresses derivation
-sidebar_label:  Address derivation
+title: Addresses Derivation
+sidebar_label:  Address Derivation
 ---
 
 IOV uses industry standard technology to derive cryptographic key pairs and

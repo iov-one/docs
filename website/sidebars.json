@@ -7,7 +7,7 @@
       "validator/troubleshooter",
       "validator/faq"
     ],
-    "Weave": [
+    "Weave Overview": [
       "weave/welcome",
       {
         "type": "subcategory",
@@ -43,12 +43,7 @@
         "type": "subcategory",
         "label": "Tutorial",
         "ids": [
-          "weave/tutorial/overview",
-          "weave/tutorial/codec",
-          "weave/tutorial/messages",
-          "weave/tutorial/models",
-          "weave/tutorial/buckets"
-        ]
+                  ]
       },
       {
         "type": "subcategory",
@@ -60,6 +55,13 @@
           "weave/weave-api-spec/weave-query-spec"
         ]
       }
+    ],
+    "Weave Tutorial": [
+      "weave-tutorial/overview",
+      "weave-tutorial/codec",
+      "weave-tutorial/messages",
+      "weave-tutorial/models",
+      "weave-tutorial/buckets"
     ]
   },
   "docs-other": {

@@ -1,7 +1,7 @@
 ---
 id: weave-transaction-spec
-title: Weave transactions
-sidebar_label: Weave transactions
+title: Weave Transactions
+sidebar_label: Weave Transactions
 ---
 
 _Weave/BNS_ uses protobuf for handling communications.

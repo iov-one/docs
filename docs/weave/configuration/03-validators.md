@@ -4,6 +4,8 @@ title: Validators
 sidebar_label: Validators 
 ---
 
+## !! Warning this document is out of date. Will be updated in future !!
+
 Since Tendermint uses a traditional BFT algorithm to reach consensus on blocks, signatures from specified validator keys replace hashes used to mine blocks in typical PoW chains. This also means that the selection of validators is an extremely important part of the blockchain security, and every validator should have strong security in place to avoid their private keys being copied or stolen.
 
 ## Static Validators

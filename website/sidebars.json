@@ -11,12 +11,12 @@
       "weave/welcome",
       {
         "type": "subcategory",
-        "label": "Design principles",
+        "label": "Basics",
         "ids": [
-          "weave/design/blockchain",
-          "weave/design/consensus",
-          "weave/design/authentication",
-          "weave/design/state"
+          "weave/basics/blockchain",
+          "weave/basics/consensus",
+          "weave/basics/authentication",
+          "weave/basics/state"
         ]
       },
       {
@@ -37,7 +37,6 @@
           "weave/tutorial/messages",
           "weave/tutorial/models",
           "weave/tutorial/buckets"
-          
         ]
       },
       {

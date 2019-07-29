@@ -40,9 +40,11 @@ const siteConfig = {
     primaryColor: '#35c1b3',
     secondaryColor: 'grey',
   },
-  /*
+  
+
   fonts: {
     myFont: [
+      "din",
       "Times New Roman",
       "Serif"
     ],
@@ -51,7 +53,6 @@ const siteConfig = {
       "system-ui"
     ]
   },
-  */
 
   copyright: `Copyright © ${new Date().getFullYear()} IOV`,
 

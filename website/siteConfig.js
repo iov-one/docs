@@ -8,7 +8,7 @@ const users = [
 ];
 
 const siteConfig = {
-  title: '',
+  title: 'IOV Documentations',
   tagline: 'Welcome to IOV docs!',
 
   url: "http://docs.iov.one",
@@ -24,10 +24,11 @@ const siteConfig = {
   },
 
   headerLinks: [
-    {doc: 'intro', label: 'Docs'},
-    {page: 'help', label: 'Help'},
+    { href: "https://github.com/iov-one", label: "GitHub" },
     { search: true },
   ],
+
+  disableHeaderTitle: true,
 
   users,
 
@@ -36,8 +37,8 @@ const siteConfig = {
   favicon: 'img/favicon.ico',
 
   colors: {
-    primaryColor: '#5AB3A5',
-    secondaryColor: '#62C2B3',
+    primaryColor: '#35c1b3',
+    secondaryColor: 'grey',
   },
   /*
   fonts: {

@@ -2,14 +2,14 @@
 
 @font-face {
   font-family: "din";
-  src: url("./fonts/DIN-Regular.woff") format("woff"), url("./fonts/DIN-Regular.ttf") format("truetype"), url("./fonts/DIN-Regular.eot") format("eot");
+  src: url("/fonts/DIN-Regular.woff") format("woff"), url("/fonts/DIN-Regular.ttf") format("truetype"), url("/fonts/DIN-Regular.eot") format("eot");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: "din";
-  src: url("./fonts/DIN-Bold.woff") format("woff"), url("./fonts/DIN-Bold.ttf") format("truetype"), url("./fonts/DIN-Bold.eot") format("eot");
+  src: url("/fonts/DIN-Bold.woff") format("woff"), url("/fonts/DIN-Bold.ttf") format("truetype"), url("/fonts/DIN-Bold.eot") format("eot");
   font-weight: bold;
   font-style: normal;
 }

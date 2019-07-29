@@ -58,7 +58,8 @@
           "weave/weave-api-spec/address-derivation",
           "weave/weave-api-spec/weave-transaction-spec",
           "weave/weave-api-spec/tx-sign-spec",
-          "weave/weave-api-spec/weave-query-spec"
+          "weave/weave-api-spec/weave-query-spec",
+          "weave/weave-api-spec/modules"
         ]
       }
     ],

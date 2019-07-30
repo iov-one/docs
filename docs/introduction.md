@@ -20,15 +20,13 @@ We are building technology to **run a blockchain of names**, the IOV Name Servic
 
 We are also building a technology that allows you to **build apps that can access all blockchains**. We are still at the beginning, but you can start building an app that works with Tendermint, Lisk and Rise at the moment, soon ethereum, by using our library **iov-core**. Click [here](https://iov-one.github.io/iov-core-docs/latest/iov-core/index.html "How to Use IOV-Core") to get started.
 
-We have built the first app with iov-core, the **IOV Wallet**, and you can see how iov-core is used and adapted for UI via BCP-Redux. You can use the adaptor from IOV-Core to Redux here: [BCP-redux](https://github.com/iov-one/bcp-redux "BCP-redux repository") and the specific implementation of the [IOV-Wallet](https://github.com/iov-one/iov-wallet "IOV Wallet Repository") (still work in progress, watch it).
-
 Finally, if you are running a blockchain technology and want **to be compatible with IOV-Core**, we will release full BCP specifications soon. In the meantime, you can start looking at our [code](https://github.com/iov-one/iov-core/tree/master/packages/iov-bns "Codec") and our [documentation](https://iov-one.github.io/iov-core-docs/latest/iov-core/index.html "How to Use IOV-Core") to get familiar with how it all works.
 
 You're free to explore the GitHub, all feedback is welcome!
 
 ## Introduction to IOV
 
-We're building an interoperability solution for the blockchain industry that will be open source and totally decentralized. Our universal wallet with cross chain atomic swaps and human friendly address formats is already a working prototype. This wallet makes using blockchain tokens as easy for regular consumers as sending and receiving email. Our product suite thus solves user experience problems that we believe must be solved in order to bring blockchain tech into mainstream mass adoption. By design, the product suite also offers mutual benefits to key parties in the blockchain ecosystem (not only end users but also blockchain devs, app creators, entrepreneurs, and network miners) in order to facilitate widespread industry adoption.
+We're building an interoperability solution for the blockchain industry that will be open source and totally decentralized. Our product suite thus solves user experience problems that we believe must be solved in order to bring blockchain tech into mainstream mass adoption. By design, the product suite also offers mutual benefits to key parties in the blockchain ecosystem (not only end users but also blockchain devs, app creators, entrepreneurs, and network miners) in order to facilitate widespread industry adoption.
 
 To briefly introduce the product suite:
 
@@ -36,7 +34,7 @@ To briefly introduce the product suite:
 
 **IOV Weave** is a framework to quickly build your custom ABCI application to power a blockchain based on the best-of-class BFT Proof-of-stake Tendermint consensus engine. We built IOV Name Service using weave.
 
-**IOV Wallet** is our universal wallet with cross-chain atomic swaps and human friendly addresses. Both desktop and mobile versions are being built.
+**IOV Wallet** is our universal wallet with cross-chain atomic swaps and human friendly addresses. Both desktop and chrome extension versions are being built.
 
 **IOV Chrome Extension** is our Google Chrome Extension to connect to different chains and get a human friendly addresses
 

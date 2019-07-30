@@ -30,7 +30,7 @@ We're building an interoperability solution for the blockchain industry that wil
 
 To briefly introduce the product suite:
 
-**IOV Name Service (INS)** is our DNS for blockchains. It is used for name asset registration (including human friendly addresses as well as token name definitions for the chains that implement the BCP.
+**IOV Name Service (INS)** is our DNS for blockchains. It is used for name asset registration (including human friendly addresses).
 
 **IOV Weave** is a framework to quickly build your custom ABCI application to power a blockchain based on the best-of-class BFT Proof-of-stake Tendermint consensus engine. We built IOV Name Service using weave.
 

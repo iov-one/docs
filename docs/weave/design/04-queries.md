@@ -93,4 +93,4 @@ These then can be registered with a `Router` that also implements QueryHandler, 
 
 ## Merkle Proofs
 
-**Proofs are not yet implemented as of weave v0.14** This is both due to prioritization of other features, and also as we wish to provide a solid proof format that is useful for IBC as well, and watching cosmos-sdk development so we can maintain compatibility. As this format is recently stabilized inside the cosmos hub, implementation in weave should not be too far off.
+**Proofs are not yet implemented as of weave v0.20** This is both due to prioritization of other features, and also as we wish to provide a solid proof format that is useful for IBC as well, and watching cosmos-sdk development so we can maintain compatibility. As this format is recently stabilized inside the cosmos hub, implementation in weave should not be too far off.

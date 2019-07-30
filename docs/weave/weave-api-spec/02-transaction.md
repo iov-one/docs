@@ -25,7 +25,7 @@ _Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.co
 
 ## Weave/Tx (Transactions)
 
-Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.18.0/spec/proto/cmd/bnsd/app/codec.proto).
+Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.20.0/spec/proto/cmd/bnsd/app/codec.proto).
 
 All the required _proto_ files for connecting to `BNS` or any `weave` based blockchain is using this `tx codec`.
 

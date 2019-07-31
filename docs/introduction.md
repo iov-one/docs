@@ -26,11 +26,11 @@ You're free to explore the GitHub, all feedback is welcome!
 
 ## Introduction to IOV
 
-We're building an interoperability solution for the blockchain industry that will be open source and totally decentralized. Our product suite thus solves user experience problems that we believe must be solved in order to bring blockchain tech into mainstream mass adoption. By design, the product suite also offers mutual benefits to key parties in the blockchain ecosystem (not only end users but also blockchain devs, app creators, entrepreneurs, and network miners) in order to facilitate widespread industry adoption.
+We're building an interoperability solution for the blockchain industry that will be open source and totally decentralized. Our product suite thus solves user experience problems that we believe must be solved in order to bring blockchain tech into mainstream mass adoption. By design, the product suite also offers mutual benefits to key parties in the blockchain ecosystem (not only end users but also blockchain devs, app creators, entrepreneurs, block producers) in order to facilitate widespread industry adoption.
 
 To briefly introduce the product suite:
 
-**IOV Name Service (INS)** is our DNS for blockchains. It is used for name asset registration (including human friendly addresses).
+**IOV Name Service (IOVNS)** is our DNS for blockchains. It is used for name asset registration (including human friendly addresses).
 
 **IOV Weave** is a framework to quickly build your custom ABCI application to power a blockchain based on the best-of-class BFT Proof-of-stake Tendermint consensus engine. We built IOV Name Service using weave.
 

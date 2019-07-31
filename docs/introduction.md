@@ -16,7 +16,7 @@ Enjoy and please send us feedback !
 
 ## How to Get Started
 
-We are building technology to **run a blockchain of names**, the IOV Name Service, and build clients for our blockchain. The code to do this is in [Weave](https://github.com/iov-one/weave "Weave Repository"). You can setup a REST API to query IOV Name Service in [BNS-proxy](https://github.com/iov-one/bns-proxy "BNS-proxy repository").You can build a client to the blockchain by using [iov-cli](https://github.com/iov-one/iov-core/blob/master/packages/iov-cli/README.md "IOV-Client Repository").
+We are building technology to **run a blockchain of names**, the IOV Name Service, and build clients for our blockchain. The code to do this is in [Weave](https://github.com/iov-one/weave "Weave Repository"). You can setup a REST API to query IOV Name Service in [IOVNS-rest-api](https://github.com/iov-one/iovns-rest-api "IOVNS-rest-api Repository").You can build a client to the blockchain by using [iov-cli](https://github.com/iov-one/iov-core/blob/master/packages/iov-cli/README.md "IOV-Client Repository").
 
 We are also building a technology that allows you to **build apps that can access all blockchains**. We are still at the beginning, but you can start building an app that works with Tendermint, Lisk and Rise at the moment, soon ethereum, by using our library **iov-core**. Click [here](https://iov-one.github.io/iov-core-docs/latest/iov-core/index.html "How to Use IOV-Core") to get started.
 

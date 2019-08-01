@@ -4,9 +4,17 @@ title: Validator setup
 sidebar_label: Setup
 ---
 
+> IOV does not recommend using docker in production; however, it can be used to start building your validator's quality score on our testnet if you so choose.
+
 This document is not for beginners.  It assumes that you know how to setup a sentry node architecture for Tendermint nodes.
 
-> IOV does not recommend using docker in production; however, it can be used to start building your validator's quality score on our testnet if you so choose.
+> Hint: When upgrading from an old testnet to a new one, you can maintain your node id and validator pub_key across testnets by doing the following before performing the upgrade:
+```
+su - iov
+set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
+cp -av ${DIR_WORK}/config/*_key.json ~
+exit
+```
 
 
 ## Systemd for running a sentry node or validator
@@ -22,7 +30,7 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories
 DIR_TM=/tendermint
-DIR_WORK=/home/iov/kissnet
+DIR_WORK=/home/iov/lovenet
 
 # docker options
 DOCKER_IOVNS_OPTS="--rm"
@@ -33,12 +41,12 @@ FILE_CID_IOVNS=iovns.cid
 FILE_CID_TM=iovns-tm.cid
 
 # images
-IMAGE_IOVNS=iov1/bnsd:v0.19.0
+IMAGE_IOVNS=iov1/bnsd:v0.20.0
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=iov1/tendermint:v0.31.5
 IMAGE_TM_OPTS="\
 --moniker='moniker' \
---p2p.persistent_peers='0c6730943a65220cb165805e3382b20d4c9562a2@35.240.44.48:26656' \
+--p2p.persistent_peers='ce812b7220b91acf11b8bb91905fe20466ffbd5c@35.195.61.59:26656' \
 --rpc.unsafe=false \
 "
 
@@ -139,7 +147,9 @@ cd ${DIR_WORK}
 
 # initialize tendermint
 docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_TM} init
-curl --fail https://bns.kissnet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
+curl --fail https://rpc.lovenet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
+[[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
+[[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 
 # initialize IOV Name Service (bnsd)
 docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_IOVNS} -home=${DIR_TM} init -i | grep initialised
@@ -177,7 +187,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.persistent_peers='0c6730943a65220cb165805e3382b20d4c9562a2@35.240.44.48:26656' \
+--p2p.persistent_peers='ce812b7220b91acf11b8bb91905fe20466ffbd5c@35.195.61.59:26656' \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

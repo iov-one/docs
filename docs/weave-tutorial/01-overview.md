@@ -4,7 +4,7 @@ title: Tutorial Overview
 sidebar_label: Overview
 ---
 
-First of all to understand weave design philosophy and for the sake of programming well designed software, I advise you to read this fine-grained article:
+First of all, to understand weave design philosophy and for the sake of programming well designed software, I advise you to read this fine-grained article:
 [Things I Learnt The Hard Way (in 30 Years of Software Development)](https://blog.juliobiason.net/thoughts/things-i-learnt-the-hard-way/)
 
 To make theory more tangible, we will build a sample application alongside this tutorial, to demonstrate dealing with real-world constraints. The application is located in the [tutorial](https://github.com/iov-one/tutorial/ "Tutorial Repository") repository, to show how to create a self-contained app.

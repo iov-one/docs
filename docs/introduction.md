@@ -1,7 +1,7 @@
 ---
 id: intro
 title: Welcome to IOV! 
-sidebar_label: Introduction 
+sidebar_label: Welcome to IOV!
 ---
 
 **IOV** is building a Universal Name Service for Wallets and Dapps.
@@ -12,7 +12,7 @@ Enjoy and please send us feedback !
 
 ## How to Get Started
 
-The code of the IOV name Service is in [Weave](https://github.com/iov-one/weave "Weave Repository"). You can send a transaction or query the IOV Name Service by using our client library [IOV-core](https://github.com/iov-one/iov-core) or by using the [IOVNS-rest-api](https://github.com/iov-one/iovns-rest-api "IOVNS-rest-api Repository").
+The code of the IOV name Service is in [Weave](/docs/weave/welcome). You can send a transaction or query the IOV Name Service by using our client library [IOV-core](/docs/iov-name-service/clients/iov-core) or by using the [IOVNS-rest-api](/docs/iov-name-service/clients/rest-api).
 
 You're free to explore the GitHub, all feedback is welcome!
 

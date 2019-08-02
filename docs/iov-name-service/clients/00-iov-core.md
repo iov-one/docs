@@ -4,7 +4,7 @@ title: IOV-Core
 sidebar_label: IOV-core
 ---
 
-When you are building a web-based application or a desktop application, the natural way to connect to the IOV Name Service is to use the multi-package typescript library: [IOV-Core](https://github.com/iov-one/iov-core).
+When you are building a web-based application, a desktop application or a block explorer, the natural way to connect to the IOV Name Service is to use the multi-package typescript library: [IOV-Core](https://github.com/iov-one/iov-core).
 
 ## What is IOV-core?
 

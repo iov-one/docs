@@ -48,7 +48,7 @@ func (o *OrderBook) Copy() orm.CloneableData {
 
 We will want to fill in these Validate methods to enforce any invariants we demand of the data to keep our database clean. Anyone who has spent much time dealing with production applications knows how “invalid data” can start creeping in without a strict database schema, this is what we do in code.
 
-We can do some basic checks and return an error if none of them pass:
+We can do some basic checks and return an error if any of them does not pass:
 
 ```go
 func (o *OrderBook) Validate() error {

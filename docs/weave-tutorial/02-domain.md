@@ -13,7 +13,9 @@ We are building an Orderbook application. This topic is quite hot at the time of
 - **Markets** will contain rules as to who (which public keys) may create an **orderbook** or who can can cancel an order. The blockchain may have multiple markets. Each market may have multiple orderbooks. Each token pair can only have one orderbook per market.
 There is no global chain owner, but each market has one that adds orderbooks and sets fees. This could be one person, a multisig, or a governance contract (Dao). When adding an orderbook, market with given market id is checked, then look up the owner *for that market*. Rather than having one owner that can create orderbooks for all markets, each market stores who can update it.
 
-- **Orders** will be posted by traders who want to buy or sell tokens with given price and amount. Order may have 2 sides: **Ask** and **Bid**. 
+- **Orderbooks** will define the which Ask/Bid market it holds and number of available orders. Orderbook will contain orders and trades.
+
+- **Orders** will be posted by traders who want to buy or sell tokens with given price and amount. Order may have 2 sides: **Ask** and **Bid**.
 - An order may have 3 states:
   - **Open** means order is waiting to be settled
   - **Done** means order has been settled

@@ -1,0 +1,179 @@
+---
+id: iov-core
+title: IOV-Core
+sidebar_label: IOV-core
+---
+
+When you are building a web-based application, a desktop application or a block explorer, the natural way to connect to the IOV Name Service is to use the multi-package typescript library: [IOV-Core](https://github.com/iov-one/iov-core).
+
+## What is IOV-core?
+
+[IOV-Core](https://github.com/iov-one/iov-core) is a powerful typescript library which contains multiple packages to:
+- manage all your private keys with [iov-keycontrol](https://github.com/iov-one/iov-core/tree/master/packages/iov-keycontrol)
+- connect to the IOV Name Service with [iov-bns](https://github.com/iov-one/iov-core/tree/master/packages/iov-bns)
+- experiment with all its features using a CLI with [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli)
+
+And also:
+
+- connect to different chains with [iov-multichain](https://github.com/iov-one/iov-core/tree/master/packages/iov-multichain) including Ethereum with [iov-ethereum](https://github.com/iov-one/iov-core/tree/master/packages/iov-ethereum)
+
+## Using IOV-cli From IOV-core To Connect To The IOV Name Service
+
+The best way to understand how IOV-core (v. 16.0) works and how you can create a human readable address such as `antoine*iov` which is linked to an Cosmos address for example is to use the [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli) and follow the readme below:
+
+## Setup
+> *You need npm and terminal access to complete this tutorial.*
+
+In order to have access to iov-cli, we need to install it, so let's create a small project and add package dependencies
+
+    mkdir mycliwallet
+    cd mycliwallet
+    npm init -yes
+    npm install @iov/cli@0.16.0
+> *You can also install iov-cli globally, or using yarn, just check [this link](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli#installation-and-first-run) for more details*
+
+Is time to start our cli, in the same terminal that we added the package, execute:
+
+    ./node_modules/.bin/iov-cli 
+    >>
+
+Now we have access to our iov terminal session.
+> *You will see a list of functions that are available to use. They are grouped by package and export some of iov-core functionality*
+
+## Initial Configuration
+
+Time to write some code in our iov terminal.
+If we want to use a cli wallet, we need:
+
+a profile and a connection to IOV testnet
+
+```
+const profile = new UserProfile();
+const signer = new MultiChainSigner(profile);
+const { connection } = await signer.addChain(bnsConnector("wss://rpc.lovenet.iov.one"));
+const chainId = connection.chainId();
+```
+
+> *chainId should print ‘iov-lovenet’*
+
+a wallet and an IOV address connected to our profile. we will generate a random mnemonic
+
+```
+const randomEntropy = Random.getBytes(32);
+const wallet = profile.addWallet(Ed25519HdWallet.fromEntropy(await randomEntropy));
+const myIdentity = await profile.createIdentity(wallet.id, chainId, HdPaths.iov(1));
+const myAddress = signer.identityToAddress(myIdentity);
+console.log("secret random mnemonic: ", profile.printableSecret(wallet.id));
+```
+
+If you want to know my secret (doo da do), it was:
+
+```
+company buddy electric crouch boss noble lift machine other unfair toilet pill barely mass sunny beach lamp release ancient call zoo mask grit puppy
+```
+
+and myAddress:
+```
+tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf
+```
+
+## Get Some IOV Tokens On My Account
+
+We are connected to iov-lovenet (testnet), so we can use iov faucet to get some tokens
+
+    const faucet = new IovFaucet("https://bns-faucet.lovenet.iov.one/");
+
+    await faucet.credit(myAddress, "IOV" as TokenTicker);
+
+Check that the account has some tokens now
+
+    let myAccount = await connection.getAccount({ address: myAddress });
+
+    myAccount
+    >> { address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf',
+      balance:
+       [ { quantity: '10000000000',
+           fractionalDigits: 9,
+           tokenTicker: 'IOV' } ],
+      pubkey: undefined }
+
+## Register a Name in IOV Name Service
+
+Now is time to use one of the iov value propositions: a human readable address that works as a non fungible token and allows storage of multiple addresses from multiple blockchains
+
+First we need to create the transaction body. You can add as many chainId/address pairs a you like, following the list template below:
+> *use your username here, mine is already taken ;)*
+
+    .editor
+
+    const registrationTx = await connection.withDefaultFee<RegisterUsernameTx & WithCreator>({
+      kind: "bns/register_username",
+      creator: myIdentity,
+      targets: [
+        { chainId: chainId, address: myAddress },
+        { chainId: "cosmos-hub2" as ChainId, address: "cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn" as Address}
+      ],
+      username: "antoine*iov",
+    });
+    ^D
+
+Now we sign, post and confirm the transaction
+
+    await signer.signAndPost(registrationTx);
+
+    const bnsConnection = connection as BnsConnection;
+
+    const myAccountBNS  = await bnsConnection.getUsernames({ owner: myAddress });
+    >> [ { id: 'antoine*iov',
+        owner: 'tiov188ayx37py2r86wz5a4a2vrn4ejrwhnnte4n7kc',
+        targets: [ [Object], [Object] ] } ]
+
+    myAccountBNS[0].targets
+
+    >> [ { chainId: 'iov-lovenet', address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf' }, { chainId: 'cosmos-hub2', address: 'cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn' } ]
+
+That is it! Welcome to the world of Personalized Names :)
+
+## Extra Mile: Send IOV Tokens to a Personalized Name
+
+To showcase the importance of a human friendly name address, we will send some tokens from a new account, to the Personalized Name previously generated into IOV Name Service
+
+Open a new terminal in mycliwallet and run ./node_modules/.bin/iov-cli
+
+Repeat the steps from **Initial Configuration** and **Get some IOV tokens on my account**.
+
+First, we need to get the recipient personalized address (“antoine*iov” in this case)
+
+    const recipientData = await bnsConnection.getUsernames({ username: "antoine*iov" });
+> *YES!! You got it!! We search by username, no need to copy/paste/barcode scan string addresses*
+
+Now that we have the list of addresses registered by the user in `recipientData`, we will search for a specific address in a specific chain (“bns-hugnet” chain in this case)
+
+    const recipientChainAddressPair = recipientData[0].targets.find(chainaddrPair => chainaddrPair.chainId === 'iov-lovenet');
+
+Create the transaction
+
+    .editor
+
+    const sendTx: SendTransaction = {
+      kind: "bcp/send",
+      creator: myIdentity,
+      recipient: recipientChainAddressPair.address,
+      memo: "My first transaction by username B-)",
+        amount: {
+        quantity: "100000",
+        fractionalDigits: 9,
+        tokenTicker: "IOV" as TokenTicker,
+      }
+    });
+    ^D
+
+Now we sign, post and confirm the transaction
+
+    await signer.signAndPost(sendTx);
+
+    (await connection.getAccount({ address: myAddress })).balance;
+
+Your balance should be “9799900000”. And if you just sent IOV tokens to antoine*iov, thank you!
+
+

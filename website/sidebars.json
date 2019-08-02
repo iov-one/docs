@@ -11,6 +11,14 @@
           "iov-name-service/validator/troubleshooter",
           "iov-name-service/validator/faq"
         ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Clients",
+        "ids": [
+          "iov-name-service/clients/iov-core",
+          "iov-name-service/clients/rest-api"
+        ]
       }
     ],
     "Weave Overview": [

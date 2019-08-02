@@ -47,12 +47,6 @@
       },
       {
         "type": "subcategory",
-        "label": "Tutorial",
-        "ids": [
-                  ]
-      },
-      {
-        "type": "subcategory",
         "label": "API specifications",
         "ids": [
           "weave/weave-api-spec/address-derivation",

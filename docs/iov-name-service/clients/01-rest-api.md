@@ -4,7 +4,7 @@ title: Rest Api
 sidebar_label: Rest Api
 ---
 
-The other way to connect to the IOV Name Service is to run the [IOV Name Service Rest API](https://github.com/iov-one/iovns-rest-api) on the top of your full node. This is a usefull way if you want to query the IOV Name Service from a mobile wallet.
+The other way to connect to the IOV Name Service is to run the [IOV Name Service Rest API](https://github.com/iov-one/iovns-rest-api) on the top of your full node. This is a usefull way if you want to connect to the IOV Name Service from a mobile wallet.
 
 ## Getting started
 

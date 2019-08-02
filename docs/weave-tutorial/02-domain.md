@@ -1,12 +1,10 @@
 ---
 id: domain 
 title: Defining the Domain 
-sidebar_label: Defining the Domain 
+sidebar_label: Domain 
 ---
 
 The first thing we consider is the data we want to store (the state). After that we can focus on the messages, which trigger state transitions. All blockchain state must be stored in our merkle-ized store, that can provide validity hashes and proofs. This is exposed to the application as a basic key-value store, which also allows in-order iteration over the keys. On top of this, we have built some tools like secondary indexes and sequences, in a similar manner to how [storm adds a orm](https://github.com/asdine/storm#simple-crud-system) on top of [boltdb’s kv store](https://github.com/boltdb/bolt#using-buckets). We have avoided struct tags and tried to type as strictly as we can (without using generics).
-
-## Define the Domain
 
 We are building an Orderbook application. This topic is quite hot at the time of writing this tutorial.
 
@@ -27,6 +25,6 @@ You can find more info on [tutorial repo](https://github.com/iov-one/tutorial/bl
 
 ## Primary Keys
 
-Some of this data belongs in the primary key, the rest in the value. Weave introduces the concept of an *Object* which contains a `Key`([]byte) and `Value`(Persistent struct). It can be cloned and validated. When we query we will receive this object, so we can place some critical information in the Key and expect it to always be present.
+Some of this data belongs in the primary key, the rest in the value. Weave introduces the concept of an *Object* which contains a `Key([]byte)` and `Value(Persistent struct)`. It can be cloned and validated. When we query we will receive this object, so we can place some critical information in the Key and expect it to always be present.
 
 The primary key must be a unique identifier and it should be the main way we want to access the data. We will be using `morm` package for externally indexing models. External index means `ID` proto fields in this context. On the other side plain `orm` makes indexing via any field. For example if we were to model a Blog we could index it using its title.

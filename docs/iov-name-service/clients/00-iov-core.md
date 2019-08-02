@@ -11,13 +11,13 @@ When you are building a web-based application, a desktop application or a block 
 [IOV-Core](https://github.com/iov-one/iov-core) is a powerful typescript library which contains multiple packages to:
 - manage all your private keys with [iov-keycontrol](https://github.com/iov-one/iov-core/tree/master/packages/iov-keycontrol)
 - connect to the IOV Name Service with [iov-bns](https://github.com/iov-one/iov-core/tree/master/packages/iov-bns)
-- experiment all its features using a CLI with [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli)
+- experiment with all its features using a CLI with [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli)
 
 And also:
 
 - connect to different chains with [iov-multichain](https://github.com/iov-one/iov-core/tree/master/packages/iov-multichain) including Ethereum with [iov-ethereum](https://github.com/iov-one/iov-core/tree/master/packages/iov-ethereum)
 
-## Using IOV-cli from IOV-core to connect to the IOV Name Service
+## Using IOV-cli From IOV-core To Connect To The IOV Name Service
 
 The best way to understand how IOV-core (v. 16.0) works and how you can create a human readable address such as `antoine*iov` which is linked to an Cosmos address for example is to use the [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli) and follow the readme below:
 
@@ -56,7 +56,7 @@ const chainId = connection.chainId();
 
 > *chainId should print ‘iov-lovenet’*
 
-a wallet and an iov address connected to our profile. we will generate a random mnemonic
+a wallet and an IOV address connected to our profile. we will generate a random mnemonic
 
 ```
 const randomEntropy = Random.getBytes(32);
@@ -77,7 +77,7 @@ and myAddress:
 tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf
 ```
 
-## Get some IOV tokens on my account
+## Get Some IOV Tokens On My Account
 
 We are connected to iov-lovenet (testnet), so we can use iov faucet to get some tokens
 
@@ -99,7 +99,7 @@ Check that the account has some tokens now
 
 ## Register a Name in IOV Name Service
 
-Now is time to use one of the iov value propositions: a human readable address that works as a Non Fungible Token and allows storage of multiple addresses from multiple blockchains
+Now is time to use one of the iov value propositions: a human readable address that works as a non fungible token and allows storage of multiple addresses from multiple blockchains
 
 First we need to create the transaction body. You can add as many chainId/address pairs a you like, following the list template below:
 > *use your username here, mine is already taken ;)*
@@ -140,7 +140,7 @@ To showcase the importance of a human friendly name address, we will send some t
 
 Open a new terminal in mycliwallet and run ./node_modules/.bin/iov-cli
 
-Repeat the steps from **Initial Configuration** and** Get some IOV tokens on my account**.
+Repeat the steps from **Initial Configuration** and **Get some IOV tokens on my account**.
 
 First, we need to get the recipient personalized address (“antoine*iov” in this case)
 

@@ -44,30 +44,92 @@ func (o *OrderBook) Copy() orm.CloneableData {
 }
 ```
 
-Another contstraint **Model** enforces same as messages is the `Validate` method.
+## Validation
+
+We will want to fill in these Validate methods to enforce any invariants we demand of the data to keep our database clean. Anyone who has spent much time dealing with production applications knows how “invalid data” can start creeping in without a strict database schema, this is what we do in code.
+
+We can do some basic checks and return an error if none of them pass:
 
 ```go
 func (o *OrderBook) Validate() error {
-    if err := isGenID(o.ID, true); err != nil {
-        return err
-    }
-    if err := isGenID(o.MarketID, false); err != nil {
-        return errors.Wrap(err, "market id")
-    }
+    var errs error
+
+    errs = errors.AppendField(errs, "Metadata", o.Metadata.Validate())
+    errs = errors.AppendField(errs, "ID", isGenID(o.ID, true))
+    errs = errors.AppendField(errs, "MarketID", isGenID(o.MarketID, false))
+
     if !coin.IsCC(o.AskTicker) {
-        return errors.Wrap(errors.ErrModel, "invalid ask ticker")
+        errs = errors.Append(errs,
+            errors.Field("AskTicker", errors.ErrCurrency, fmt.Sprintf("Invalid ask ticker: %s", o.AskTicker)))
     }
     if !coin.IsCC(o.BidTicker) {
-        return errors.Wrap(errors.ErrModel, "invalid bid ticker")
+        errs = errors.Append(errs,
+            errors.Field("BidTicker", errors.ErrCurrency, fmt.Sprintf("Invalid bid ticker: %s", o.BidTicker)))
     }
+
     if o.TotalAskCount < 0 {
-        return errors.Wrap(errors.ErrModel, "negative total ask count")
+        errs = errors.Append(errs,
+            errors.Field("TotalAskCount", errors.ErrModel, "negative total ask count"))
     }
     if o.TotalBidCount < 0 {
-        return errors.Wrap(errors.ErrModel, "negative total bid count")
+        errs = errors.Append(errs,
+            errors.Field("TotalBidCount", errors.ErrModel, "negative total bid count"))
     }
-    return nil
+
+return errs
 }
+```
+
+We use `errors.AppendField`, It enables multi error validation.
+
+### Errors
+
+Here are some weave errors taken from [weave/errors](https://github.com/iov-one/weave/blob/master/errors/errors.go "Weave errors"):
+
+```go
+// ErrUnauthorized is used whenever a request without sufficient
+// authorization is handled.
+ErrUnauthorized = Register(2, "unauthorized")
+
+// ErrNotFound is used when a requested operation cannot be completed
+// due to missing data.
+ErrNotFound = Register(3, "not found")
+
+// ErrMsg is returned whenever an event is invalid and cannot be
+// handled.
+ErrMsg = Register(4, "invalid message")
+```
+
+What is with these `ErrXYZ()` calls you may think? Well, we could return a “normal” error like `errors.New("fail")`, but we wanted two more features. First of all, it helps debugging enormously to have a stack trace of where the error originally occurred. For this we use [pkg/errors](https://github.com/pkg/errors "go/pkg") that attaches a stacktrace to the error that can optionally be printed later with a `Printf("%+v", err)`. We also want to return a unique abci error code, which may be interpreted by client applications, either programmatically or to provide translations of the error message client side.
+
+For these reasons, weave provides some utility methods and common error types in the errors [package](https://godoc.org/github.com/iov-one/weave/errors). The ABCI Code attached to the error is then returned in the [DeliverTx Result](https://github.com/iov-one/weave/blob/v0.20.0/abci.go#L114-L126).
+
+Every package ideally can define it’s own custom error types and error codes, generally in a file called [errors.go](https://github.com/iov-one/weave/blob/master/x/sigs/errors.go). The key elements are:
+
+```go
+// ABCI Response Codes
+// tutorial reserves 400 ~ 420.
+const (
+    CodeInvalidText    uint32 = 400
+)
+
+var (
+    errTitleTooLong       = fmt.Errorf("Title is too long")
+    errInvalidAuthorCount = fmt.Errorf("Invalid number of blog authors")
+)
+
+// Error code with no arguments, check on code not particular type
+func ErrTitleTooLong() error {
+    return errors.WithCode(errTitleTooLong, CodeInvalidText)
+}
+func IsInvalidTextError(err error) bool {
+    return errors.HasErrorCode(err, CodeInvalidText)
+}
+
+// You can also prepend a variable message using WithLog
+func ErrInvalidAuthorCount(count int) error {
+    msg := fmt.Sprintf("authors=%d", count)
+    return errors.WithLog(msg, errInvalidAuthorCount, CodeInvalidAuthor)
 ```
 
 _"I want to point out again and make it persistent in your mind: Extensive Validation is crucial."_

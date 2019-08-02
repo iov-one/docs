@@ -65,9 +65,10 @@
     ],
     "Weave Tutorial": [
       "weave-tutorial/overview",
+      "weave-tutorial/domain",
       "weave-tutorial/codec",
-      "weave-tutorial/messages",
       "weave-tutorial/models",
+      "weave-tutorial/messages",
       "weave-tutorial/buckets"
     ]
   },

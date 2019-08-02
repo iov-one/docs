@@ -127,5 +127,4 @@ Sample market id index with tickers = `000000056665820070797900`
 
 ## Custom Bucket
 
-Did you notice we used `morm.ModelBucket` instead of `orm.ModelBucket`?. That is because *morm* is a customized bucket that is designed for handling external indexes easier.
-You can compare [morm](https://github.com/iov-one/tutorial/blob/master/morm/model_bucket.go#L40) and [weave/orm](https://github.com/iov-one/weave/tree/master/orm) and see how to implement your custom bucket. It uses auto-incrementing sequences(id) under the hood.
+Want to enforce the data consistency on the buckets. All data is validated before saving, but we also need to make sure that all data is the proper type of object before saving. Unfortunately, this is quite difficult to do compile-time without generic, so a typical approach is to embed the orm.Bucket in another struct and just force validation of the object type runtime before save. Truth time: `morm.ModelBucket` is a custom bucket designed for handling external indexes easier. We used morm modules instead of orm to show you even buckets are customizable to your needs. You can compare [morm](https://github.com/iov-one/tutorial/blob/master/morm/model_bucket.go#L40) and [weave/orm](https://github.com/iov-one/weave/tree/master/orm) and see how to implement your custom bucket. It uses auto-incrementing sequences(id) under the hood.

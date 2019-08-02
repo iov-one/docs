@@ -8,7 +8,7 @@ The other way to connect to the IOV Name Service is to run the [IOV Name Service
 
 ## Getting started
 
-- You need first to setup a full node. You can check this page to have all the informaiton needed.
+- You need first to setup a full node. You can [check this page](/docs/iov-name-service/validator/setup) to have all the informaiton needed.
 - Install the IOV Name Service API Rest on your full node following the [readme information](https://github.com/iov-one/iovns-rest-api)
 
 ## API

@@ -124,7 +124,7 @@ Now we sign, post and confirm the transaction
     const bnsConnection = connection as BnsConnection;
 
     const myAccountBNS  = await bnsConnection.getUsernames({ owner: myAddress });
-    >> [ { id: 'lucas',
+    >> [ { id: 'antoine*iov',
         owner: 'tiov188ayx37py2r86wz5a4a2vrn4ejrwhnnte4n7kc',
         targets: [ [Object], [Object] ] } ]
 

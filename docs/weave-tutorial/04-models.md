@@ -6,7 +6,7 @@ sidebar_label: Models
 
 > [PR#6](https://github.com/iov-one/tutorial/pull/6): _Create models_
 
-We defined our state in [codec section](weave-tutorial/02-codec.md). In order to use models in weave we have to wrap our model with some functionalities and enforce it is a **morm.Model**
+We defined our state in [codec section](weave-tutorial/03-codec.md). In order to use models in weave we have to wrap our model with some functionalities and enforce it is a **morm.Model**
 
 Ensure our `OrderBook` fulfills morm.Model. This is just a helper so the compiler will complain loudly here if you forget to implement a method. Guaranteeing it *I am trying to implement this interface*.
 
@@ -14,7 +14,7 @@ Ensure our `OrderBook` fulfills morm.Model. This is just a helper so the compile
 var _ morm.Model = (*OrderBook)(nil)
 ```
 
-Now lets explain on our models identity:
+Now lets explain on our models identity
 
 ## Auto incremented identities
 
@@ -82,7 +82,7 @@ return errs
 
 We use `errors.AppendField`, It enables multi error validation.
 
-### Errors
+## Errors
 
 Here are some weave errors taken from [weave/errors](https://github.com/iov-one/weave/blob/master/errors/errors.go "Weave errors"):
 

@@ -6,9 +6,7 @@ sidebar_label: Introduction
 
 **IOV** is building a Universal Name Service for Wallets and Dapps.
 
-The IOV Name Service is a registry for names used in the blockchain ecosystem. We believe naming things makes them easier to use for everyone.
-
-We are also providing a toolkit to build blockchain based apps that can easily use and swap all assets from all blockchains. We believe the future of dapps is there.
+The IOV Name Service is a registry for names used in the blockchain ecosystem. We believe naming things makes them easier to use for everyone. We are also providing a toolkit to build blockchain based apps that can easily use and swap all assets from all blockchains. We believe the future of dapps is there.
 
 Enjoy and please send us feedback !
 

@@ -11,7 +11,7 @@ sidebar_label: Troubleshooter
 - The genesis object is included in a rpc response frame, so it must be extracted from the "result" object.
 
 ```sh
-curl https://bns.davenet.iov.one/genesis | jq .result.genesis > config/genesis.json
+curl https://rpc.lovenet.iov.one/genesis | jq .result.genesis > config/genesis.json
 ```
 
 ### failed to start a server: listen unix /tendermint/app.sock: bind: address already in use
@@ -19,7 +19,7 @@ curl https://bns.davenet.iov.one/genesis | jq .result.genesis > config/genesis.j
 - The clean-up of the app.sock socket failed.
 
 ```sh
-rm app.sock
+rm ${DIR_WORK}/iovns.sock
 ```
 
 ### No blocks are being produced

@@ -55,7 +55,7 @@ Firstly, You must have noticed:
 weave.Metadata metadata = 1;
 ```
 
-`weave.Metadata` allows you to use *Migration* extension. Migration extension allows upgrading the code on chain without downtime. This will be explained in more detail in further sections.
+`weave.Metadata` enables upgrading the code on chain without downtime. It is required if you want to use any [weave provided extensions](https://github.com/iov-one/weave/tree/master/x). [Migrations](https://github.com/iov-one/weave/tree/v0.20.0/migration) package will be explained in more detail in further sections.
 
 The second one is how the magic `ID` field works. This will be explained in [Models](weave-tutorial/04-models.md) section.
 

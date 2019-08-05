@@ -1,7 +1,7 @@
 ---
 id: rest-api
-title: Rest Api
-sidebar_label: Rest Api
+title: REST API
+sidebar_label: REST API
 ---
 
 The other way to connect to the IOV Name Service is to run the [IOV Name Service Rest API](https://github.com/iov-one/iovns-rest-api) on the top of your full node. This is a usefull way if you want to connect to the IOV Name Service from a mobile wallet.

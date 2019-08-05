@@ -97,7 +97,9 @@ func (m CreateOrderBookMsg) Validate() error {
 ```
 
 ```go
-func validID(id []byte) error {
+// validateID returns an error if this is not an 8-byte ID
+// as expected for orm.IDGenBucket
+func validateID(id []byte) error {
     if len(id) == 0 {
         return errors.Wrap(errors.ErrEmpty, "id missing")
     }

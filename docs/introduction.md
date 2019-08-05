@@ -29,5 +29,3 @@ We're building an interoperability solution for the blockchain industry that is 
 **IOV Weave** is a framework to quickly build your custom ABCI application to power a blockchain based on the best-of-class BFT Proof-of-stake Tendermint consensus engine. We built IOV Name Service using weave.
 
 **IOV Chrome Extension** is our Google Chrome Extension to connect to different chains and get a human friendly addresses. It connects to the IOV Wallet (web-based) which demonstrates the different features of IOV-core.
-
-

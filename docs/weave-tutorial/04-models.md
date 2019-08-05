@@ -22,7 +22,7 @@ Now let's explain on our model's identity
 
 ## Custom identity
 
-For using your custom identity, do not define `bytes id = 2 [(gogoproto.customname) = "ID"];` on `codec.proto`. You can use any other field as an index with logic on top. Just write `SetID` and `GetID` logic that uses your index.
+To use your custom identity, do not define `bytes id = 2 [(gogoproto.customname) = "ID"];` on `codec.proto`. You can use any other field as an index with logic on top. Just write `SetID` and `GetID` logic that uses your index.
 
 Now you see how indexing works in Weave. Let's see the other wonders of the framework.
 
@@ -100,7 +100,7 @@ ErrNotFound = Register(3, "not found")
 ErrMsg = Register(4, "invalid message")
 ```
 
-What is with these `ErrXYZ()` calls you may think? Well, we could return a “normal” error like `errors.New("fail")`, but we wanted two more features. First of all, it helps debugging enormously to have a stack trace of where the error originally occurred. For this, we use [pkg/errors](https://github.com/pkg/errors "go/pkg") that attach a stack trace to the error that can optionally be printed later with a `Printf("%+v", err)`. We also want to return a unique abci error code, which may be interpreted by client applications, either programmatically or to provide translations of the error message client side.
+What is with these `ErrXYZ()` calls you may think? Well, we could return a “normal” error like `errors.New("fail")`, but we wanted two more features. First of all, it helps debugging enormously to have a stack trace of where the error occurred. For this, we use [pkg/errors](https://github.com/pkg/errors "go/pkg") that attach a stack trace to the error that can optionally be printed later with a `Printf("%+v", err)`. We also want to return a unique abci error code, which may be interpreted by client applications, either programmatically or to provide translations of the error message client side.
 
 For these reasons, weave provides some utility methods and common error types in the errors [package](https://godoc.org/github.com/iov-one/weave/errors). The ABCI Code attached to the error is then returned in the [DeliverTx Result](https://github.com/iov-one/weave/blob/v0.20.0/abci.go#L114-L126).
 

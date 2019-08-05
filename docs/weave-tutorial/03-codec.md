@@ -10,13 +10,13 @@ Weave defines simple `Marshaller` and `Persistent` interface standards. These in
 
 ## Create Codec file
 
-The first thing is: imagine the shape of your classes. This `Codec` should be defined in [proto3](https://developers.google.com/protocol-buffers/docs/proto3) syntax. There are a number of different `int encodings`, `byte slices`, `strings`, and nested structures. And fields may be repeated. So forget complex types with methods now and just focus on the actual data structure.
+The first thing is: imagine the shape of your classes. This `Codec` should be defined in [proto3](https://developers.google.com/protocol-buffers/docs/proto3) syntax. There are severa; different `int encodings`, `byte slices`, `strings`, and nested structures. And fields may be repeated. So forget complex types with methods now and just focus on the actual data structure.
 
-Codec is the first the component that needs to be designed. Keep in mind that this part is the most important since whole module will depend on _codec_. You can think codec it as _model_ in mvc pattern. Yet it is not simple as model. Codec defines the whole application state models and more. On this file we would not go far as explaining every proto message. One example for each message and state would be enough. Further more if you want to see all the implementation, you can check out [tutorial](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto)
+Codec is the first component that needs to be designed. Keep in mind that this part is the most important since the whole module will depend on _codec_. You can think codec it as _model_ in mvc pattern. Yet it is not simple as model. Codec defines the whole application state models and more. On this article, we would not go as far as explaining every proto message. One example for each message and state would be enough. Furthermore, if you want to see all the implementation, you can check out [tutorial](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto)
 
 ## State
 
-In the previous section we explained how to define your domain thus attributes if models. Here `Trade` is defined as proto message. The [x/codec.proto](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto#L75-L88) file defines the `Trade` type rather simply, once you remove the comments, this is all that is left:
+In the previous section, we explained how to define your domain thus attributes if models. Here `Trade` is defined as proto message. The [x/codec.proto](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto#L75-L88) file defines the `Trade` type rather simply, once you remove the comments, this is all that is left:
 
 ```protobuf
 message Trade {
@@ -32,12 +32,12 @@ message Trade {
     }
 ```
 
-As you can see above, weave is heavily using `bytes` for identites, addresses etc. At first glance this might seem difficult to handle but if you take a look at [x/orderbook/bucket](https://github.com/iov-one/tutorial/blob/master/x/orderbook/bucket.go#L125) you can see it is very useful for indexing and performance
+As you can see above, weave is heavily using `bytes` for identities, addresses, etc. At first glance, this might seem difficult to handle but if you take a look at [x/orderbook/bucket](https://github.com/iov-one/tutorial/blob/master/x/orderbook/bucket.go#L125) you can see it is very useful for indexing and performance
 
 Note that the package defined in the protobuf file must match the package name used by the Go language code in the same directory.
 
-You can also import types from one proto file into another. Make sure to use the full github path in order that the generated go code has properly working imports. The package name above is also used as a namespace for the imported protobuf definitions. This is how [x/cash](https://github.com/iov-one/weave/blob/master/x/cash/codec.proto) creates a wallet that contains an array of tokens of different currencies.
-There are 2 critical points that needs to be explained in state models and messages.
+You can also import types from one proto file into another. Make sure to use the full github path so that the generated go code has properly working imports. The package name above is also used as a namespace for the imported protobuf definitions. This is how [x/cash](https://github.com/iov-one/weave/blob/master/x/cash/codec.proto) creates a wallet that contains an array of tokens of different currencies.
+2 critical points  needs to be explained in state models and messages.
 
 Firstly, You must have noticed:
 
@@ -47,7 +47,7 @@ weave.Metadata metadata = 1;
 
 `weave.Metadata` allows you to use *Migration* extension. Migration extension allows upgrading the code on chain without any downtime. This will be explained in more detail in further sections.
 
-Second one is how the magic `ID` field works. This will be explained in [Models](weave-tutorial/04-models.md) section.
+The second one is how the magic `ID` field works. This will be explained in [Models](weave-tutorial/04-models.md) section.
 
 ## Message Definitions
 
@@ -72,9 +72,9 @@ Now we have scaffold of our application thanks to auto-generated *codec.pb.go* f
 
 ## Using Autogenerated Structs
 
-The first time through the above process may appear tedious, but once you get the hang of it, you just have to add a few lines to a _.proto_ file and type `make protoc`. Et viola! You have a bunch of fresh *.pb.go files that provide efficient, portable serialization for your code.
+The first time through the above process may appear tedious, but once you get the hang of it, you just have to add a few lines to a _.proto_ file and type `make protoc`. Et voila! You have a bunch of fresh *.pb.go files that provide efficient, portable serialization for your code.
 
-But how do you use those structs? Taking `Amount` from [x/codec.proto](https://orkunkl.github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto#L10-L23) as an example, we see a `x/codec.pb.go` file with `type Amount struct {...}` that very closely mirrors the content of the codec.proto file, as well as a number of methods. There are some auto-generated getters, which can be useful to fulfill interfaces or to query field of _nil_ objects without panicking. And then there are some (very long) **Marshal** and **Unmarshal** methods. These are the meat of the matter. They fulfill the Persistent interface and let us write code like this:
+But how do you use those structs? Taking `Amount` from [x/codec.proto](https://orkunkl.github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto#L10-L23) as an example, we see a `x/codec.pb.go` file with `type Amount struct {...}` that very closely mirrors the content of the codec.proto file, as well as many of methods. There are some auto-generated getters, which can be useful to fulfill interfaces or to query field of _nil_ objects without panicking. And then there are some (very long) **Marshal** and **Unmarshal** methods. These are the meat of the matter. They fulfill the Persistent interface and let us write code like this:
 
 ```go
 orig := Amount{Whole: 123, franctional: 2}
@@ -99,11 +99,11 @@ func (a *Amount) IsNegative() bool {
 }
 ```
 
-This is a quite productive workflow and I recommend trying it out. You may find it doesn’t work for you and you can try other approaches, like copying the protobuf generated structs into some custom-writen structs you like and then copying back into protobuf structs for serialization. You can also try playing with special [gogo-protobuf](https://github.com/gogo/protobuf/blob/master/extensions.md) flags in your protobuf files to shape the autogenerated code into the exact shape you want.
+This is a quite productive workflow and I recommend trying it out. You may find it doesn’t work for you and you can try other approaches, like copying the protobuf generated structs into some custom-written structs you like and then copying back into protobuf structs for serialization. You can also try playing with special [gogo-protobuf](https://github.com/gogo/protobuf/blob/master/extensions.md) flags in your protobuf files to shape the autogenerated code into the exact shape you want.
 
 ## Notes About oneof
 
-**oneof** is a powerful feature to produce union/sum types in your protobuf structures. For example, you may have a public key which may be one of many different algorithms, and can define cases for each, which can be swtiched upon in runtime. We also use this for the transaction to enumerate a set of possible messages that can be embedded in the transaction. A transaction may have any one of them and serialize and deserialize properly. Type-safety is enforced in compile-time and we can switch on the kind on runtime, quite nice. (Example from [bcp-demo](https://github.com/iov-one/bcp-demo/blob/master/app/codec.proto)):
+**oneof** is a powerful feature to produce union/sum types in your protobuf structures. For example, you may have a public key which may be one of many different algorithms and can define cases for each, which can be switched upon in runtime. We also use this for the transaction to enumerate a set of possible messages that can be embedded in the transaction. A transaction may have any one of them and serialize and deserialize properly. Type-safety is enforced in compile-time and we can switch on the kind on runtime, quite nice. (Example from [bcp-demo](https://github.com/iov-one/bcp-demo/blob/master/app/codec.proto)):
 
 ```protobuf
 oneof sum {
@@ -117,7 +117,7 @@ oneof sum {
 }
 ```
 
-The only problem is that the generated code is ugly to some people’s eyes. This lies in the fact that there is no clean way to express sum types in golang, and you have to force an interface with private methods in order to close the set of possible types. Although some people have been so revolted by this code that they prefered to [write their own serialization library](https://github.com/tendermint/go-amino "go-amino"), I would suggest just taking the breath and getting to know it. Here are the relevant pieces:
+The only problem is that the generated code is ugly to some people’s eyes. This lies in the fact that there is no clean way to express sum types in golang, and you have to force an interface with private methods to close the set of possible types. Although some people have been so revolted by this code that they preferred to [write their own serialization library](https://github.com/tendermint/go-amino "go-amino"), I would suggest just taking the breath and getting to know it. Here are the relevant pieces:
 
 ```go
 type Tx struct {

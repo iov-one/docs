@@ -19,17 +19,27 @@ Codec is the first component that needs to be designed. Keep in mind that this p
 In the previous section, we explained how to define your domain thus attributes if models. Here `Trade` is defined as proto message. The [x/codec.proto](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto#L75-L88) file defines the `Trade` type rather simply, once you remove the comments, this is all that is left:
 
 ```protobuf
+// Trade is a settled partial/full order
+// We store these as independent entities to help with queries to map
+// the prices over time. They are also referenced by the Orders, so we can
+// see how much was fulfilled.
+//
+// Ask and Bid tickers are "inherited" from the orderbook
 message Trade {
-    weave.Metadata metadata = 1;
-        bytes id = 2 [(gogoproto.customname) = "ID"];
-        bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
-        bytes order_id = 4 [(gogoproto.customname) = "OrderID"];
-        bytes taker = 5 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
-        bytes maker = 6 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
-        coin.Coin maker_paid = 7;
-        coin.Coin taker_paid = 8;
-        int64 executed_at = 9 [(gogoproto.casttype) = "github.com/iov-one/weave.UnixTime"];
-    }
+  weave.Metadata metadata = 1;
+  bytes id = 2 [(gogoproto.customname) = "ID"];
+  bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
+  bytes order_id = 4 [(gogoproto.customname) = "OrderID"];
+  // Address of taker (this is an order that was instantly fulfilled)
+  bytes taker = 5 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
+  // Address of maker (this is an order that was stored first before fulfillment)
+  bytes maker = 6 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
+  // this is how much each side paid (they got the opposite one)
+  coin.Coin maker_paid = 7;
+  coin.Coin taker_paid = 8;
+  // executed_at defines execution time of an order
+  int64 executed_at = 9 [(gogoproto.casttype) = "github.com/iov-one/weave.UnixTime"];
+}
 ```
 
 As you can see above, weave is heavily using `bytes` for identities, addresses, etc. At first glance, this might seem difficult to handle but if you take a look at [x/orderbook/bucket](https://github.com/iov-one/tutorial/blob/master/x/orderbook/bucket.go#L125) you can see it is useful for indexing and performance
@@ -52,13 +62,50 @@ The second one is how the magic `ID` field works. This will be explained in [Mod
 ## Message Definitions
 
 ```protobuf
-    message CreateOrderMsg {
-        weave.Metadata metadata = 1;
-        bytes trader = 2 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
-        bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
-        coin.Coin offer = 4;
-        Amount price = 5;
-    }
+// CreateOrderMsg will offer to sell some currency on an orderbook
+// at a given price.
+message CreateOrderMsg {
+  weave.Metadata metadata = 1;
+  // Trader is the Address that will pay the offer, and get the matches.
+  // Defaults to x.MainSigner() if left blank
+  bytes trader = 2 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
+  // OrderBookID must support Offer.Ticker as one of the two sides,
+  // Which side this order will be, is automatically inferred
+  bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
+  // Offer is how much will be paid
+  coin.Coin offer = 4;
+  // Price is how much is requested for each unit of the offer token
+  Amount price = 5;
+}
+```
+
+Noticed `(gogoproto.casttype)` and `(gogoproto.customname)`?
+
+```protobuf
+bytes trader = 2 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
+```
+
+`(gogoproto.casttype)` indicates this field will be cast to `weave.Address`. Compiled codec.pb.go field:
+
+```go
+// Address of trader that created order (ad gets paid from it)
+    Trader      github_com_iov_one_weave.Address `protobuf:"bytes,3,opt,name=trader,proto3,casttype=github.com/iov-one/weave.Address" json:"trader,omitempty"`
+```
+
+```protobuf
+bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
+```
+
+`(gogoproto.customname)` indicates this field will be named as `OrderBookID`. Compiled codec.pb.go field:
+
+```go
+OrderBookID []byte `protobuf:"bytes,3,opt,name=order_book_id,json=orderBookId,proto3" json:"order_book_id,omitempty"`
+```
+
+Without it we would get:
+
+```go
+OrderBookId []byte `protobuf:"bytes,3,opt,name=order_book_id,json=orderBookId,proto3" json:"order_book_id,omitempty"`
 ```
 
 As you can see above we define necessary fields that will be used by `handler` to interact with application state.

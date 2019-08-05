@@ -12,7 +12,7 @@ Weave defines `Marshaller` and `Persistent` interface standards. These interface
 
 First imagine the shape of your classes. The product of your imagination will be called `Codec`. And the language of expressing shape of the classes is: [proto3](https://developers.google.com/protocol-buffers/docs/proto3). There are several different `int encodings`, `byte slices`, `strings`, and nested structures. And fields may be repeated. So forget complex types with methods now and just focus on the actual data structure.
 
-Codec is the first component that needs to be designed. Keep in mind that this part is the most important since the whole module will depend on _codec_. You can think codec it as _model_ in mvc pattern. Yet it is not simple as model. Codec defines the whole application state models and more. On this article, we would not go as far as explaining every proto message. One example for each message and state would be enough. Furthermore, if you want to see all the implementation, you can check out [tutorial](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto)
+Codec is the first component that needs to be designed. Keep in mind that this part is the most important since the whole module will depend on _codec_. You can think codec it as _model_ in mvc pattern. Yet codec not only defines the model representation but marshalling/unmarshalling and interactions with messages. Codec defines the whole application state models and more. On this article, we would not go as far as explaining every proto message. One example for each message and state would be enough. Furthermore, if you want to see all the implementation, you can check out [tutorial](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto)
 
 ## State
 

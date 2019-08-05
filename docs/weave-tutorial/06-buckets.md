@@ -40,7 +40,7 @@ This basically consists of adding _Copy()_ and _Validate()_ to the objects in `c
 
 ## Dive into Code
 
-Let's define `MarketBucket` that will hold `Market` information and write a function that creates a market. This is a basic `morm/model_bucket` without any indexes.
+Let's define `MarketBucket` that will hold `Market` information and write a function that creates a market. This is a basic `morm/model_bucket` without any secondary index.
 
 ```go
 type MarketBucket struct {
@@ -119,7 +119,7 @@ func BuildMarketIDTickersIndex(orderbook *OrderBook) []byte {
 }
 ```
 
-*BuildMarketIDTickersIndex =  indexByteSize = 8(MarketID) + ask ticker size + bid ticker size*
+*BuildMarketIDTickersIndex = indexByteSize = 8(MarketID) + ask ticker size + bid ticker size*
 
 Sample market id index with tickers = `000000056665820070797900`
 
@@ -127,4 +127,4 @@ Sample market id index with tickers = `000000056665820070797900`
 
 ## Custom Bucket
 
-Want to enforce the data consistency on the buckets. All data is validated before saving, but we also need to make sure that all data is the proper type of object before saving. Unfortunately, this is quite difficult to do compile-time without generic, so a typical approach is to embed the orm.Bucket in another struct and just force validation of the object type runtime before save. Truth time: `morm.ModelBucket` is a custom bucket designed for handling external indexes easier. We used morm modules instead of orm to show you even buckets are customizable to your needs. You can compare [morm](https://github.com/iov-one/tutorial/blob/master/morm/model_bucket.go#L40) and [weave/orm](https://github.com/iov-one/weave/tree/master/orm) and see how to implement your custom bucket. It uses auto-incrementing sequences(id) under the hood.
+Want to enforce the data consistency on the buckets. All data is validated before saving, but we also need to make sure that all data is the proper type of object before saving. Unfortunately, this is quite difficult to do compile-time without generic, so a typical approach is to embed the orm.Bucket in another struct and just force validation of the object type runtime before save. Truth time: `morm.ModelBucket` is a refinement of `weave/orm.ModelBucket`. It uses auto-incrementing sequences(id) under the hood. We used morm modules instead of orm to show you even buckets are customizable to your needs. You can compare [morm](https://github.com/iov-one/tutorial/blob/master/morm/model_bucket.go#L40) and [weave/orm](https://github.com/iov-one/weave/tree/master/orm) and see how to implement your custom bucket.

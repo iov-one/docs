@@ -8,7 +8,7 @@ sidebar_label: Buckets
 \
 [PR#9](https://github.com/iov-one/tutorial/pull/9): _Add indexer for market using marketID, askTicker, bidTicker_
 
-When running your handlers, you get access to the root **KVStore**, which is an abstraction level similar to boltdb or leveldb. It is our data warehouse. An extenstion can opt-in to using one or more Buckets to store the data. Buckets offer the following advantages:
+When running your handlers, you get access to the root **KVStore**, which is an abstraction level similar to boltdb or leveldb. It is our data warehouse. An extension can opt-in to using one or more Buckets to store the data. Buckets offer the following advantages:
 
 - Isolation between extensions (each Bucket has a unique prefix that is transparently prepended to the keys)
 - Type safety (enforce all data stored in a Bucket is the same type, to avoid parse errors later on)
@@ -36,11 +36,11 @@ And extend your protobuf objects to implement `CloneableData`:
 // in a simple object to handle much of the details.
 ```
 
-This basically consists of adding _Copy()_ and _Validate()_ to the objects in `codec.pb.go`. On [Models](weave-tutorial/04-models.md) section we implemented _Copy()_ and _Validate()_ as you remember. Now it makes sense right!
+This basically consists of adding _Copy()_ and _Validate()_ to the objects in `codec.pb.go`. On [Models](weave-tutorial/04-models.md) section, we implemented _Copy()_ and _Validate()_ as you remember. Now it makes sense right!
 
 ## Dive into Code
 
-Let's define `MarketBucket` that will hold `Market` informations and write a function creates a market. This is a basic `morm/model_bucket` without any indexes.
+Let's define `MarketBucket` that will hold `Market` information and write a function that creates a market. This is a basic `morm/model_bucket` without any indexes.
 
 ```go
 type MarketBucket struct {
@@ -55,7 +55,7 @@ func NewMarketBucket() *MarketBucket {
 }
 ```
 
-Now create your `OrderBookBucket` with secondary indexes. Seoncary indexes enable us inserting and querying models with ease. You can think is as SQL indexes.
+Now create your `OrderBookBucket` with secondary indexes. Secondary indexes enable us to insert and query models with ease. You can think is as SQL indexes.
 
 ```go
 type OrderBookBucket struct {
@@ -79,11 +79,11 @@ Let's explain what the heck is `morm.WithIndex("market", marketIDindexer, false)
 
 ## Secondary Indexes
 
-Sometimes we need another index for the data. Generally, we will look up a orderbook from the market it belongs to and it’s index in the market. But what if we want to list all orderbooks of a market over all orderbooks? For this, we need to add a secondary index on the orderbooks to query by market. This is a typical case and weave provides nice support for this functionality.
+Sometimes we need another index for the data. Generally, we will look up an order book from the market it belongs to and it’s index in the market. But what if we want to list all orderbooks of a market overall order books? For this, we need to add a secondary index on the order books to query by market. This is a typical case and weave provides nice support for this functionality.
 
-We add a indexing method to take any object, enforce the type to be a proper Orderbook, then extract the index we want. This can be a field, or any deterministic transformation of one (or multiple) fields. The output of the index becomes a key in another query. Bucket provides a simple method to query by index.
+We add an indexing method to take any object, enforce the type to be a proper Orderbook, then extract the index we want. This can be a field or any deterministic transformation of one (or multiple) fields. The output of the index becomes key in another query. Bucket provides a simple method to query by index.
 
-**marketIDindexer** is an secondary index with only market ID. This is a simple index form to implement.
+**marketIDindexer** is a secondary index with only market ID. This is a simple index form to implement.
 It binds OrderBook to a MarketId(*bytes*)
 
 Weave uses uniformed *bytes* as indexes. This improves performance.
@@ -101,7 +101,7 @@ func marketIDindexer(obj orm.Object) ([]byte, error) {
 }
 ```
 
-You must have ideas flying around on your mind like **how are we going to make an compound index? Really!? Is it all weave has?**
+You must have ideas flying around in your mind like **how are we going to make a compound index? Really!? Is it all weave has?**
 
 Don't worry. Weave is like a swiss knife with a lot of blockchain features.
 

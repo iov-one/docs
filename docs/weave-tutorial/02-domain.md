@@ -4,7 +4,7 @@ title: Defining the Domain
 sidebar_label: Domain 
 ---
 
-The first thing we consider is the data we want to store (the state). After that, we can focus on the messages, which trigger state transitions. All blockchain state must be stored in our merkle-ized store, that can provide validity hashes and proofs. This is exposed to the application as a basic key-value store, which also allows in-order iteration over the keys. On top of this, we have built some tools like secondary indexes and sequences, similar to how [storm adds an ORM](https://github.com/asdine/storm#simple-crud-system) on top of [boltdb’s kv store](https://github.com/boltdb/bolt#using-buckets). We have avoided struct tags and tried to type as strictly as we can (without using generics).
+The first thing we consider is the data we want to store (the state). After that, we can focus on the messages, which trigger state transitions. All blockchain state must be stored in our merkle-ized store, that provide validity hashes and proofs. This is exposed to the application as a basic key-value store, which also allows in-order iteration over the keys. On top of this, we have built some tools like secondary indexes and sequences, similar to how [storm adds an ORM](https://github.com/asdine/storm#simple-crud-system) on top of [boltdb’s key-value store](https://github.com/boltdb/bolt#using-buckets). We have avoided struct tags and tried to type as strictly as we can (without using generics).
 
 We are building an Orderbook application. This topic is quite hot at the time of writing this tutorial.
 
@@ -15,9 +15,9 @@ There is no global chain owner, but each market has one that adds order books an
 
 - **Orders** will be posted by traders who want to buy or sell tokens with given price and amount. Order may have 2 sides: **Ask** and **Bid**.
 - An order may have 3 states:
-  - **Open** means order is waiting to be settled
-  - **Done** means order has been settled
-  - **Cancel** means order has been cancelled by owner
+  - **Open** means the order is waiting to be settled
+  - **Done** means the order has been settled
+  - **Cancel** means the order has been cancelled by the owner
 
 - **Trade** is a settled order.
 

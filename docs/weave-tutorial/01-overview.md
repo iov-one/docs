@@ -11,6 +11,6 @@ To make the theory more tangible, we will build a sample application alongside t
 
 In this tutorial, you will learn how to serialize and model your data structures, define messages and handlers, expose queries, and read initial configuration from the genesis file. You will be able to build a new extension and tie it together with other extensions into a complete blockchain application.
 
-Tutorial content is richened with PR discussions. If you follow the PR reviews you can have a clear understanding of how to design your module and implement a blockchain app using weave piece by piece. And you can see how the development flow works and what are the issues you should have on your mind while moving forward.
+Tutorial content is richened with Pull Request discussions. If you follow the PR reviews you can have a clear understanding of how to design your module and implement a blockchain app using weave piece by piece. And you can see how the development flow works and what are the issues you should have on your mind while moving forward.
 
 Whenever you have questions in your mind about the internals check out [Weave]("https://github.com/iov-one/weave) source code. It is very well documented. Please feel free to add [issues](https://github.com/iov-one/weave/issues) if you think there is something under-documented or confusing.

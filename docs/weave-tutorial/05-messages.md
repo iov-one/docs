@@ -67,9 +67,9 @@ var _ weave.Msg = (*CreateOrderBookMsg)(nil)
 
 ## Validation
 
-While validation for data models is much more like SQL constraints: “max length 20”, “not null”, “constaint foo > 3”, validation for messages is validating potentially malicious data coming in from external sources and should be validated more thoroughly. One may want to use regexp to avoid control characters or null bytes in a “string” input. Maybe restrict it to alphanumeric or ascii characters, strip out html, or allow full utf-8. Addresses must be checked to be the valid length. Amount being sent to be positive (else I send you -5 ETH and we have a **TakeMsg**, instead of **SendMsg**).
+While validation of data models is much more like SQL constraints: “max length 20”, “not null”, “constaint foo > 3”, validation of messages is validating potentially malicious data coming in from external sources and should be validated more thoroughly. One may want to use regexp to avoid control characters or null bytes in a “string” input. Maybe restrict it to alphanumeric or ascii characters, strip out html, or allow full utf-8. Addresses must be checked to be the valid length. Amount being sent to be positive (else I send you -5 ETH and we have a **TakeMsg**, instead of **SendMsg**).
 
-The validation on Messages should be a lot more thorough and well tested than the validation on data models, which is as much documentation of acceptable values as it is runtime security.
+The validation of Messages should be a lot more thorough and well tested than the validation on data models, which is as much documentation of acceptable values as it is runtime security.
 
 `Validate` method of `CreateOrderBookMsg`:
 
@@ -106,4 +106,4 @@ func validID(id []byte) error {
 }
 ```
 
-You must have notice we even validate if `ID`'s lenght is not 0 and equal to 8 and tickers are actually string tickers. **Remember** more validation more solid your application is. If you **constrain** possible inputs, **less** checks in the business logic.
+You must have notice we even validate if `ID`'s lenght is not 0 and equal to 8 and tickers are actually string tickers. **Remember** the more validation the more solid your application is. If you **constrain** possible inputs, you can write **less** validation in the business logic.

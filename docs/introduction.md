@@ -4,6 +4,8 @@ title: Welcome to IOV!
 sidebar_label: Welcome to IOV!
 ---
 
+![image](assets/iov-logo.png)
+
 **IOV** is building a Universal Name Service for Wallets and Dapps.
 
 The IOV Name Service is a registry for names used in the blockchain ecosystem. We believe naming things makes them easier to use for everyone. We are also providing a toolkit to build blockchain based apps that can easily use and swap all assets from all blockchains. We believe the future of dapps is there.
@@ -27,5 +29,3 @@ We're building an interoperability solution for the blockchain industry that is 
 **IOV Weave** is a framework to quickly build your custom ABCI application to power a blockchain based on the best-of-class BFT Proof-of-stake Tendermint consensus engine. We built IOV Name Service using weave.
 
 **IOV Chrome Extension** is our Google Chrome Extension to connect to different chains and get a human friendly addresses. It connects to the IOV Wallet (web-based) which demonstrates the different features of IOV-core.
-
-

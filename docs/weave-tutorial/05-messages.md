@@ -22,15 +22,15 @@ type Tx interface {
 }
 ```
 
-And every application can extend it with additional functionality, such as [Signatures](https://godoc.org/github.com/iov-one/weave/x/sigs#SignedTx), [Fees](https://godoc.org/github.com/iov-one/weave/x/cash#FeeTx), or anything else your application needs. The data placed in the Transaction is meant to be anything that applies to all modules, and is processed by a **Middleware**.
+And every application can extend Tx with additional functionality, such as [Signatures](https://godoc.org/github.com/iov-one/weave/x/sigs#SignedTx), [Fees](https://godoc.org/github.com/iov-one/weave/x/cash#FeeTx), or anything else your application needs. The data placed in the Transaction is meant to be anything that applies to all modules, and is processed by a **Middleware**.
 
-A [Message](https://godoc.org/github.com/iov-one/weave#Msg) is also persistent and can be pretty much anything that an extension defines, as it also defines the Handler to process it. The only necessary feature of a Message is that it can return a `Path() string` which allows us to route it to the proper Handler.
+A [Message](https://godoc.org/github.com/iov-one/weave#Msg) is also persistent and can be pretty much anything that an extension defines. The only necessary feature of a Message is `Path() string` method which provides the required route to the Handler.
 
 When we define a concrete transaction type for one application, we define it in protobuf with a set of possible messages that it can contain. Every application can add optional field to the transaction and allow a different set of messages, and the Handlers and Decorators work orthogonally to this, regardless of the **concrete** Transaction type.
 
 ## Defining Messages
 
-Messages are similar to the `POST` endpoints in a typical API. They are the only way to effect a change in the system. Ignoring the issue of authentication and rate limitation, which is handled by the Decorators / Middleware, when we design Messages, we focus on all possible state transitions and the information they need to proceed.
+Messages are similar to the `POST`, `DELETE`, `PUT` endpoints in a typical REST API. They are the way to effect a change in the system. Ignoring the issue of authentication and rate limitation, which is handled by the Decorators / Middleware, when we design Messages, we focus on all possible state transitions and the information they need to proceed.
 
 In the Orderbook example, we can imagine:
 
@@ -53,6 +53,7 @@ func init() {
 Define path that will be used for routing messages to handler:
 
 ```go
+// Path implementes weave.Msg interface.
 func (CreateOrderBookMsg) Path() string {
     return "orderbook/create_orderbook"
 }
@@ -68,7 +69,9 @@ var _ weave.Msg = (*CreateOrderBookMsg)(nil)
 
 While validation of data models is much more like SQL constraints: “**max length 20**”, “**not null**”, “**constaint foo > 3**”, validation of messages is validating potentially malicious data coming in from external sources and should be validated more thoroughly. One may want to use regexp to avoid control characters or null bytes in a “string” input. Maybe restrict it to alphanumeric or ascii characters, strip out html, or allow full utf-8. Addresses must be checked to be the valid length. Amount being sent to be positive (else I send you -5 ETH and we have a **TakeMsg**, instead of **SendMsg**).
 
-The validation of Messages should be a lot more thorough and well tested than the validation on data models, which is as much documentation of acceptable values as it is runtime security.
+Validate method on a message must only provide a sanity check for the data it represents and must not rely on any external state. Message can only ensure the data format and hardcoded logic. It cannot validate business logic. Business logic is validated in a **handler**.
+
+The validation of messages should be a lot more thorough and well tested than the validation on data models, which is as much documentation of acceptable values as it is runtime security.
 
 `Validate` method of `CreateOrderBookMsg`:
 

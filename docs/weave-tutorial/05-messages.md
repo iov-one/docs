@@ -75,22 +75,24 @@ The validation of Messages should be a lot more thorough and well tested than th
 
 ```go
 func (m CreateOrderBookMsg) Validate() error {
-    if err := m.Metadata.Validate(); err != nil {
-        return errors.Wrap(err, "metadata")
-    }
-    if err := validID(m.MarketID); err != nil {
-        return errors.Wrap(err, "market id")
-    }
+    var errs error
+
+    errs = errors.AppendField(errs, "Metadata", m.Metadata.Validate())
+    errs = errors.AppendField(errs, "MarketID", validID(m.MarketID))
+
     if !coin.IsCC(m.AskTicker) {
-        return errors.Wrapf(errors.ErrCurrency, "Invalid Ask Ticker: %s", m.AskTicker)
+        errs = errors.Append(errs,
+            errors.Field("AskTicker", errors.ErrCurrency, "invalid ask ticker"))
     }
     if !coin.IsCC(m.BidTicker) {
-        return errors.Wrapf(errors.ErrCurrency, "Invalid Bid Ticker: %s", m.BidTicker)
+        errs = errors.Append(errs,
+            errors.Field("BidTicker", errors.ErrCurrency, "invalid bid ticker"))
     }
     if m.BidTicker <= m.AskTicker {
-        return errors.Wrapf(errors.ErrCurrency, "ask (%s) must be before bid (%s)", m.AskTicker, m.BidTicker)
+        errs = errors.Append(errs,
+            errors.Field("BidTicker", errors.ErrCurrency, "ask must be before bid"))
     }
-    return nil
+    return errs
 }
 ```
 

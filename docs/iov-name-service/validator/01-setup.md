@@ -9,13 +9,13 @@ sidebar_label: Setup
 This document is not for beginners.  It assumes that you know how to setup a sentry node architecture for Tendermint nodes.
 
 > Hint: When upgrading from an old testnet to a new one, you can maintain your node id and validator pub_key across testnets by doing the following before performing the upgrade:
-```
+
+```sh
 su - iov
 set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
 cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
-
 
 ## Systemd for running a sentry node or validator
 
@@ -168,17 +168,16 @@ At this point you're running a full-node that can be examined at `http://localho
 > The most important file from the procedure above is `/etc/systemd/system/iovns.env`.  It defines docker image versions and options, directories that allow the `iovns.service` and `iovns-tm.service` to communicate with each other, and IOV Name Service and tendermint options.
 
 Using `/etc/systemd/system/iovns.env`, rather than specifying values directly in the service files, obviates the need to do `systemctl daemon-reload` on every option change.  Most values in `/etc/systemd/system/iovns.env` are self explanatory; however, there are a few of note:
-  - for IOV Name Service
-    - `IMAGE_IOVNS_OPTS` allows you to customize the anti-spam fee, etc.
-  - for Tendermint
-    - `DOCKER_TM_OPTS` is important because it exposes tendermint ports.
-    - `IMAGE_TM_OPTS` allows you to customize the configuration of tendermint, including `priv_validator_laddr`, `p2p.pex`, `p2p.persistent_peers`, `p2p.private_peer_ids`, etc.  **In other words, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `priv_validator_laddr` and `p2p.*` options.**  Please refer to the <a href="https://tendermint.com/docs/tendermint-core/configuration.html#options" target="blank_">tendermint documentation for the options</a>.
 
+- for IOV Name Service
+  - `IMAGE_IOVNS_OPTS` allows you to customize the anti-spam fee, etc.
+- for Tendermint
+  - `DOCKER_TM_OPTS` is important because it exposes tendermint ports.
+  - `IMAGE_TM_OPTS` allows you to customize the configuration of tendermint, including `priv_validator_laddr`, `p2p.pex`, `p2p.persistent_peers`, `p2p.private_peer_ids`, etc.  **In other words, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `priv_validator_laddr` and `p2p.*` options.**  Please refer to the <a href="https://tendermint.com/docs/tendermint-core/configuration.html#options" target="blank_">tendermint documentation for the options</a>.
 
 ## Point the nodes at each other
 
 Now that you have sentry node(s) and a validator, they need to be made aware of their role and pointed at each other.
-
 
 ### Sentry node configuration
 
@@ -193,8 +192,8 @@ IMAGE_TM_OPTS="\
 --rpc.unsafe=true \
 "
 ```
-There are a lot more tendermint configuration options available than those shown above.  Customize them as you see fit.
 
+There are a lot more tendermint configuration options available than those shown above.  Customize them as you see fit.
 
 ### Validator configuration
 

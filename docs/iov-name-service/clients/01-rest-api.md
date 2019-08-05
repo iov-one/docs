@@ -1,7 +1,7 @@
 ---
 id: rest-api
-title: Rest Api
-sidebar_label: Rest Api
+title: REST API
+sidebar_label: REST API
 ---
 
 The other way to connect to the IOV Name Service is to run the [IOV Name Service Rest API](https://github.com/iov-one/iovns-rest-api) on the top of your full node. This is a usefull way if you want to connect to the IOV Name Service from a mobile wallet.
@@ -12,43 +12,52 @@ The other way to connect to the IOV Name Service is to run the [IOV Name Service
 - Install the IOV Name Service API Rest on your full node following the [readme information](https://github.com/iov-one/iovns-rest-api)
 
 ## API
+
 ### General
+
 - `GET /`: returns welcome message
 - `GET /chain`: returns chain id
 - `GET /nodes`: returns tendermint and faucet urls
 - `GET /tokens`: returns list of tokens
 
 ### Block
+
 - `GET /block/latest`: returns latest block height
 - `GET /block/:height`: returns block header based on block height
 
-
 ### Username
+
 - `GET /username/:id`: returns user data based on username
 - `POST /username`: creates a username
 - `PATCH /username`: updates targets from specific username
 
 ### Account
+
 - `GET /account/address/:owner`: returns account information (addresses) based on iov address
 - `GET /account/address/balance/:address`: returns account information (balances) based on iov address
 - `GET /account/address/nonce/:owner` returns nonce based on iov address
 - `GET /account/pubkey/nonce/:owner` returns nonce based on iov public key
 
 ### Transaction
+
 - `POST /transaction`: creates a transaction
 - `GET /transaction/`: returns transaction information based on query parameters:
   - id=transactionId
   - sentFromOrTo=userAddress
 
-## Api Examples
+## API Examples
+
 ### New username example
+
 Based on:
+
 - 12 words secret account: `dinosaur punch surface title crack sudden motion sight airport purse shoot napkin produce design wire mouse cake color tourist cricket purity brass speak once`
 - username to create: `bns-p_test-un_x5r0dm4838*iov`
 - chaain id: `local-bns-devnet`
 - nonce: 0
 
 The following json object should be generated and send it to post username to create a new username:
+
 ```json
 {
   "transaction": {
@@ -88,13 +97,16 @@ The following json object should be generated and send it to post username to cr
 ```
 
 ### Send transaction example
+
 Based on:
+
 - 12 words secret account: `devote figure chef merge throw swear muscle another midnight shock raven duck prefer wolf chase flight notice scout wrap hair pencil desk senior until`
 - recipient address: `tiov16mmje4vu9e580krwghg9rcpcqnek3f5fp93ffp`
 - chain id: `local-bns-devnet`
 - nonce: 0
 
 The following json object should be generated and post to transaction to transfer tokens:
+
 ```json
 {
   "transaction": {
@@ -133,4 +145,3 @@ The following json object should be generated and post to transaction to transfe
   "otherSignatures": []
 }
 ```
-

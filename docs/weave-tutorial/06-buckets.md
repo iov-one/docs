@@ -8,7 +8,7 @@ sidebar_label: Buckets
 \
 [PR#9](https://github.com/iov-one/tutorial/pull/9): _Add indexer for market using marketID, askTicker, bidTicker_
 
-When running your handlers, you get access to the root **KVStore**, which is an abstraction level similar to boltdb or leveldb. It is our data warehouse. An extension can opt-in to using one or more Buckets to store the data. Buckets offer the following advantages:
+In Weave framework, Buckets are the standard way to access and manipulate data, which is stored in **Key-Value Database*. Weave buckets could be found similar to [BoltDB](https://github.com/boltdb/bolt#using-buckets "Bolt Repo") or [LevelDB](https://github.com/google/leveldb "LevelDB Repo") design. Any extension can use one or multiple Buckets to store and access data. Buckets offer the following advantages:
 
 - Isolation between extensions (each Bucket has a unique prefix that is transparently prepended to the keys)
 - Type safety (enforce all data stored in a Bucket is the same type, to avoid parse errors later on)

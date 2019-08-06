@@ -65,9 +65,10 @@ chmod g+r iovns.env
 export CAT=$(which --skip-alias cat)
 export DOCKER=$(which --skip-alias docker)
 export RM=$(which --skip-alias rm)
+export SH=$(which --skip-alias sh)
 
 # create iovns.service
-cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' > iovns.service
+cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' -e 's@__SH__@'"$SH"'@g' > iovns.service
 [Unit]
 Description=IOV Name Service
 After=network-online.target
@@ -88,7 +89,7 @@ ExecStart=__DOCKER__ run $DOCKER_IOVNS_OPTS \
       start \
       -bind="unix://${DIR_TM}/${SOCK_TM}" \
       $IMAGE_IOVNS_OPTS
-ExecStop=sh -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_IOVNS})"
+ExecStop=__SH__ -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_IOVNS})"
 ExecStopPost=__RM__ -fv ${DIR_WORK}/${FILE_CID_IOVNS}
 #Restart=on-failure
 #RestartSec=3
@@ -101,7 +102,7 @@ WantedBy=multi-user.target
 __EOF_IOVNS_SERVICE__
 
 # create iovns-tm.service
-cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' > iovns-tm.service
+cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g'  -e 's@__SH__@'"$SH"'@g' > iovns-tm.service
 [Unit]
 Description=Tendermint for IOV Name Service
 After=iovns.service
@@ -120,7 +121,7 @@ ExecStart=__DOCKER__ run "$DOCKER_TM_OPTS" \
    ${IMAGE_TM} node \
       --proxy_app="unix://${DIR_TM}/${SOCK_TM}" \
       $IMAGE_TM_OPTS
-ExecStop=sh -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_TM})"
+ExecStop=__SH__ -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_TM})"
 ExecStopPost=__RM__ -fv ${DIR_WORK}/${FILE_CID_TM}
 #Restart=on-failure
 #RestartSec=3

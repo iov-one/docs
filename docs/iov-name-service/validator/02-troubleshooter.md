@@ -14,9 +14,9 @@ sidebar_label: Troubleshooter
 curl https://rpc.lovenet.iov.one/genesis | jq .result.genesis > config/genesis.json
 ```
 
-### failed to start a server: listen unix /tendermint/app.sock: bind: address already in use
+### failed to start a server: listen unix /tendermint/iovns.sock: bind: address already in use
 
-- The clean-up of the app.sock socket failed.
+- The clean-up of the iovns.sock socket failed.
 
 ```sh
 rm ${DIR_WORK}/iovns.sock

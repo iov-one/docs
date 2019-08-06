@@ -59,24 +59,20 @@ func (o *OrderBook) Validate() error {
     errs = errors.AppendField(errs, "MarketID", isGenID(o.MarketID, false))
 
     if !coin.IsCC(o.AskTicker) {
-        errs = errors.Append(errs,
-            errors.Field("AskTicker", errors.ErrCurrency, fmt.Sprintf("Invalid ask ticker: %s", o.AskTicker)))
+        errs = errors.AppendField(errs, "AskTicker", errors.ErrCurrency)
     }
     if !coin.IsCC(o.BidTicker) {
-        errs = errors.Append(errs,
-            errors.Field("BidTicker", errors.ErrCurrency, fmt.Sprintf("Invalid bid ticker: %s", o.BidTicker)))
+        errs = errors.AppendField(errs, "BidTicker", errors.ErrCurrency)
     }
 
     if o.TotalAskCount < 0 {
-        errs = errors.Append(errs,
-            errors.Field("TotalAskCount", errors.ErrModel, "negative total ask count"))
+        errs = errors.AppendField(errs, "TotalAskCount", errors.ErrModel)
     }
     if o.TotalBidCount < 0 {
-        errs = errors.Append(errs,
-            errors.Field("TotalBidCount", errors.ErrModel, "negative total bid count"))
+        errs = errors.AppendField(errs, "TotalBidCount", errors.ErrModel)
     }
 
-return errs
+    return errs
 }
 ```
 

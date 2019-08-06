@@ -76,19 +76,18 @@ The validation of messages should be a lot more thorough and well tested than th
 `Validate` method of `CreateOrderBookMsg`:
 
 ```go
+// Validate ensures the CreateOrderBookMsg is valid
 func (m CreateOrderBookMsg) Validate() error {
     var errs error
 
     errs = errors.AppendField(errs, "Metadata", m.Metadata.Validate())
-    errs = errors.AppendField(errs, "MarketID", validID(m.MarketID))
+    errs = errors.AppendField(errs, "MarketID", validateID(m.MarketID))
 
     if !coin.IsCC(m.AskTicker) {
-        errs = errors.Append(errs,
-            errors.Field("AskTicker", errors.ErrCurrency, "invalid ask ticker"))
+        errs = errors.AppendField(errs, "AskTicker", errors.ErrCurrency)
     }
     if !coin.IsCC(m.BidTicker) {
-        errs = errors.Append(errs,
-            errors.Field("BidTicker", errors.ErrCurrency, "invalid bid ticker"))
+        errs = errors.AppendField(errs, "BidTicker", errors.ErrCurrency)
     }
     if m.BidTicker <= m.AskTicker {
         errs = errors.Append(errs,

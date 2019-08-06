@@ -17,16 +17,32 @@ In Weave framework, Buckets are the standard way to access and manipulate data, 
 
 All extensions from weave use Buckets, so for compatibility as well as the features, **please use Buckets in your app**, unless you have a very good reason not to (and know what you are doing).
 
-To do so, you will have to wrap your state data structures into [Objects](https://godoc.org/github.com/iov-one/weave/orm#Object). The simplest way is to use `SimpleObj`:
+To use buckets, models must be wrappeed in `SimpleObj`.
 
 ```go
-// It can be used as a template for type-safe objects
 type SimpleObj struct {
     key   []byte
     value CloneableData
+}
 ```
 
-And extend your protobuf objects to implement `CloneableData`:
+Easiest way to achieve this is to use `ModelBucket`.
+
+```go
+b := orm.NewModelBucket("market", &Market{})
+```
+
+`orm.NewModelBucket` wraps `Market` in SimpleObj for you:
+
+```go
+// NewModelBucket returns a ModelBucket instance. This implementation relies on
+// a bucket instance. Final implementation should operate directly on the
+// KVStore instead.
+func NewModelBucket(name string, m Model, opts ...ModelBucketOption) ModelBucket {
+    b := NewBucket(name, NewSimpleObj(nil, m))
+```
+
+And be sure protobuf objects implemented `CloneableData`:
 
 ```go
     Clone() Object

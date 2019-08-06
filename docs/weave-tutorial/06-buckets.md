@@ -95,7 +95,7 @@ Let's explain what the heck is `morm.WithIndex("market", marketIDindexer, false)
 
 ## Secondary Indexes
 
-Sometimes we need another index for the data. Generally, we will look up an order book from the market it belongs to and it’s index in the market. But what if we want to list all orderbooks of a market overall order books? For this, we need to add a secondary index on the order books to query by market. This is a typical case and weave provides nice support for this functionality.
+Sometimes we need another index for the data. Generally, we will look up an order book from the market it belongs to and its index in the market. But what if we want to list all orderbooks of a market overall order books? For this, we need to add a secondary index on the order books to query by market. This is a typical case and weave provides nice support for this functionality.
 
 We add an indexing method to take any object, enforce the type to be a proper Orderbook, then extract the index we want. This can be a field or any deterministic transformation of one (or multiple) fields. The output of the index becomes key in another query. Bucket provides a simple method to query by index.
 
@@ -143,5 +143,5 @@ Sample market id index with tickers = `000000056665820070797900`
 
 ## Custom Buckets
 
-Data consistency must be enforced on the buckets. All data is validated before saving, but we also need to make sure that all data is the proper type of object before saving. Unfortunately, this is quite difficult to do compile-time without generic, so a typical approach is to embed the orm.Bucket in another struct and just force validation of the object type runtime before save. Wrap an orm.Bucket with the functionalities you desire, there you have a custom bucket to serve your needs.
-Truth time: `morm.ModelBucket` is a refinement of `weave/orm.ModelBucket`. It uses auto-incrementing sequences(id) under the hood. We used morm modules instead of orm to show you even buckets are customizable to your needs. You can compare [morm](https://github.com/iov-one/tutorial/blob/master/morm/model_bucket.go#L40) and [weave/orm](https://github.com/iov-one/weave/tree/master/orm) and see how to implement your custom bucket.
+Data consistency must be enforced on buckets. All data is validated before saving, but we also need to make sure that all data is the proper type of object before saving. Let's say you want to Unfortunately, this is quite difficult to compile-time without generic, so a typical approach is to embed the orm.Bucket in another struct and just force validation of the object type runtime before save. Wrap an orm.ModelBucket with the functionalities you desire, there you have a custom bucket to serve your needs.
+Truth time: `morm.ModelBucket` is a refinement of `weave/orm.ModelBucket`. We used morm modules instead of orm to show you even buckets are customizable to your needs. You can compare [morm](https://github.com/iov-one/tutorial/blob/master/morm/model_bucket.go#L40) and [weave/orm](https://github.com/iov-one/weave/tree/master/orm) and see how to implement your custom bucket.

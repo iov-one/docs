@@ -67,7 +67,7 @@ a wallet and an IOV address connected to our profile. we will generate a random 
 ```ts
 const randomEntropy = Random.getBytes(32);
 const wallet = profile.addWallet(Ed25519HdWallet.fromEntropy(await randomEntropy));
-const myIdentity = await profile.createIdentity(wallet.id, chainId, HdPaths.iov(1));
+const myIdentity = await profile.createIdentity(wallet.id, chainId, HdPaths.iov(0));
 const myAddress = signer.identityToAddress(myIdentity);
 console.log("secret random mnemonic: ", profile.printableSecret(wallet.id));
 ```

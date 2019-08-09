@@ -1,8 +1,14 @@
 ---
 id: setup
-title: Validator setup
-sidebar_label: Setup
+title: Setup a Validator Node
+sidebar_label: Setup a Validator Node
 ---
+
+## Apply to the validator program
+
+Please <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">register your information on this form</a>, this is needed for the IOV Validator Team to review your information and to open a channel of communication with us. At the end of the article, you will need to use this channel of communication to give us your pub_key so we can upgrade your full-node to a validator.
+
+## Systemd for running a sentry node or validator
 
 > IOV does not recommend using docker in production; however, it can be used to start building your validator's quality score on our testnet if you so choose.
 
@@ -16,8 +22,6 @@ set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pic
 cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
-
-## Systemd for running a sentry node or validator
 
 This document assumes that `curl`, `docker`, `jq`, and `which` are installed on your system, and user `iov` in groups `iov` and `docker` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
@@ -212,4 +216,4 @@ IMAGE_TM_OPTS="\
 
 ## Light-up the validator
 
-Once your sentry nodes and validator are sync'ed then the final step to becoming a validator is to submit your validator's pub_key to IOV.  **On your validator node**, execute `curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value` and reply with the resulting 44 character pub_key to the ticket that was issued to you when you applied for the validator program.  (There's no `create-validator` command like in Cosmos; validators are added via governance, which is just IOV on the testnet, for the moment.)
+Once your sentry nodes and validator are sync'ed then the final step to becoming a validator is to submit your validator's pub_key to IOV.  **On your validator node**, execute `curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value` and reply with the resulting 44 character pub_key to the ticket that was issued to you when you applied for <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">the validator program</a>.  (There's no `create-validator` command like in Cosmos; validators are added via governance, which is just IOV on the testnet, for the moment.)

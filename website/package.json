@@ -7,10 +7,10 @@
     "write-translations": "docusaurus-write-translations",
     "version": "docusaurus-version",
     "rename-version": "docusaurus-rename-version",
-    "strip-markdown": "rm -r ../stripped-docs/* && node scripts/strip-markdown"
+    "strip-markdown": "rm -rf ../stripped-docs/* && node scripts/strip-markdown"
   },
   "devDependencies": {
-    "docusaurus": "^1.11.1",
+    "docusaurus": "^1.12.0",
     "filehound": "^1.17.3",
     "fs-extra": "^8.1.0",
     "remove-markdown": "^0.3.0"

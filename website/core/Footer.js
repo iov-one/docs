@@ -39,8 +39,8 @@ class Footer extends React.Component {
           </div>
           <div>
             <h5>Community</h5>
-            <a href="https://riot.im/app/#/room/#weave:matrix.org">Riot Chat</a>
-            <a href="https://t.me/internetofvalues">Telegram</a>
+            <a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a>
+            <a href="https://t.me/internetofvalues" target="_blank">Telegram</a>
             <a
               href="https://twitter.com/iov_official"
               target="_blank"
@@ -50,7 +50,8 @@ class Footer extends React.Component {
           </div>
           <div>
             <h5>More</h5>
-            <a href="https://github.com/iov-one">GitHub</a>
+            <a href="https://github.com/iov-one" target="_blank">GitHub</a>
+            <a href="https://www.iov.one" target="_blank">Website</a>
           </div>
         </section>
         <section className="copyright">{this.props.config.copyright}</section>

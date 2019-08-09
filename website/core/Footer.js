@@ -51,6 +51,7 @@ class Footer extends React.Component {
           <div>
             <h5>More</h5>
             <a href="https://github.com/iov-one">GitHub</a>
+            <a href="https://www.iov.one" target="_blank">Website</a>
           </div>
         </section>
         <section className="copyright">{this.props.config.copyright}</section>

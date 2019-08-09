@@ -10,7 +10,7 @@ This document is not for beginners.  It assumes that you know how to setup a sen
 
 ## Apply to the validator program
 
-Please [register your information on this form](https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771), this is needed for the IOV Validator to review your information and to open a channel of communication with us. At the end of the article, you will need to use this channel of communication to give us your pub-key so we can upgrade your full-node to a validator.
+Please [register your information on this form](https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771), this is needed for the IOV Validator Team to review your information and to open a channel of communication with us. At the end of the article, you will need to use this channel of communication to give us your pub-key so we can upgrade your full-node to a validator.
 
 ## Systemd for running a sentry node or validator
 

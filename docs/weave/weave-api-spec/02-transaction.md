@@ -29,13 +29,16 @@ Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.20.0/s
 
 All the required _proto_ files for connecting to `BNS` or any `weave` based blockchain is using this `tx codec`.
 
-On the first line of the `codec.proto` 
+On the first line of the `codec.proto`
+
 ```proto
 syntax = "proto3";
 ```
+
 This line indicates protobuf file uses `proto3` as language syntax
 
 Next is the package this codec belongs to is defined
+
 ```proto
 package bnsd;
 ```
@@ -57,6 +60,7 @@ import "x/validators/codec.proto";
 ```
 
 ### Tx message
+
 ```proto
 message Tx {
   cash.FeeInfo fees = 1;
@@ -103,23 +107,29 @@ message Tx {
 
 To have the required tools to communicate and send transactions to _weave/bnsd_, follow these steps.
 
-### 1 - Import _bnsd_ protobuf definitios  
+### 1 - Import _bnsd_ protobuf definitios
+
 - Copy whole [weave/spec/proto/](https://github.com/iov-one/weave/tree/master/spec/proto) into the repo, as the imports should refer to local files.
 
 ### 2 - Install your preferred language-specific protoc plugin
+
 > We recommend using [uber/prototool](https://github.com/uber/prototool) or better [IOV/prototool-docker](https://github.com/iov-one/prototool-docker). Import _prototool-docker_ directly from [docker hub](https://hub.docker.com/r/iov1/prototool)
+
 - Create _prototool.yaml_ under root path. 
 - reference: [weave-starter-kit](https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml) 
 - Import prefered languages plugin under _plugins_ with _plugin options_ such as compilation output. 
 - reference: [weave-starter-kit](https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml#L22...L25)
 
 ### 3 - Import _app/codec.proto_
+
 - Insert _app/codec.proto_ files path under `includes` in prototool.yaml
 - reference: [weave-starter-kit](https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml#L20)
 
 ### 4 - Compile _.proto_ definitions
+
 - If _IOV/prototool_ used, run `docker run --rm --user=$(shell id -u):$(shell id -g) -v $(shell pwd):/work iov1/prototool:v0.2.2 prototool generate`
 - Or instead of messing around with long protoc build scripts, include and parameterize this script in a build tool or script such as [weave-starter-kit/Makefile](https://github.com/iov-one/weave-starter-kit/blob/master/Makefile)
 
 ### 5 - Import compiled files in your project
+
 - After all these steps, now _weave/bnsd_ compiled protobuf files are ready. Import and make your dreams come true.

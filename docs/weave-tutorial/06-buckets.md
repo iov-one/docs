@@ -32,7 +32,7 @@ Easiest way to achieve this is to use `ModelBucket`.
 b := orm.NewModelBucket("market", &Market{})
 ```
 
-`orm.NewModelBucket` wraps `Market` in SimpleObj for you:
+`orm.NewModelBucket` wraps `Market` in SimpleObj internally:
 
 ```go
 // NewModelBucket returns a ModelBucket instance. This implementation relies on
@@ -51,6 +51,8 @@ And be sure protobuf objects implemented `CloneableData`:
 // CloneableData is an intelligent Value that can be embedded
 // in a simple object to handle much of the details.
 ```
+
+Bucket name must comply with `^[a-z_]{3,10}$` regex rule, meaning names must be between 3 to 10 characters and all lower case.
 
 This basically consists of adding _Copy()_ and _Validate()_ to the objects in `codec.pb.go`. On [Models](weave-tutorial/04-models.md) section, we implemented _Copy()_ and _Validate()_ as you remember. Now it makes sense right!
 

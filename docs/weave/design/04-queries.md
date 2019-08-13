@@ -22,15 +22,17 @@ The request uses `Height` to select which block height to query and `Prove` to d
 The actual data that we wish to read is declared in `Path` and `Data`. `Path` defines what kind of query this is, much like the path in an http get request. `Data` is an arbitrary argument. In the typical case, `Path = /key` and `Data = <key bytes>` to directly query a given key in the merkle tree. However, if you wish to query the account balance, you will have to know how we define the account keys internally.
 
 ```go
+// tendermint v0.31.5
 type ResponseQuery struct {
-    Code uint32
-    Log    string
-    Info   string
-    Index  int64
-    Key    []byte
-    Value  []byte
-    Proof  []byte
-    Height int64
+    Code      uint32
+    Log       string
+    Info      string
+    Index     int64
+    Key       []byte
+    Value     []byte
+    Proof     []byte
+    Height    int64
+    Codespace string
 }
 ```
 

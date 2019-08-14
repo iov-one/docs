@@ -66,11 +66,11 @@ chgrp iov iovns.env
 chmod g+r iovns.env
 
 # deal with inconsistent systemd PATH among distributions
+export SKIP_ALIAS=$( [[ `which 2> /dev/stdout | fgrep -1 skip-alias` ]] && echo "--skip-alias" || echo "" )
 export CAT=$(which $SKIP_ALIAS cat)
 export DOCKER=$(which $SKIP_ALIAS docker)
 export RM=$(which $SKIP_ALIAS rm)
 export SH=$(which $SKIP_ALIAS sh)
-export SKIP_ALIAS=$( [[ `which 2> /dev/stdout | fgrep -1 skip-alias` ]] && echo "--skip-alias" || echo "" )
 
 # create iovns.service
 cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' -e 's@__SH__@'"$SH"'@g' > iovns.service

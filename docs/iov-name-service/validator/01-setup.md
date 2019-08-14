@@ -1,14 +1,14 @@
 ---
 id: setup
-title: Setup a Validator Node
-sidebar_label: Setup a Validator Node
+title: Setup A Validator Node
+sidebar_label: Setup
 ---
 
 ## Apply to the validator program
 
-Please <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">register your information on this form</a>, this is needed for the IOV Validator Team to review your information and to open a channel of communication with us. At the end of the article, you will need to use this channel of communication to give us your pub_key so we can upgrade your full-node to a validator.
+Before starting to setup your validator, please <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">apply to the validator program</a> to open a channel of communication with IOV. At the end of the article, you will need to use this channel of communication to give us your pub_key so that we can upgrade your full-node to a validator.
 
-## Systemd for running a sentry node or validator
+## Use systemd for running a sentry node or validator
 
 > IOV does not recommend using docker in production; however, it can be used to start building your validator's quality score on our testnet if you so choose.
 
@@ -66,10 +66,11 @@ chgrp iov iovns.env
 chmod g+r iovns.env
 
 # deal with inconsistent systemd PATH among distributions
-export CAT=$(which --skip-alias cat)
-export DOCKER=$(which --skip-alias docker)
-export RM=$(which --skip-alias rm)
-export SH=$(which --skip-alias sh)
+export SKIP_ALIAS=$( [[ `which 2> /dev/stdout | fgrep -1 skip-alias` ]] && echo "--skip-alias" || echo "" )
+export CAT=$(which $SKIP_ALIAS cat)
+export DOCKER=$(which $SKIP_ALIAS docker)
+export RM=$(which $SKIP_ALIAS rm)
+export SH=$(which $SKIP_ALIAS sh)
 
 # create iovns.service
 cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' -e 's@__SH__@'"$SH"'@g' > iovns.service

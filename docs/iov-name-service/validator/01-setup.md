@@ -44,9 +44,9 @@ IMAGE_IOVNS_OPTS="-min_fee '0.5 IOV'"
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.5-iov2/tendermint-0.31.5-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --moniker='moniker' \
---p2p.laddr='tcp://0.0.0.0:16656' \
---p2p.persistent_peers='1c5aa24f62a1e30badff37f8f673df90e3a08656@104.155.68.141:26656' \
---rpc.laddr='tcp://0.0.0.0:16657' \
+--p2p.laddr=tcp://0.0.0.0:16656 \
+--p2p.persistent_peers=1c5aa24f62a1e30badff37f8f673df90e3a08656@104.155.68.141:26656 \
+--rpc.laddr=tcp://0.0.0.0:16657 \
 --rpc.unsafe=false \
 "
 
@@ -64,7 +64,7 @@ chmod g+r iovns.env
 set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
 
 # create iovns.service
-cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovns.service
+cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' -e 's@__IMAGE_IOVNS_OPTS__@'"$IMAGE_IOVNS_OPTS"'@g' > iovns.service
 [Unit]
 Description=IOV Name Service
 After=network-online.target
@@ -78,7 +78,7 @@ ExecStart=__DIR_IOVNS__/bnsd \
    -home=${DIR_WORK} \
    start \
    -bind=unix://${DIR_WORK}/${SOCK_TM} \
-   $IMAGE_IOVNS_OPTS
+   __IMAGE_IOVNS_OPTS__
 LimitNOFILE=4096
 #Restart=on-failure
 #RestartSec=3
@@ -91,7 +91,7 @@ WantedBy=multi-user.target
 __EOF_IOVNS_SERVICE__
 
 # create iovns-tm.service
-cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovns-tm.service
+cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' -e 's!__IMAGE_TM_OPTS__!'"$IMAGE_TM_OPTS"'!g' > iovns-tm.service
 [Unit]
 Description=Tendermint for IOV Name Service
 After=iovns.service
@@ -104,7 +104,7 @@ EnvironmentFile=/etc/systemd/system/iovns.env
 ExecStart=__DIR_IOVNS__/tendermint node \
    --home=${DIR_WORK} \
    --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
-   $IMAGE_TM_OPTS
+   __IMAGE_TM_OPTS__
 LimitNOFILE=4096
 #Restart=on-failure
 #RestartSec=3

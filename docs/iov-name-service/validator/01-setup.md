@@ -25,7 +25,7 @@ cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
 
-This document assumes that `curl`, `jq`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
+This document assumes that `curl`, `expr`, `grep`, `jq`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
 sudo su # make life easier for the next ~100 lines
@@ -116,6 +116,12 @@ SyslogIdentifier=iovns-tm
 WantedBy=multi-user.target
 __EOF_IOVNS_TM_SERVICE__
 
+# hack around ancient versions of systemd
+expr $(systemctl --version | grep -m 1 -P -o "\d+") '<' 239 && {
+   sed --in-place 's!\$IMAGE_IOVNS_OPTS!'"$IMAGE_IOVNS_OPTS"'!' /etc/systemd/system/iovns.service
+   sed --in-place 's!\$IMAGE_TM_OPTS!\'"$IMAGE_TM_OPTS"'!' /etc/systemd/system/iovns-tm.service
+}
+
 systemctl daemon-reload
 
 # download gitian built binaries
@@ -158,6 +164,8 @@ Using `/etc/systemd/system/iovns.env`, rather than specifying values directly in
   - `IMAGE_IOVNS_OPTS` allows you to customize the anti-spam fee, etc.
 - for Tendermint
   - `IMAGE_TM_OPTS` allows you to customize the configuration of tendermint, including `priv_validator_laddr`, `p2p.pex`, `p2p.persistent_peers`, `p2p.private_peer_ids`, etc.  **In other words, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `priv_validator_laddr` and `p2p.*` options.**  Please refer to the <a href="https://tendermint.com/docs/tendermint-core/configuration.html#options" target="blank_">tendermint documentation for the options</a>.
+
+> Old versions of systemd (CentOs) cannot take advantage of the dynamism of `/etc/systemd/system/iovns.env` like modern versions can.  Consequently, the service files themselves are where `bnsd` (IOV Name Service) and `tendermint` options must be specified.
 
 ## Point the nodes at each other
 

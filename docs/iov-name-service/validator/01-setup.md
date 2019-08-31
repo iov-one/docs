@@ -10,7 +10,7 @@ Before starting to setup your validator, please <a href="https://support.iov.one
 
 ## Familiarize yourself with Gitian
 
-Downloading and running a binary makes most people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust and is the distribution method chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
+Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artefacts and is the distribution method chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
 
 ## Use systemd for running a sentry node or validator
 
@@ -120,7 +120,7 @@ systemctl daemon-reload
 set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
 
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-for i in ${IMAGE_IOVNS} ${IMAGE_TM} ; do wget -qO- $i | tar xvz ; done
+for i in ${IMAGE_IOVNS} ${IMAGE_TM} ; do wget -qO- $i | tar xvz ; done # bnsd is the IOV Name Service daemon
 
 exit # root
 

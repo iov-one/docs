@@ -34,7 +34,7 @@ cd /etc/systemd/system
 
 # create an environment file for the IOV Name Service services
 cat <<__EOF_IOVNS_ENV__ > iovns.env
-# directories
+# directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/boarnet
 
@@ -77,7 +77,7 @@ EnvironmentFile=/etc/systemd/system/iovns.env
 ExecStart=__DIR_IOVNS__/bnsd \
    -home=${DIR_WORK} \
    start \
-   -bind="unix://${DIR_WORK}/${SOCK_TM}" \
+   -bind=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_IOVNS_OPTS
 LimitNOFILE=4096
 #Restart=on-failure
@@ -103,7 +103,7 @@ Group=iov
 EnvironmentFile=/etc/systemd/system/iovns.env
 ExecStart=__DIR_IOVNS__/tendermint node \
    --home=${DIR_WORK} \
-   --proxy_app="unix://${DIR_WORK}/${SOCK_TM}" \
+   --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_TM_OPTS
 LimitNOFILE=4096
 #Restart=on-failure

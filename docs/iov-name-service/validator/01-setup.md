@@ -44,9 +44,9 @@ IMAGE_IOVNS_OPTS="-min_fee '0.5 IOV'"
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.5-iov2/tendermint-0.31.5-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --moniker='moniker' \
---p2p.laddr='tcp://0.0.0.0:16656'
+--p2p.laddr='tcp://0.0.0.0:16656' \
 --p2p.persistent_peers='1c5aa24f62a1e30badff37f8f673df90e3a08656@104.155.68.141:26656' \
---rpc.laddr='tcp://0.0.0.0:16657'
+--rpc.laddr='tcp://0.0.0.0:16657' \
 --rpc.unsafe=false \
 "
 

@@ -61,6 +61,8 @@ __EOF_IOVNS_ENV__
 chgrp iov iovns.env
 chmod g+r iovns.env
 
+set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
+
 # create iovns.service
 cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovns.service
 [Unit]
@@ -117,8 +119,6 @@ __EOF_IOVNS_TM_SERVICE__
 systemctl daemon-reload
 
 # download gitian built binaries
-set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
-
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
 for i in ${IMAGE_IOVNS} ${IMAGE_TM} ; do wget -qO- $i | tar xvz ; done # bnsd is the IOV Name Service daemon
 

@@ -4,7 +4,7 @@ title: Defining the Domain
 sidebar_label: Domain
 ---
 
-The first thing we consider is the data we want to store, which is known as the state. After that, we can focus on the messages, which trigger state transitions. All blockchain state must be stored in our merkle-ized store, which provides validity hashes and proofs. This is exposed to the application as a basic key-value store, which also allows in-order iteration over the keys. On top of this, we have built some tools, such as secondary indexes and sequences, similar to how [Storm adds an ORM](https://github.com/asdine/storm#simple-crud-system) on top of [BoltDB’s key-value store](https://github.com/boltdb/bolt#using-buckets). We have avoided struct tags and tried to type as strictly as we can (without using generics).
+The first thing we consider is the data we want to store, which is known as the state. After that, we can focus on the messages, which trigger state transitions. All blockchain state must be stored in our Merkle-ized store, which provides validity hashes and proofs. This is exposed to the application as a basic key-value store, which also allows in-order iteration over the keys. On top of this, we have built some tools, such as secondary indexes and sequences, similar to how [Storm adds an ORM](https://github.com/asdine/storm#simple-crud-system) on top of [BoltDB’s key-value store](https://github.com/boltdb/bolt#using-buckets). We have avoided struct tags and tried to type as strictly as we can (without using generics).
 
 We are building an Order book application. This topic is quite hot at the time of writing this tutorial.
 

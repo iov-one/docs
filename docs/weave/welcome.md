@@ -6,7 +6,7 @@ sidebar_label: Welcome
 
 ![image](assets/weave-logo.jpg)
 
-[IOV Weave](https://github.com/iov-one/weave) is a framework to quickly build your custom [ABCI application](https://github.com/tendermint/abci) to power a blockchain based on the best-of-class BFT Proof-of-stake [Tendermint consensus engine](https://tendermint.com). It provides much commonly used functionality that can quickly be imported in your custom chain, as well as a simple framework for adding the custom functionality unique to your project.
+[IOV Weave](https://github.com/iov-one/weave) is a framework for quickly building your custom [ABCI application](https://github.com/tendermint/abci) to power a blockchain based on the best-of-class BFT Proof-of-stake [Tendermint consensus engine](https://tendermint.com). It provides much commonly used functionality that can quickly be imported in your custom chain, as well as a simple framework for adding the custom functionality unique to your project.
 
 Some of the highlights of Weave include a Merkle-tree backed data store, a highly configurable extension system that also applies to the core logic such as fees and signature validation. Weave also brings powerful customizations initialised from the genesis file. In addition there is a simple ORM which sits on top of a key-value store that also has proveable secondary indexes. There is a flexible permissioning system to use contracts as first-class actors, “No empty blocks” for quick synchronizing on quiet chains, and the ability to introduce “product fees” for transactions that need to charge more than the basic anti-spam fees. We have also added support for "migrations" that can switch on modules, or enable logic updates, via on-chain feature switch transactions.
 
@@ -30,7 +30,7 @@ Some of the highlights of Weave include a Merkle-tree backed data store, a highl
 
 ### In Progress
 
-Light client proofs, custom token issuance and support for IBC (Inter Blockchain Communication) are currently being designed.
+You can keep an eye out on [IOV Blog](https://medium.com/iov-internet-of-values) to be informed on latest updates.
 
 ## Basic Blockchain Terminology
 
@@ -46,11 +46,11 @@ Ethereum pioneered the second generation of blockchain, where they realized that
 
 ### Next Generation
 
-Since that time, many groups are working on "next generation" solutions that take the learnings of Ethereum and attempt to build a highly scalable and secure blockchain that can run general purpose programs. [Read more](weave/basics/01-blockchain.md#next-generation)
+Since that time, many groups are working on "next generation" solutions that build on the experience of Ethereum and attempt to build a highly scalable and secure blockchain that can run general purpose programs. [Read more](weave/basics/01-blockchain.md#next-generation)
 
-### Eventual finality
+### Probabilistic finality
 
-All Proof-of-Work systems use eventual finality, where the resource cost of creating a block is extremely high. After many blocks are gossiped, the longest chain of blocks has the most work invested in it, and thus is the true chain. [Read more](weave/basics/02-consensus.md#eventual-finality)
+All Proof-of-Work systems use probabilistic finality, where the resource cost of creating a block is extremely high. After many blocks are gossiped, the longest chain of blocks has the most work invested in it, and thus is the true chain. [Read more](weave/basics/02-consensus.md#probabilistic-finality)
 
 ### Immediate finality
 

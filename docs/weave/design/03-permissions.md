@@ -112,7 +112,7 @@ This area needs more research and we can either adopt them verbatim or build a s
 
 **Permission** is the right to perform a specific type of action, like send tokens from an account, or release an escrow. These permissions can be assigned to an individual, but more generally to a "Condition".
 
-**Conditions define what checks a transaction must fulfill to be able to access a given permission. They must be serializable and can be stored along with an object.
+**Conditions** define what checks a transaction must fulfill to be able to access a given permission. They must be serializable and can be stored along with an object.
 
 The simplest example is "who can transfer money out of an account". In many blockchains, they hash the public key and use that to form an "address". Then this address is used as a primary key to an account balance. A user can send tokens to any address, and if we have signed with a public key, which hashes to the "address" of this account, then we can authorize payments out of the account. In this case, the signature is _authentication_, we must have _transfer permission_ on this account, and the _condition_ is the presence of a signature with a public key that hashes to the account's address.
 

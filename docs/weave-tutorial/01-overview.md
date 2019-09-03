@@ -13,4 +13,4 @@ In this tutorial, you will learn how to serialize and model your data structures
 
 Tutorial content is enriched by Pull Request (PR) discussions. If you follow the PR reviews you will develop a clear understanding of how to design your module and implement a blockchain app using Weave, piece by piece. And you can see how the development flow works and what are the issues you should have on your mind while moving forward.
 
-If you have questions about the internal working of Weave, you should check out the [source code]("https://github.com/iov-one/weave), which is very well documented. Please feel free to add to the list of [issues](https://github.com/iov-one/weave/issues) if you think there is something insufficiently documented or that is confusing.
+If you have questions about the internal workings of Weave, you should check out the [source code]("https://github.com/iov-one/weave), which is very well documented. Please feel free to add to the list of [issues](https://github.com/iov-one/weave/issues) if you think there is something insufficiently documented or that is confusing.

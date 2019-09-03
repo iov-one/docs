@@ -8,7 +8,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/cmd/bnsd/x/username/model.go#L73): `username:`
 - `/usernames` -> returns [bnsd/x/username/username.Token](https://github.com/iov-one/weave/blob/v0.20.0/cmd/bnsd/x/username/codec.proto#L7-L26) by `id`(8 bytes) or empty result
-- `/usernames?prefix` -> returns 1 or more `Token` that begin with that prefix
+- `/usernames?prefix` -> returns one or more `Token` that begin with that prefix
 - **Message paths**
   - `username/register_token` -> [bnsd/x/username.RegisterTokenMsg](https://github.com/iov-one/weave/blob/v0.20.0/cmd/bnsd/x/username/codec.proto#L45-L53)
   - `username/transfer_token` -> [bnsd/x/username.TransferTokenMsg](https://github.com/iov-one/weave/blob/v0.20.0/cmd/bnsd/x/username/codec.proto#L55-L65)
@@ -28,7 +28,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/cash/model.go#L18): `cash:`
 - `/wallets` -> returns [x/cash.Set](https://github.com/iov-one/weave/blob/v0.20.0/x/cash/codec.proto#L11-L14) by `id` (8 bytes) or empty result
-- `/wallets?prefix` -> returns 1 or more `Set` that begin with that prefix
+- `/wallets?prefix` -> returns one or more `Set` that begin with that prefix
 - **Message paths**
   - `cash/send` -> [x/cash.SendMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/cash/codec.proto#L16-L30)
   - `update_configuration` -> [x/cash.UpdateConfigurationMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/cash/codec.proto#L48-L53)
@@ -37,7 +37,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/sigs/model.go#L117): `sigs:`
 - `/auth` -> returns [x/sigs.UserData](https://github.com/iov-one/weave/blob/v0.20.0/spec/proto/x/sigs/codec.proto#L13-L17) by `id`(8 bytes) or empty result
-- `/auth?prefix` -> returns 1 or more `UserData` that begin with that prefix
+- `/auth?prefix` -> returns one or more `UserData` that begin with that prefix
 - **Message paths**
   - `sigs/bump_sequence` -> [x/sigs.BumpSequenceMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/sigs/codec.proto#L30-L42)
 
@@ -45,7 +45,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/multisig/model.go#L86): `multisig:`
 - `/contracts` -> returns [x/multisig.Contract](https://github.com/iov-one/weave/blob/v0.20.0/x/multisig/codec.proto#L8-L21) by `id` (8 bytes) or empty result
-- `/contracts?prefix` -> returns 1 or more `Contract` that begin with that prefix
+- `/contracts?prefix` -> returns one or more `Contract` that begin with that prefix
 - **Message paths**
   - `multisig/create` -> [x/multisig.CreateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/multisig/codec.proto#L32-L37)
   - `multisig/update` -> [x/multisig.UpdateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/multisig/codec.proto#L39-L44)
@@ -57,7 +57,7 @@ sidebar_label: Modules
 - `/aswaps/source` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.20.0/x/aswap/codec.proto#L9-L29) by `source`(20 bytes address) as secondary index or empty result
 - `/aswaps/destination` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.20.0/x/aswap/codec.proto#L9-L29) by `destination`(20 bytes address) as secondary index or empty result
 - `/aswaps/preimage_hash` -> returns [x/aswap.Swap](https://github.com/iov-one/weave/blob/v0.20.0/x/aswap/codec.proto#L9-L29) by `preimage_hash`(32 bytes sha256 hash) as secondary index or empty result
-- `/aswaps?prefix` -> returns 1 or more `Swap` that begin with that prefix
+- `/aswaps?prefix` -> returns one or more `Swap` that begin with that prefix
 - **Message paths**
   - `aswap/create` -> [x/aswap.CreateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/aswap/codec.proto#L33-L46)
   - `aswap/release` -> [x/aswap.ReleaseMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/aswap/codec.proto#L48-L58)
@@ -70,7 +70,7 @@ sidebar_label: Modules
 - `/escrows/source` -> returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/v0.20.0/x/escrow/codec.proto#L9-L28) by `source`(20 bytes address) as secondary index or empty result
 - `/escrows/destination` -> returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/v0.20.0/x/escrow/codec.proto#L9-L28) by `destination`(20 bytes address) as secondary index or empty result
 - `/escrows/arbiter` -> returns [x/escrow.Escrow](https://github.com/iov-one/weave/blob/v0.20.0/x/escrow/codec.proto#L9-L28) by `arbiter` (20 bytes address) as secondary index
-- `/escrows?prefix` -> returns 1 or more `Escrow` that begin with that prefix
+- `/escrows?prefix` -> returns one or more `Escrow` that begin with that prefix
 - **Message paths**
   - `escrow/create` -> [x/escrow.CreateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/escrow/codec.proto#L31-L46)
 - `escrow/release` -> [x/escrow.ReleaseMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/escrow/codec.proto#L48-L56)
@@ -81,7 +81,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/paychan/model.go#L67): `paychan:`
 - `/paychans` -> returns [x/paychan.PaymentChannel](https://github.com/iov-one/weave/blob/v0.20.0/x/paychan/codec.proto#L10-L36) by `id`(8 bytes) or empty result
-- `/paychans?prefix` -> returns 1 or more `PaymentChannel` that begin with that prefix
+- `/paychans?prefix` -> returns one or more `PaymentChannel` that begin with that prefix
 - **Message paths**
   - `paychan/create` -> [x/paychan.CreateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/paychan/codec.proto#L40-L59)
   - `paychan/transfer` -> [x/paychan.TransferMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/paychan/codec.proto#L73-L80)
@@ -91,7 +91,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/distribution/model.go#L110): `revenue:`
 - `/revenues` -> returns [x/distribution.Revenue](https://github.com/iov-one/weave/blob/v0.20.0/x/distribution/codec.proto#L8-L20) by `id`(8 bytes) or empty result
-- `/revenues?prefix` -> returns 1 or more `Revenue` that begin with that prefix
+- `/revenues?prefix` -> returns one or more `Revenue` that begin with that prefix
 - **Message paths**
   - `distribution/create` -> [x/distribution.CreateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/distribution/codec.proto#L38-L48)
   - `distribution/distribute` -> [x/distribution.DistributeMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/distribution/codec.proto#L50-L58)
@@ -101,7 +101,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/currency/model.go#L55): `tokeninfo:`
 - `/tokens` -> returns [x/currency.TokenInfo](https://github.com/iov-one/weave/blob/v0.20.0/x/currency/codec.proto#L7-L12) by `id`(8 bytes) or empty result
-- `/tokens?prefix` -> returns 1 or more `TokenInfo` that begin with that prefix
+- `/tokens?prefix` -> returns one or more `TokenInfo` that begin with that prefix
 - **Message paths**
   - `currency/create` -> [x/currency.CreateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/currency/codec.proto#L14-L21)
 
@@ -109,7 +109,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/validators/model.go#L16): `uvalid:`
 - `/validators` -> returns [x/validators.Accounts](https://github.com/iov-one/weave/blob/v0.20.0/x/validators/codec.proto#L14-L18) by `id`(8 bytes) or empty result
-- `/validators?prefix` -> returns 1 or more `Accounts` that begin with that prefix
+- `/validators?prefix` -> returns one or more `Accounts` that begin with that prefix
 - **Message paths**
   - `validators/apply_diff` -> [x/validators.ApplyDiffMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/validators/codec.proto#L8-L13)
 
@@ -117,9 +117,9 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/msgfee/model.go#L48): `msgfee:`
 - `/msgfee` -> returns [x/msgfee.MsgFee](https://github.com/iov-one/weave/blob/v0.20.0/x/msgfee/codec.proto#L9-L16) by `id`(8 bytes) or empty result
-- `/msgfee?prefix` -> returns 1 or more `MsgFee` that begin with that prefix
+- `/msgfee?prefix` -> returns one or more `MsgFee` that begin with that prefix
 - `/minfee` -> returns [x/msgfee.MsgFee](https://github.com/iov-one/weave/blob/v0.20.0/x/msgfee/codec.proto#L9-L16) by `id`(8 bytes) or empty result
-- `/minfee?prefix` -> returns 1 or more `MsgFee` that begin with that prefix
+- `/minfee?prefix` -> returns one or more `MsgFee` that begin with that prefix
 
 ## Governance
 
@@ -127,7 +127,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/bucket.go#L17): `electorate:`
 - `/electorate` -> returns [x/gov.Electorate](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L9-L24) by `id`(8 bytes) or empty result
-- `/electorate?prefix` -> returns 1 or more `Electorate` that begin with that prefix
+- `/electorate?prefix` -> returns one or more `Electorate` that begin with that prefix
 - **Message paths**
   - `gov/update_electorate` -> [x/gov.UpdateElectorateMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L249-L257)
 
@@ -136,13 +136,13 @@ sidebar_label: Modules
 - Elector is a multikey index of electorate
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/bucket.go#L18): `elector:`
 - `/electorate/elector` -> returns [x/gov.Elector](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L24-L32) by `elector`(20 bytes address) or empty result
-- `/electorate/elector?prefix` -> returns 1 or more `Elector` that begin with that prefix
+- `/electorate/elector?prefix` -> returns one or more `Elector` that begin with that prefix
 
 ### Election rules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/bucket.go#L51): `electnrule:`
 - `/electionRule` -> returns [x/gov.ElectionRule](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L33-L63) by `id`(8 bytes) or empty result
-- `/electionRules?prefix` -> returns 1 or more `ElectionRule` that begin with that prefix
+- `/electionRules?prefix` -> returns one or more `ElectionRule` that begin with that prefix
 - **Message paths**
   - `gov/update_election_rule` -> [x/gov.UpdateElectionRuleMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L258-L279)
   - `gov/create_text_resolution` -> [x/gov.CreateTextResolutionMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L241-L247)
@@ -151,7 +151,7 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/bucket.go#L77): `proposal:`
 - `/proposal` -> returns [x/gov.Proposal](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L78-L116) by `id`(8 bytes) or empty result
-- `/proposal?prefix` -> returns 1 or more `Proposal` that begin with that prefix
+- `/proposal?prefix` -> returns one or more `Proposal` that begin with that prefix
 - **Message paths**
   - `gov/create_proposal` -> [x/gov.CreateProposalMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L185-L205)
   - `gov/delete_proposal` -> [x/gov.DeleteProposalMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L206-L211)
@@ -160,11 +160,11 @@ sidebar_label: Modules
 
 - [key prefix](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/bucket.go#L186): `vote:`
 - `/vote` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L169-L179) by `id`(8 bytes) or empty result
-- `/vote?prefix` -> returns 1 or more `Vote` that begin with that prefix
+- `/vote?prefix` -> returns one or more `Vote` that begin with that prefix
 - `/vote/proposal` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L169-L179) by `id`(8 bytes) or empty result
-- `/vote/proposal?prefix` -> returns 1 or more `Vote` that begin with that prefix
+- `/vote/proposal?prefix` -> returns one or more `Vote` that begin with that prefix
   -- `/vote/elector` -> returns [x/gov.Vote](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L169-L179) by `id`(8 bytes) or empty result
-- `/vote/elector?prefix` -> returns 1 or more `Vote` that begin with that prefix
+- `/vote/elector?prefix` -> returns one or more `Vote` that begin with that prefix
 - **Message paths**
   - `gov/vote` -> [x/gov.VoteMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L221-L231)
   - `gov/tally` -> [x/gov.TallyMsg](https://github.com/iov-one/weave/blob/v0.20.0/x/gov/codec.proto#L233-L239)

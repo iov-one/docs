@@ -6,11 +6,11 @@ sidebar_label: Messages
 
 > [PR#2](https://github.com/iov-one/tutorial/pull/2): _Create msgs_
 
-Messages are requests for a change in the state, the action part of a transaction. They also need to be persisted (to be sent over the wire and stored on the blockchain), and must also be validated. They later are passed into [Handlers](https://godoc.org/github.com/iov-one/weave#Handler) to be processed and effect change in the blockchain state.
+Messages are requests for a change in the state, the action part of a transaction. They also need to be persisted (to be sent over the wire and stored on the blockchain), and must also be validated. They are later passed into [Handlers](https://godoc.org/github.com/iov-one/weave#Handler) to be processed and effect change in the blockchain state.
 
 ## Messages vs. Transactions
 
-A message is a request to make change and this is the basic element of a blockchain. A transaction contains a message along with metadata and authorization information, such as fees, signatures, nonces, and time-to-live.
+As we've seen before, a message is a request to make a change; it's the basic element of a blockchain. A transaction is that which contains a message along with metadata and authorization information, such as fees, signatures, nonces, and time-to-live.
 
 A [Transaction](https://godoc.org/github.com/iov-one/weave#Tx) is fundamentally defined as anything persistent that holds a message:
 
@@ -26,13 +26,13 @@ And every application can extend Tx with additional functionality, such as [Sign
 
 A [Message](https://godoc.org/github.com/iov-one/weave#Msg) is also persistent and can be pretty much anything that an extension defines. The only necessary feature of a Message is `Path() string` method which provides the required route to the Handler.
 
-When we define a concrete transaction type for one application, we define it in protobuf with a set of possible messages that it can contain. Every application can add optional field to the transaction and allow a different set of messages, and the Handlers and Decorators work orthogonally to this, regardless of the **concrete** Transaction type.
+When we define a concrete transaction type for one application, we define it in protobuf with a set of possible messages that it can contain. Every application can add optional fields to the transaction and allow a different set of messages, and the Handlers and Decorators work orthogonally to this, regardless of the **concrete** Transaction type.
 
 ## Defining Messages
 
-Messages are similar to the `POST`, `DELETE`, `PUT` endpoints in a typical REST API. They are the way to effect a change in the system. Ignoring the issue of authentication and rate limitation, which is handled by the Decorators / Middleware, when we design Messages, we focus on all possible state transitions and the information they need to proceed.
+Messages are similar to the `POST`, `DELETE`, `PUT` endpoints in a typical REST API. They are the way to effect a change in the system. Ignoring the issue of authentication and rate limitation, which is handled by the Decorators / Middleware, when we design Messages, we focus on all possible state transitions and the information they need in order to proceed.
 
-In the Orderbook example, we can imagine:
+In the Order book example, we can imagine:
 
 - Create market
 - Create order book
@@ -41,7 +41,7 @@ In the Orderbook example, we can imagine:
 ## Dive into Code
 
 First create your `msg.go` file. This is where the magic will happen.
-Then create an __init()__ function and register to migration schema:
+Then create an **init()** function and register to migration schema:
 
 ```go
 func init() {
@@ -50,12 +50,12 @@ func init() {
 }
 ```
 
-Define path that will be used for routing messages to handler:
+Define path that will be used for routing messages to Handler:
 
 ```go
 // Path implementes weave.Msg interface.
 func (CreateOrderBookMsg) Path() string {
-    return "orderbook/create_orderbook"
+    return "order book/create_orderbook"
 }
 ```
 
@@ -67,7 +67,7 @@ var _ weave.Msg = (*CreateOrderBookMsg)(nil)
 
 ## Validation
 
-While validation of data models is much more like SQL constraints: “**max length 20**”, “**not null**”, “**constaint foo > 3**”, validation of messages is validating potentially malicious data coming in from external sources and should be validated more thoroughly. One may want to use regexp to avoid control characters or null bytes in a “string” input. Maybe restrict it to alphanumeric or ascii characters, strip out html, or allow full utf-8. Addresses must be checked to be the valid length. Amount being sent to be positive (else I send you -5 ETH and we have a **TakeMsg**, instead of **SendMsg**).
+While validation of data models is much more like SQL constraints: “**max length 20**”, “**not null**”, “**constaint foo > 3**”, validation of messages is validating potentially malicious data coming in from external sources and should be validated more thoroughly. One may want to use regexp to avoid control characters or null bytes in a “string” input. Maybe restrict it to alphanumeric or ASCII characters, strip out HTML, or allow full UTF-8. Addresses must be checked to be the valid length. Amount being sent to be positive (else I send you -5 ETH and we have a **TakeMsg**, instead of **SendMsg**).
 
 Validate method on a message must only provide a sanity check for the data it represents and must not rely on any external state. Message can only ensure the data format and hardcoded logic. It cannot validate business logic. Business logic is validated in a **handler**.
 
@@ -111,4 +111,4 @@ func validateID(id []byte) error {
 }
 ```
 
-You must have noticed we even validate if `ID`'s lenght is not 0 and equal to 8 and tickers are actually string tickers. **Remember** the more validation the more solid your application is. If you **constrain** possible inputs, you can write **less** validation in the business logic.
+You must have noticed we even validate if `ID`'s length is not 0 and equal to 8 and tickers are actually string tickers. **Remember** the more validation, the more solid your application is. If you **constrain** possible inputs, you can write **less** validation in the business logic.

@@ -1,40 +1,40 @@
 ---
-id: extension 
-title: Extension 
-sidebar_label: Extension 
+id: extension
+title: Extension
+sidebar_label: Extension
 ---
 
-[IOV weave](https://github.com/iov-one/weave) doesn't just produce a `mycoind` executable, but was designed from the group up to be extremely flexible for many common use cases. One can easily extend the functionality of `mycoind` by adding more *extensions* on top of it, which we do when building the full-fledged [bnsd](https://github.com/iov-one/weave/tree/master/cmd/bnsd/) application, which will form the basis of the [iov](https://iov.one) blockchain. You can also chose not to import any of the modules of mycoind and just use the building blocks to build an entirely different system (like utxo chain).
+[IOV Weave](https://github.com/iov-one/weave) doesn't just produce a `mycoind` executable, but was designed from the ground up to be extremely flexible for many common use cases. One can easily extend the functionality of `mycoind` by adding more *extensions* on top of it, which we do when building the full-fledged [bnsd](https://github.com/iov-one/weave/tree/master/cmd/bnsd/) application, which will form the basis of the [iov](https://iov.one) blockchain. You can also chose not to import any of the modules of mycoind and just use the building blocks to build an entirely different system (like utxo chain).
 
 Note that even pieces as fundamental as [signature validation](https://github.com/iov-one/weave/tree/master/x/sigs) or [isolating failed transactions](https://github.com/iov-one/weave/blob/master/x/utils/savepoint.go) are implemented as importable modules and wired up together when you construct the application.
 
 ## Extension Functionality
 
-Most code to extend the basic framework is packaged as *extensions* and stored in packages under the x directory. One can ignore all code under x and still build a complete weave-compatible application, these are just some pieces that many chains would like to reuse. You can import these extensions, or write you own, with the same power and functionality.
+Most code to extend the basic framework is packaged as *extensions* and stored in packages under the x directory. One can ignore all code under x and still build a complete Weave-compatible application, these are just some pieces that many chains would like to reuse. You can import these extensions, or write you own, with the same power and functionality.
 
-When you write a weave-based application (covered in the next section), you will likely want to create a few new extensions to add new functionality tied into why your chain is unique. What types of behavior can you customize?
+When you write a Weave-based application (covered in the next section), you will likely want to create a few new extensions to add new functionality tied into why your chain is unique. What types of behavior can you customize?
 
 - Handler - process transactions, maintain local state, control state transitions. Sending coins is an example of a Handler
 - Decorator (aka Middleware) - do some pre-processing and update the context with information to influence eventual Handler. Signature validation is an example of a Decorator.
-- Initializer - Provide a function to initialize the data store based on a section of the app\_state in the genesis file
+- Initializer - Provide a function to initialize the data store based on a section of the app_state in the genesis file
 
 \* Handle ABCI calls - `app.BaseApp` implements `abci.Application` and you can wrap it with a pure ABCI Middleware to do things like record timing information on the `Commit` or `Info` calls, without forking the code.
 
 ## App Framework
 
-If `weave` allows you to customize everything, what does it provide?
+If `Weave` allows you to customize everything, what does it provide?
 
 ### ORM
 
-The `orm` package wraps up the merkle tree, provable kv-store provided by [tendermint iavl](https://github.com/tendermint/iavl) and adds convenient features on top, like `CacheWrap` to isolate read/writes of a transaction before deciding to Write or Discard, and provides type-safe data storage and secondary indexes if you write to an `orm.Bucket`. In fact, even if you want to build your own framework from scratch, take a look about using `orm` and `iavl` together to provide storage
+The `orm` package wraps up the Merkle tree, provable kv-store provided by [tendermint iavl](https://github.com/tendermint/iavl) and adds convenient features on top, like `CacheWrap` to isolate read/writes of a transaction before deciding to Write or Discard, and provides type-safe data storage and secondary indexes if you write to an `orm.Bucket`. In fact, even if you want to build your own framework from scratch, take a look about using `orm` and `iavl` together to provide storage.
 
 ### ABCI Adapter
 
-The `app` package builds on top of the `orm` to provide default implementations for many of the abci calls, and parses the other ones to allow us to handle requests easier with internal functions. One one hand, it adapts the format, so we can do things like locally return changes to the validator set during `DeliverTx` (when we calculate it), but return the final change on `EndBlock` (when tendermint expects the response). It also handles routing transactions and queries to various modules rather than one monolith. This package demonstrates where most of the main interfaces are used for.
+The `app` package builds on top of the `orm` to provide default implementations for many of the abci calls, and parses the other ones to allow us to handle requests easier with internal functions. One one hand, it adapts the format, so we can do things like locally return changes to the validator set during `DeliverTx` (when we calculate it), but return the final change on `EndBlock` (when Tendermint expects the response). It also handles routing transactions and queries to various modules rather than one monolith. This package demonstrates where most of the main interfaces are used for.
 
 ### Handlers and Decorators
 
-A *Handler* defines what actions to perform in response to a transaction in either CheckTx or DeliverTx. The `app` package also allows us to `ChainDecorators` and register multiple `Handlers` on a `Router` to separate processing logic based on the contents of the transaction.
+A _Handler_ defines what actions to perform in response to a transaction in either CheckTx or DeliverTx. The `app` package also allows us to `ChainDecorators` and register multiple `Handlers` on a `Router` to separate processing logic based on the contents of the transaction.
 
 ### Error Handling
 
@@ -42,4 +42,4 @@ The `errors` package provides some nice helpers to produce error return values t
 
 ### Serialization Standard
 
-Weave defines simple [Marshaller](https://github.com/iov-one/weave/blob/master/tx.go#L28-L35) and [Persistent](https://github.com/iov-one/weave/blob/master/tx.go#L37-L48) interface standards. These interfaces are automatically implemented by any code autogenerated by protoc from protobuf files. This allows us to easily define serialization in an efficient and extremely portable manner (protobuf has support in every major language and platform). However, the interfaces don't force protobuf and you can define these two methods on any object to provide a custom serialization format as desired. This should allow interoperability with the Application and Handler code with any serialization library you wish to use.
+Weave defines simple [Marshaller](https://github.com/iov-one/weave/blob/master/tx.go#L28-L35) and [Persistent](https://github.com/iov-one/weave/blob/master/tx.go#L37-L48) interface standards. These interfaces are automatically implemented by any code autogenerated by protoc from protobuf files. This allows us to define serialization easily in an efficient and extremely portable manner (protobuf has support in every major language and platform). However, the interfaces don't force protobuf and you can define these two methods on any object to provide a custom serialization format as desired. This should allow interoperability with the Application and Handler code with any serialization library you wish to use.

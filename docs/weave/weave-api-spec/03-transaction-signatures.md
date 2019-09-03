@@ -13,8 +13,6 @@ To execute desired actions and state changes on **Weave-based** blockchains, eve
 Weave uses the `ed25519` signing algorithm to achieve this important feature.
 After following the steps in [Weave transactions](weave/weave-api-spec/02-transaction.md), created **Tx** must be signed. But first Weave _conditions_ role in signing must be explained.
 
-[//]: # 'TODO move readthedocs documentation to this project and give references here'
-
 Conditions format defined as `(extension, type, data)` in general.
 
 Condition with **ed25519** public key signature could be represented as `("sigs", "ed25519", <address>)`.

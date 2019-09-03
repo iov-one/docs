@@ -62,8 +62,7 @@ func (a Authenticate) GetConditions(ctx weave.Context) []weave.Condition {
 }
 ```
 
-And finally, when we create a module that needs to read authentication info, we can pass in the handler, so it can use check authentication info from
-this middleware.
+And finally, when we create a module that needs to read authentication info, we can pass in the handler, so it can use check authentication info from this middleware.
 
 ```go
 var _ weave.Handler = SendHandler{}

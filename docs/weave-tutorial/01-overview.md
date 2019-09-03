@@ -4,13 +4,13 @@ title: Tutorial Overview
 sidebar_label: Overview
 ---
 
-First of all, to understand weave design philosophy and for the sake of programming well-designed software, I advise you to read this fine-grained article:
+First of all, to understand the design philosophy behind Weave and in the interest of good software design, a recommended read is:
 [Things I Learnt The Hard Way (in 30 Years of Software Development)](https://blog.juliobiason.net/thoughts/things-i-learnt-the-hard-way/)
 
-To make the theory more tangible, we will build a sample application alongside this tutorial, to demonstrate dealing with real-world constraints. The application is located in the [tutorial](https://github.com/iov-one/tutorial/ "Tutorial Repository") repository, to show how to create a self-contained app.
+To make the theory more tangible, alongside this tutorial we will build a sample application, to demonstrate dealing with real-world constraints. The application, which is located in the [tutorial](https://github.com/iov-one/tutorial/ "Tutorial Repository") repository, shows how to create a self-contained app.
 
-In this tutorial, you will learn how to serialize and model your data structures, define messages and handlers, expose queries, and read initial configuration from the genesis file. You will be able to build a new extension and tie it together with other extensions into a complete blockchain application.
+In this tutorial, you will learn how to serialize and model your data structures, define messages and handlers, expose queries, and read initial configuration from the genesis file. In the end, you will be able to build a new extension and tie it together with other extensions into a complete blockchain application.
 
-Tutorial content is richened with Pull Request discussions. If you follow the PR reviews you can have a clear understanding of how to design your module and implement a blockchain app using weave piece by piece. And you can see how the development flow works and what are the issues you should have on your mind while moving forward.
+Tutorial content is enriched by Pull Request (PR) discussions. If you follow the PR reviews you will develop a clear understanding of how to design your module and implement a blockchain app using Weave, piece by piece. And you can see how the development flow works and what are the issues you should have on your mind while moving forward.
 
-Whenever you have questions in your mind about the internals check out [Weave]("https://github.com/iov-one/weave) source code. It is very well documented. Please feel free to add [issues](https://github.com/iov-one/weave/issues) if you think there is something under-documented or confusing.
+If you have questions about the internal working of Weave, you should check out the [source code]("https://github.com/iov-one/weave), which is very well documented. Please feel free to add to the list of [issues](https://github.com/iov-one/weave/issues) if you think there is something insufficiently documented or that is confusing.

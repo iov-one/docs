@@ -1,10 +1,10 @@
 ---
-id: queries 
-title: Queries 
-sidebar_label: Queries 
+id: queries
+title: Queries
+sidebar_label: Queries
 ---
 
-Once transactions are executed on the blockchain, we would like to be able to query the new state of the system. The ABCI interface and tendermint rpc expose a standard query functionality for key-value pairs. Weave provides more advanced queries, such as over ranges of data, prefix searches, and queries on secondary indexes. To do so, we also need to provide a specification for the query request and response format that goes beyond raw bytes.
+Once transactions are executed on the blockchain, we would like to be able to query the new state of the system. The ABCI interface and Tendermint rpc expose a standard query functionality for key-value pairs. Weave provides more advanced queries, such as over ranges of data, prefix searches, and queries on secondary indexes. To do so, we also need to provide a specification for the query request and response format that goes beyond raw bytes.
 
 ## ABCI Format
 
@@ -17,9 +17,9 @@ type RequestQuery struct {
 }
 ```
 
-The request uses `Height` to select which block height to query and `Prove` to determine if we should also return merkle proofs for the response. Note that "block height to query" is shorthand for "query the state produced after executing all transactions included in all blocks up to *and including* `Height`". For various reasons internal to tendermint, the root hash of this state is included as `AppHash` in the block at `Height+1`.
+The request uses `Height` to select which block height to query and `Prove` to determine if we should also return Merkle proofs for the response. Note that "block height to query" is shorthand for "query the state produced after executing all transactions included in all blocks up to _and including_ `Height`". For various reasons internal to Tendermint, the root hash of this state is included as `AppHash` in the block at `Height+1`.
 
-The actual data that we wish to read is declared in `Path` and `Data`. `Path` defines what kind of query this is, much like the path in an http get request. `Data` is an arbitrary argument. In the typical case, `Path = /key` and `Data = <key bytes>` to directly query a given key in the merkle tree. However, if you wish to query the account balance, you will have to know how we define the account keys internally.
+The actual data that we wish to read is declared in `Path` and `Data`. `Path` defines what kind of query this is, much like the path in an http get request. `Data` is an arbitrary argument. In the typical case, `Path = /key` and `Data = <key bytes>` to query a given key directly in the Merkle tree. However, if you wish to query the account balance, you will have to know how we define the account keys internally.
 
 ```go
 // tendermint v0.31.5
@@ -36,13 +36,13 @@ type ResponseQuery struct {
 }
 ```
 
-That's a lot of fields... let's skip through them. `Code` is set to non-zero only when there is an error in processing the query. `Log` and `Info` are human readable strings for debugging or extra info. `Index` *may* be the location of this key in the merkle tree, but that is not well defined.
+That's a lot of fields... let's skip through them. `Code` is set to non-zero only when there is an error in processing the query. `Log` and `Info` are human-readable strings for debugging or extra info. `Index` _may_ be the location of this key in the Merkle tree, but that is not well defined.
 
-Now to the important ones. `Height`, as above, the the block height of the tree we queried and is always set, even if the query had 0 to request "most recent". `Key` is the key of the merkle tree we got, `Value` is the value stored at that key (may be empty if there is no value), and `Proof` is a merkle proof in an undefined format.
+Now to the important ones. `Height`, as above, the the block height of the tree we queried and is always set, even if the query had 0 to request "most recent". `Key` is the key of the Merkle tree we got, `Value` is the value stored at that key (may be empty if there is no value), and `Proof` is a Merkle proof in an undefined format.
 
 ## Weave Request Types
 
-As we see above, the request format doesn't actually define what possible types are for either `Path` or `Data` and leaves it up to the application. This is good for a generic query interface, but to allow better code reuse between weave extensions, as well as ease of development of weave clients, we define a standard here for all weave modules.
+As we see above, the request format doesn't actually define what possible types are for either `Path` or `Data` and leaves it up to the application. This is good for a generic query interface, but to allow better code reuse between Weave extensions, as well as ease of development of Weave clients, we define a standard here for all Weave modules.
 
 ### Constructing Paths
 
@@ -58,7 +58,7 @@ By default, we expect `Data` to include a raw key to match in that context. Howe
 
 ### Examples
 
-[namecoin.NewWalletBucket](https://github.com/iov-one/weave/blob/master/x/namecoin/wallet.go#L107-L113) adds and a `name` field to the account, along with a secondary index. It is [registered under /wallets](https://github.com/iov-one/weave/blob/master/x/namecoin/handler.go#L52-L57) in the QueryHandler.
+[namecoin.NewWalletBucket](https://github.com/iov-one/weave/blob/master/x/namecoin/wallet.go#L107-L113) adds a `name` field to the account, along with a secondary index. It is [registered under /wallets](https://github.com/iov-one/weave/blob/master/x/namecoin/handler.go#L52-L57) in the QueryHandler.
 
 Path: `/`, Data: `0123456789` (hex):  
 db.Get(`0123456789`)
@@ -74,7 +74,7 @@ db.Iterator(`0123456789`, `012345678A`)
 
 ### Weave Response Types
 
-Some queries return single responses, others multiple. Rather that some complex switch statement in either the client or the application, the simplest approach is to learn from other databases, and always return a `ResultSet`. A higher-level client wrapper can provide nicer interfaces, but this provides a consistent format they can build on.
+Some queries return single responses, others multiple. Rather than build a complex switch statement in either the client or the application, the simplest approach is to learn from other databases, and always return a `ResultSet`. A higher-level client wrapper can provide nicer interfaces, but this provides a consistent format they can build on.
 
 - `Key`: {key\*}
 - `Value`: {value\*}
@@ -95,4 +95,4 @@ These then can be registered with a `Router` that also implements QueryHandler, 
 
 ## Merkle Proofs
 
-**Proofs are not yet implemented.** This is both due to prioritization of other features, and also as we wish to provide a solid proof format that is useful for IBC as well, and watching cosmos-sdk development so we can maintain compatibility. As this format is recently stabilized inside the cosmos hub, implementation in weave should not be too far off. If want you can follow up the issue on [github](https://github.com/iov-one/weave/issues/5 "Define proofs for query #5")
+**Proofs are not yet implemented.** This is both due to prioritization of other features, and also as we wish to provide a solid proof format that is useful for IBC as well, and watching Cosmos-SDK development so we can maintain compatibility. As this format is recently stabilized inside the Cosmos hub, implementation in Weave should not be too far off. If want you can follow up the issue on [github](https://github.com/iov-one/weave/issues/5 "Define proofs for query #5").

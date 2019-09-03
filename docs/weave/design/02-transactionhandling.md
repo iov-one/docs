@@ -1,7 +1,7 @@
 ---
-id: transaction-flow 
-title: Flow of Transactions 
-sidebar_label: Flow of Transactions 
+id: transaction-flow
+title: Flow of Transactions
+sidebar_label: Flow of Transactions
 ---
 
 Weave implements the complexity of the ABCI interface for you and only exposes a few key points for you to add your custom logic. We provide you a [default merklized key value store](https://github.com/iov-one/weave/blob/master/store/iavl/adapter.go) to store all the data, which exposes a simple interface, similar to LevelDB.
@@ -13,7 +13,7 @@ When you create a [new BaseApp](https://github.com/iov-one/weave/blob/master/app
 - a handler that processes `CheckTx` and `DeliverTx` (like `http.Handler`)
 - and optionally a `Ticker` that is called every `BeginBlock` if you have repeated tasks.
 
-The merkelized data store automatically supports `Queries` (with proofs), and the initial handshake to sync with tendermint on startup.
+The merkelized data store automatically supports `Queries` (with proofs), and the initial handshake to sync with Tendermint on startup.
 
 ## Transactions
 
@@ -23,7 +23,7 @@ Once the transaction has been processed by the middleware stack, we can call `Ge
 
 ## Handler
 
-As mentioned above, we pass every `Tx` through a middleware stack to perform standard processing and checks on all transactions. However, only the `Tx` is validated, we need to pass the underlying message to the specific code to handle this action.
+As mentioned above, we pass every `Tx` through a middleware stack to perform standard processing and check on all transactions. However, only the `Tx` is validated, we need to pass the underlying message to the specific code to handle this action.
 
 We do so by taking inspiration from standard http Routers. Every message object must implement `Path()` , which returns a string used by the `Router` in order to find the proper `Handler`. The `Handler` is then responsible for processing any message type that is registered with it.
 
@@ -44,21 +44,21 @@ In turn, Deliver actually executes the expected actions based on the information
 
 This is provided to handle delayed tasks. For example, at height 100, you can trigger a task "send 100 coins to Bob at height 200 if there is no proof of lying before then".
 
-This is called at the beginning of every block, before executing the transactions. It must be deterministic and only triggered by actions identically on all nodes, meaning triggered by querying for certain conditions in the merkle store. We plan to provide some utilities to help store and execute these delayed tasks.
+This is called at the beginning of every block, before executing the transactions. It must be deterministic and only triggered by actions identically on all nodes, meaning triggered by querying for certain conditions in the Merkle store. We plan to provide some utilities to help store and execute these delayed tasks.
 
-*Note*: While the basic hooks are implemented to call such a ticker, this functionality is not in use in any of the apps in the weave repository, largely due to concerns of extra complexity and difficulty to prove correctness of extensions.
+_Note_: While the basic hooks are implemented to call such a ticker, this functionality is not in use in any of the apps in the Weave repository. This is due to concerns of complexity and difficulty to prove the correctness of the extensions
 
 ## Merkle Store
 
-A key value store with [merkle proofs](https://en.wikipedia.org/wiki/Merkle_tree).
+A key value store with [Merkle proofs](https://en.wikipedia.org/wiki/Merkle_tree).
 
-The two most widely known examples in go are:
+The two most widely known examples in Go are:
 
 - [Tendermint IAVL](https://github.com/tendermint/iavl)
 - [Ethereum Patricia Trie](https://github.com/ethereum/wiki/wiki/Patricia-Tree)
 
 We require an interface similar to LevelDB, with Get/Set/Delete, as well as an Iterator over a range of keys. In the future, we aim to build wrappers on top of this basic interface to provide functionality more akin to Redis or even some sort of secondary indexes like a RDBMS.
 
-The reason we cannot use a more powerful engine as a backing is the need for merkle proofs. We use these for two reasons. The first is that after executing a block of transactions, all nodes check the merkle root of their new state and come to consensus on that. If there is no consensus on the new state, the blockchain will halt until this is resolved (either many malicous nodes, or a very buggy code). Merkle roots, allow a quick, incremental update of a hash of a very large data store.
+The reason we cannot use a more powerful database as a store is the need for Merkle proofs. We use these for two reasons. The first is that after executing a block of transactions, all nodes check the Merkle root of their new state and come to consensus on that. If there is no consensus on the new state, the blockchain will halt until this is resolved (either many malicous nodes, or a very buggy code). Merkle roots, allow a quick, incremental update of a hash of a very large data store.
 
-The other reason we use merkle proofs, is to be able to prove the internal state to light clients, which may be able to follow and prove all the headers, but unable or unwilling to execute every transaction. If a node gives me a value for a given key, that data is only as trustable as the node itself. However, if the node can provide a merkle proof from that key-value pair to a root hash, and that root hash is included in a trusted header, signed by the super majority of the validators, then the response is a trustable as the chain itself, regardless of whether the node we communicate is trustworthy or not.
+The other reason we use Merkle proofs, is to be able to prove the internal state to light clients, which may be able to follow and prove all the headers, but unable or unwilling to execute every transaction. If a node gives me a value for a given key, that data is only as trustable as the node itself. However, if the node can provide a Merkle proof from that key-value pair to a root hash, and that root hash is included in a trusted header, signed by the super majority of the validators, then the response is a trustable as the chain itself, regardless of whether the node we communicate is trustworthy or not.

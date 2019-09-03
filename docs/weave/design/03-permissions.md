@@ -1,18 +1,18 @@
 ---
 id: permissions
-title: Permissions 
-sidebar_label: Permissions 
+title: Permissions
+sidebar_label: Permissions
 ---
 
-When controlling the execution of a transaction, there are two things to consider, authentication and authorization. The first, authentication, deals with verifying who is requesting the executions. The second, authorization, deals with the access controls on the action, which can refer to the authentication information.
+When controlling the execution of a transaction, there are two things to consider, namely authentication and authorization. Authentication verifies who is requesting the executions. Authorization controls access to a given action and can be linked to the authentication information
 
 ## Authentication
 
 Authentication information is added to the context as part of the middleware stack, and used to verify the caller. The simplest example is signature verification. We check if the signature validates against a known public key, and after checking nonces for replay protection, can authenticate this public key for this transaction.
 
-However, Ethereum devs are used to the concept of authority not just being tied to a signature, but potentially a smart contract. We will allow something similar, but we don't need to be as general, as we also don't have the same general "anyone can call anything" architecture, nor do we run untrusted code.
+It is worth noting that Ethereum extends to concept of authority beyond signatures to smart contracts. Weave by contrast does not run untrusted code, not has the "anyone can call anything" concept built in.
 
-We use multiple middlewares to check for various conditions on the transaction and add the authentication information to the `Context`. The basic example, `x/sigs.Middleware`, checks if the Tx has signatures, and if so validates them.
+There are multiple middleware pieces that check for various conditions associated with transactions and add the authentication to the `Context`. The basic example, `x/sigs.Middleware`, checks if the Tx has signatures, and if so validates them.
 
 ```go
 // SignedTx represents a transaction that contains signatures,
@@ -101,35 +101,35 @@ func ChainAuth(impls ...Authenticator) MultiAuth {
 
 ### Crypto-Conditions
 
-I am not the first one to try to build a generalized authentication system for blockchain technology. Probably the most developed / standardized proposal is Crypto-Conditions, which exists as an [IETF Draft](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-7) as well as [working implementations in multiple languages](https://github.com/rfcs/crypto-conditions).
+We are not the first one to try to build a generalized authentication system for blockchain technology. Probably the most developed / standardized proposal is Crypto-Conditions, which exists as an [IETF Draft](https://tools.ietf.org/html/draft-thomas-crypto-conditions-02#section-7) as well as [working implementations in multiple languages](https://github.com/rfcs/crypto-conditions).
 
-This area needs more research and we can either adopt them verbatim or build a similar system. I have heard they are a bit difficult to use, and also don't support some design choices we may want (like using secp256k1 signatures, scrypt for hashing). But the idea to have a general format to combine different conditions in a boolean circuit is powerful. eg. `(signature A and preimage H) OR Threshold(2, [Signature A, Signature B, Signature C])`. We could use this to provide a very simple DSL for defining multi-sig wallets, recovery phrases, etc.
+This area needs more research and we can either adopt them verbatim or build a similar system. Anecdotally they are a bit difficult to use, and also don't support some design choices we may want(like using secp256k1 signatures, scrypt for hashing). But the idea to have a general format to combine different conditions in a boolean circuit is powerful. eg. `(signature A and preimage H) OR Threshold(2, [Signature A, Signature B, Signature C])`. We could use this to provide a very simple DSL for defining multi-sig wallets, recovery phrases, etc.
 
 ### Conditions
 
-*Authentication* defines who is requesting this transaction and is added to the context as part of the middleware stack. I will refer to the set of Authentications on a transaction as the "requester", which may be made of signatures, preimages, or other objects.
+**Authentication** defines who is requesting this transaction and is added to the context as part of the middleware stack. We will refer to the set of Authentications on a transaction as the "requester", which may be made of signatures, preimages, or other objects.
 
-*Authorization* happens in a handler, where it decides if the transaction can execute this transaction. It determines if the transaction fulfills the necessary *conditions* to assume the required *permission* to execute the action.
+**Authorization** happens in a handler, where it decides if the transaction can execute this transaction. It determines if the transaction fulfills the necessary _conditions_ to assume the required _permission_ to execute the action.
 
-*Permission* is the right to perform a specific type of action, like send tokens from an account, or release an escrow. These permissions can be assigned to an individual, but more general to a "Condition"
+**Permission** is the right to perform a specific type of action, like send tokens from an account, or release an escrow. These permissions can be assigned to an individual, but more generally to a "Condition".
 
-*Conditions* define what checks a transaction must fulfill to be able to access a given permission. They must be serializable and can be stored along with an object.
+**Conditions define what checks a transaction must fulfill to be able to access a given permission. They must be serializable and can be stored along with an object.
 
-The simplest example is "who can transfer money out of an account". In many blockchains, they hash the public key and use that to form an "address". Then this address is used as a primary key to an account balance. A user can send tokens to any address, and if I have signed with a public key, which hashes to the "address" of this account, then I can authorize payments out of the account. In this case, the signature is *authentication*, we must have *transfer permission* on this account, and the *condition* is the presence of a signature with a public key that hashes to the account's address.
+The simplest example is "who can transfer money out of an account". In many blockchains, they hash the public key and use that to form an "address". Then this address is used as a primary key to an account balance. A user can send tokens to any address, and if we have signed with a public key, which hashes to the "address" of this account, then we can authorize payments out of the account. In this case, the signature is _authentication_, we must have _transfer permission_ on this account, and the _condition_ is the presence of a signature with a public key that hashes to the account's address.
 
-In Ethereum, smart contracts also have addresses and can be used as a condition, not just signatures. So, we can imagine a variety of different conditions that can be required, not just signatures. A hash preimage, the majority of votes in an election, or presence of a merkle proof could be evaluated by various middlewares and used as *conditions* to assume given *permissions*. And one object / account could have multiple different permissions.
+In Ethereum, smart contracts also have addresses and can be used as a condition, not just signatures. So, we can imagine a variety of different conditions that can be required, not just signatures. A hash preimage, the majority of votes in an election, or presence of a Merkle proof could be evaluated by various middlewares and used as _conditions_ to assume given _permissions_. And one object / account could have multiple different permissions.
 
 ### Serialization
 
 Now we have a clear understanding of what conditions are in this context, and that there may be different conditions on one object, we need to consider how to store them in the database. A condition can be considered a tuple of `(extension, type, data)`, for example a ed25519 public key signature could be represented as `("sigs", "ed25519", <addr>)` and a sha256 hashlock could be `("hash", "sha256", <hash>)`.
 
-Note that the "data" doesn't need to reveal what the data is that will match this condition, but needs to be calculated from it (eg. addr is first 20 bytes of a hash of the public key). And each extension and type may have different interpretations of the data.
+Note that the "data" doesn't need to reveal what the data is that will match this condition, but needs to be calculated from it (eg. addr is first 20 bytes of a hash of the public key). Each extension and type may have different a interpretation of the data.
 
-If we enforce simple text for extension and type, we could encode it as `sprintf("%s/%s/%X", extension, type, data)`. This is longer than the 20 bytes often used for addresses, and maybe we could hash it first, but then we loose information. I can envision a user wanting to know if an account is controlled by a private key, a hash preimage, or another contract. If I am going to set up an escrow with the same arbiter as you on another chain to do atomic swap, I want to make sure that it is controlled by a hash preimage (which you must reveal), not your private key (which would not let me collect the other escrow).
+If we enforce simple text for extension and type, we could encode it as `sprintf("%s/%s/%X", extension, type, data)`. This is longer than the 20 bytes often used for addresses, and while it could be hashed first information could be lost. We can envision a user wanting to know if an account is controlled by a private key, a hash preimage, or another contract. If we are going to set up an escrow with the same arbiter as you on another chain to do atomic swap, we want to make sure that it is controlled by a hash preimage (which you must reveal), not your private key (which would not let me collect the other escrow).
 
 ### Addresses
 
-We started with a simple address function, which was the first 20 bytes of the sha256 hash of a public key. However, this left no room for other authentication mechanisms, and it wasn't even clear how we could differentiate between ed25519 and secp256k1 signatures. However, the usecase was clear: a short identifier that was uniquely tied to an authentication condition, but *did not reveal* that condition.
+We started with a simple address function, which was the first 20 bytes of the sha256 hash of a public key. However, this left no room for other authentication mechanisms, and it wasn't even clear how we could differentiate between ed25519 and secp256k1 signatures. However, the usecase was clear: a short identifier that was uniquely tied to an authentication condition, but _did not reveal_ that condition.
 
 We can redefine address to be the hash of a "condition", not just public key bytes, and then we keep this functionality while generalizing what a condition is.
 
@@ -142,12 +142,12 @@ The questions is when and how to use each one. Any field that can declare an own
 
 Here are some rough guidelines:
 
-1. If we really need to save 20 bytes, use an *Address*. (But few places need that micro-optimization)
-2. If we need visibility of control, use *Condition* (multi-sig solutions, arbiters, etc)
-3. If you want to obscure control (until first use), use *Address*
-4. Everything else, at your discretion, but prefer *Address* when possible for consistency.
+1. If you really need to save 20 bytes, use an _Address_. (But few places need that micro-optimization)
+2. If you need visibility of control, use _Condition_ (multi-sig solutions, arbiters, etc)
+3. If you want to obscure control (until first use), use _Address_
+4. Everything else, at your discretion, but prefer _Address_ when possible for consistency.
 
-I guess it is up to the extension developer, but I would generally use Conditions for anything stored in the value and Address for fields that appear in the key, unless there is a reason otherwise.
+While it is a descision for the extension developer, we would generally use Conditions for anything stored in the value and Address for fields that appear in the key, unless there is a reason to do otherwise.
 
 **Cash**: Key is Address
 

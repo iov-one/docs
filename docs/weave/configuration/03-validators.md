@@ -1,7 +1,7 @@
 ---
-id: validators 
-title: Validators 
-sidebar_label: Validators 
+id: validators
+title: Validators
+sidebar_label: Validators
 ---
 
 ## !! Warning this document is out of date. Will be updated in future !!
@@ -14,13 +14,13 @@ In the simplest setup, every node can generate a private key with `tendermint in
 
 Every validator can find their validator public key, which is different than the public keys / addresses that are assigned tokens, via:
 
-``` {.sourceCode .console}
+```{.sourceCode .console}
 cat ~/.mycoind/config/priv_validator.json | jq .pub_key
 ```
 
 If you still have the default genesis file from tendermint init, this public key should match the one validator registered for this blockchain, so it can mint blocks all by itself.
 
-``` {.sourceCode .console}
+```{.sourceCode .console}
 cat ~/.mycoind/config/genesis.json | jq .validators
 ```
 
@@ -52,6 +52,6 @@ A static validator set in the genesis file is quite useless for a real network t
 
 For each of these general approaches there is a wide range of tuning of incentives and punishments in order to achieve the desired level of usability and security.
 
-The only current implementation shipping with weave is a [POA implementation](https://godoc.org/github.com/iov-one/weave/x/validators#ApplyDiffMsg) allowing some master key (can be a multisig or even an election) update the validator set. This can support systems from testnets to those with strong on-chain governance, but doesn't work for the PoS fluid market-based solution.
+The only current implementation shipping with Weave is a [POA implementation](https://godoc.org/github.com/iov-one/weave/x/validators#ApplyDiffMsg) allowing some master key (can be a multisig or even an election) update the validator set. This can support systems from testnets to those with strong on-chain governance, but doesn't work for the PoS fluid market-based solution.
 
 If you wish to build an extension supporting PoS, previous related work from cosmos-sdk can be found in their [simple stake](https://github.com/cosmos/cosmos-sdk/tree/v0.15.1/x/simplestake) implementation and the [more complicated DPoS implementation](https://github.com/cosmos/cosmos-sdk/tree/master/x/staking) with incentive mechanisms.

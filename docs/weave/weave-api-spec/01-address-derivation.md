@@ -20,7 +20,7 @@ mnemonics in different languages, none of our software currently supports doing
 that.
 
 Note: There are extensions to BIP39 that allow mnemonics with fewer than 12
-words. Those mnemonics should be considered insecure for our purposes and none
+words. Those mnemonics should be considered insecure for our purposes, and none
 of our software supports them.
 
 ## Derive a key pair from a mnemonic
@@ -53,16 +53,16 @@ This results in HD paths of the form
 m/44'/234'/a'
 ```
 
-where `a` is an account index starting at 0. We call this format "BIP44-like"
-because it follows the idea of BIP44 but is not compatible to the 5-component
+where `a` is an account index starting at 0. We call this format 'BIP44-like'
+because it follows the idea of BIP44, but is not compatible with the five-component
 BIP44 standard.
 
 ### Simple addresses (deprecated)
 
 [During development](https://github.com/iov-one/iov-core/blob/v0.15.0/docs/KeyBase.md#simple-addresses),
 we used the derivation path `m/4804438'/a'`. This was created and called
-"simple" because we initially planned to use a multi-dimensional 5-component
-BIP44 path in the long run. However, we gave up this idea and now the IOV path
+'simple' because we initially planned to use a multi-dimensional 5-component
+BIP44 path in the long run. However, we gave up on this idea and now the IOV path
 described above is equally simple.
 
 ## Deriving addresses from keypairs

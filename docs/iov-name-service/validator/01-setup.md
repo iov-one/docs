@@ -8,9 +8,11 @@ sidebar_label: Setup
 
 Before starting to setup your validator, please <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">apply to the validator program</a> to open a channel of communication with IOV. At the end of the article, you will need to use this channel of communication to give us your pub_key so that we can upgrade your full-node to a validator.
 
-## Use systemd for running a sentry node or validator
+## Familiarize yourself with Gitian
 
-> IOV does not recommend using docker in production; however, it can be used to start building your validator's quality score on our testnet if you so choose.
+Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artefacts and is the distribution method chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
+
+## Use systemd for running a sentry node or validator
 
 This document is not for beginners.  It assumes that you know how to setup a sentry node architecture for Tendermint nodes.
 
@@ -23,7 +25,7 @@ cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
 
-This document assumes that `curl`, `docker`, `jq`, and `which` are installed on your system, and user `iov` in groups `iov` and `docker` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
+This document assumes that `curl`, `expr`, `grep`, `jq`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
 sudo su # make life easier for the next ~100 lines
@@ -32,25 +34,19 @@ cd /etc/systemd/system
 
 # create an environment file for the IOV Name Service services
 cat <<__EOF_IOVNS_ENV__ > iovns.env
-# directories
-DIR_TM=/tendermint
+# directories (without spaces to ease pain)
+DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/lovenet
 
-# docker options
-DOCKER_IOVNS_OPTS="--rm"
-DOCKER_TM_OPTS="--rm -p16656:26656 -p16657:26657"
-
-# docker cid files
-FILE_CID_IOVNS=iovns.cid
-FILE_CID_TM=iovns-tm.cid
-
 # images
-IMAGE_IOVNS=iov1/bnsd:v0.20.0
-IMAGE_IOVNS_OPTS=""
-IMAGE_TM=iov1/tendermint:v0.31.5
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.0/bnsd-0.21.0-linux-amd64.tar.gz
+IMAGE_IOVNS_OPTS="-min_fee '0.5 IOV'"
+IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.5-iov2/tendermint-0.31.5-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --moniker='moniker' \
---p2p.persistent_peers='ce812b7220b91acf11b8bb91905fe20466ffbd5c@35.195.61.59:26656' \
+--p2p.laddr=tcp://0.0.0.0:16656 \
+--p2p.persistent_peers=1c5aa24f62a1e30badff37f8f673df90e3a08656@104.155.68.141:26656 \
+--rpc.laddr=tcp://0.0.0.0:16657 \
 --rpc.unsafe=false \
 "
 
@@ -65,37 +61,25 @@ __EOF_IOVNS_ENV__
 chgrp iov iovns.env
 chmod g+r iovns.env
 
-# deal with inconsistent systemd PATH among distributions
-export SKIP_ALIAS=$( [[ `which 2> /dev/stdout | fgrep -1 skip-alias` ]] && echo "--skip-alias" || echo "" )
-export CAT=$(which $SKIP_ALIAS cat)
-export DOCKER=$(which $SKIP_ALIAS docker)
-export RM=$(which $SKIP_ALIAS rm)
-export SH=$(which $SKIP_ALIAS sh)
+set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
 
 # create iovns.service
-cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g' -e 's@__SH__@'"$SH"'@g' > iovns.service
+cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovns.service
 [Unit]
 Description=IOV Name Service
 After=network-online.target
-Requires=docker.service
 
 [Service]
 Type=simple
 User=iov
 Group=iov
 EnvironmentFile=/etc/systemd/system/iovns.env
-ExecStart=__DOCKER__ run $DOCKER_IOVNS_OPTS \
-   --cidfile=${DIR_WORK}/${FILE_CID_IOVNS} \
-   --read-only \
-   --user=${IOV_UID}:${IOV_GID} \
-   --volume=${DIR_WORK}:${DIR_TM} \
-   ${IMAGE_IOVNS} \
-      -home=${DIR_TM} \
-      start \
-      -bind="unix://${DIR_TM}/${SOCK_TM}" \
-      $IMAGE_IOVNS_OPTS
-ExecStop=__SH__ -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_IOVNS})"
-ExecStopPost=__RM__ -fv ${DIR_WORK}/${FILE_CID_IOVNS}
+ExecStart=__DIR_IOVNS__/bnsd \
+   -home=${DIR_WORK} \
+   start \
+   -bind=unix://${DIR_WORK}/${SOCK_TM} \
+   $IMAGE_IOVNS_OPTS
+LimitNOFILE=4096
 #Restart=on-failure
 #RestartSec=3
 StandardError=journal
@@ -107,27 +91,21 @@ WantedBy=multi-user.target
 __EOF_IOVNS_SERVICE__
 
 # create iovns-tm.service
-cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__CAT__@'"$CAT"'@g' -e 's@__DOCKER__@'"$DOCKER"'@g' -e 's@__RM__@'"$RM"'@g'  -e 's@__SH__@'"$SH"'@g' > iovns-tm.service
+cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovns-tm.service
 [Unit]
 Description=Tendermint for IOV Name Service
 After=iovns.service
-Requires=docker.service
 
 [Service]
 Type=simple
 User=iov
 Group=iov
 EnvironmentFile=/etc/systemd/system/iovns.env
-ExecStart=__DOCKER__ run "$DOCKER_TM_OPTS" \
-   --cidfile=${DIR_WORK}/${FILE_CID_TM} \
-   --read-only \
-   --user=${IOV_UID}:${IOV_GID} \
-   --volume=${DIR_WORK}:${DIR_TM} \
-   ${IMAGE_TM} node \
-      --proxy_app="unix://${DIR_TM}/${SOCK_TM}" \
-      $IMAGE_TM_OPTS
-ExecStop=__SH__ -c "__DOCKER__ stop $(__CAT__ ${DIR_WORK}/${FILE_CID_TM})"
-ExecStopPost=__RM__ -fv ${DIR_WORK}/${FILE_CID_TM}
+ExecStart=__DIR_IOVNS__/tendermint node \
+   --home=${DIR_WORK} \
+   --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
+   $IMAGE_TM_OPTS
+LimitNOFILE=4096
 #Restart=on-failure
 #RestartSec=3
 StandardError=journal
@@ -138,27 +116,35 @@ SyslogIdentifier=iovns-tm
 WantedBy=multi-user.target
 __EOF_IOVNS_TM_SERVICE__
 
+# hack around ancient versions of systemd
+expr $(systemctl --version | grep -m 1 -P -o "\d+") '<' 239 && {
+   sed --in-place 's!\$IMAGE_IOVNS_OPTS!'"$IMAGE_IOVNS_OPTS"'!' /etc/systemd/system/iovns.service
+   sed --in-place 's!\$IMAGE_TM_OPTS!\'"$IMAGE_TM_OPTS"'!' /etc/systemd/system/iovns-tm.service
+}
+
 systemctl daemon-reload
+
+# download gitian built binaries or gitian build your own; bnsd is the IOV Name Service daemon
+mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
+wget ${IMAGE_IOVNS} && sha256sum bnsd*.gz       | fgrep 5b4ac76b4c0a06afdcd36687cec0352f33f46e41a60f61cdf7802225ed5ba1e8 && tar xvf bnsd*.gz || echo "BAD BINARY!"
+wget ${IMAGE_TM}    && sha256sum tendermint*.gz | fgrep 421548f02dadca48452375b5905fcb49a267981b537c143422dde0591e46dc93 && tar xvf tendermint*.gz || echo "BAD BINARY!"
+
 exit # root
 
 # initialize the IOV Name Service
 su - iov
 set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
 
-docker pull ${IMAGE_TM}
-docker pull ${IMAGE_IOVNS}
-
-mkdir -p ${DIR_WORK}
-cd ${DIR_WORK}
+mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
-docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_TM} init
+${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
 curl --fail https://rpc.lovenet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 
 # initialize IOV Name Service (bnsd)
-docker run --rm --user=${IOV_UID}:${IOV_GID} -v ${DIR_WORK}:${DIR_TM} ${IMAGE_IOVNS} -home=${DIR_TM} init -i | grep initialised
+${DIR_IOVNS}/bnsd -home=${DIR_WORK} init -i | grep initialised
 
 exit # iov
 
@@ -171,15 +157,16 @@ exit # root
 
 At this point you're running a full-node that can be examined at `http://localhost:16657/status`.
 
-> The most important file from the procedure above is `/etc/systemd/system/iovns.env`.  It defines docker image versions and options, directories that allow the `iovns.service` and `iovns-tm.service` to communicate with each other, and IOV Name Service and tendermint options.
+> The most important file from the procedure above is `/etc/systemd/system/iovns.env`.  It defines binaries, the socket that allows `iovns.service` and `iovns-tm.service` to communicate with each other, and IOV Name Service and tendermint options.
 
 Using `/etc/systemd/system/iovns.env`, rather than specifying values directly in the service files, obviates the need to do `systemctl daemon-reload` on every option change.  Most values in `/etc/systemd/system/iovns.env` are self explanatory; however, there are a few of note:
 
 - for IOV Name Service
   - `IMAGE_IOVNS_OPTS` allows you to customize the anti-spam fee, etc.
 - for Tendermint
-  - `DOCKER_TM_OPTS` is important because it exposes tendermint ports.
   - `IMAGE_TM_OPTS` allows you to customize the configuration of tendermint, including `priv_validator_laddr`, `p2p.pex`, `p2p.persistent_peers`, `p2p.private_peer_ids`, etc.  **In other words, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `priv_validator_laddr` and `p2p.*` options.**  Please refer to the <a href="https://tendermint.com/docs/tendermint-core/configuration.html#options" target="blank_">tendermint documentation for the options</a>.
+
+> Old versions of systemd (CentOs) cannot take advantage of the dynamism of `/etc/systemd/system/iovns.env` like modern versions can.  Consequently, the service files themselves are where `bnsd` (IOV Name Service) and `tendermint` options must be specified.
 
 ## Point the nodes at each other
 

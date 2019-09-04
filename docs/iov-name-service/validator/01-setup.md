@@ -124,9 +124,10 @@ expr $(systemctl --version | grep -m 1 -P -o "\d+") '<' 239 && {
 
 systemctl daemon-reload
 
-# download gitian built binaries
+# download gitian built binaries or gitian build your own; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-for i in ${IMAGE_IOVNS} ${IMAGE_TM} ; do wget -qO- $i | tar xvz ; done # bnsd is the IOV Name Service daemon
+wget ${IMAGE_IOVNS} && sha256sum bnsd*.gz       | fgrep 5b4ac76b4c0a06afdcd36687cec0352f33f46e41a60f61cdf7802225ed5ba1e8 && tar xvf bnsd*.gz || echo "BAD BINARY!"
+wget ${IMAGE_TM}    && sha256sum tendermint*.gz | fgrep 421548f02dadca48452375b5905fcb49a267981b537c143422dde0591e46dc93 && tar xvf tendermint*.gz || echo "BAD BINARY!"
 
 exit # root
 

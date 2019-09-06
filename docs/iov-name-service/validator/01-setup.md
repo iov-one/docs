@@ -25,7 +25,7 @@ cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
 
-This document assumes that `curl`, `expr`, `grep`, `jq`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
+This document assumes that `curl`, `expr`, `grep`, `jq`, `sed`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
 sudo su # make life easier for the next ~100 lines
@@ -124,7 +124,7 @@ expr $(systemctl --version | grep -m 1 -P -o "\d+") '<' 239 && {
 
 systemctl daemon-reload
 
-# download gitian built binaries or gitian build your own; bnsd is the IOV Name Service daemon
+# download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
 wget ${IMAGE_IOVNS} && sha256sum bnsd*.gz       | fgrep 5b4ac76b4c0a06afdcd36687cec0352f33f46e41a60f61cdf7802225ed5ba1e8 && tar xvf bnsd*.gz || echo "BAD BINARY!"
 wget ${IMAGE_TM}    && sha256sum tendermint*.gz | fgrep 421548f02dadca48452375b5905fcb49a267981b537c143422dde0591e46dc93 && tar xvf tendermint*.gz || echo "BAD BINARY!"
@@ -142,6 +142,7 @@ ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
 curl --fail https://rpc.boarnet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
+sed --in-place 's!^timeout_commit.*!timeout_commit = "5s"!' config/config.toml # options not available via command line
 
 # initialize IOV Name Service (bnsd)
 ${DIR_IOVNS}/bnsd -home=${DIR_WORK} init -i | grep initialised

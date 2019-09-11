@@ -21,7 +21,7 @@ There is no global chain owner, but each market has its own chain owner that add
 
 - **Trade** is a settled order.
 
-You can find more information about this topic on [tutorial repo](https://github.com/iov-one/tutorial/blob/master/x/order book/README.md 'README.md'). It is good practice to define domain as _README_ in the module.
+You can find more information about this topic on [tutorial repo](https://github.com/iov-one/tutorial/blob/master/x/orderbook/README.md 'README.md') It is good practice to define domain as _README_ in the module.
 
 ## Primary Keys
 

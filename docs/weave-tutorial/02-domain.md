@@ -8,7 +8,7 @@ The first thing we consider is the data we want to store, which is known as the 
 
 ## State
 
-State as in [Turing machine](https://en.wikipedia.org/wiki/Turing_machine), is how the system's data is presented this contained. We are building an Order book application to solidify the state concept. Exchange topic is quite hot at the time of writing this tutorial.
+State as in [Turing machine](https://en.wikipedia.org/wiki/Turing_machine), is how the system's data is presented and preserved. We are building an Order book application to solidify the state concept. Exchange topic is quite hot at the time of writing this tutorial.
 
 - **Markets** will contain rules as to who (which public keys) may create an **order book** or who can cancel an order. The term _market_ here, defines the state of an entity that represents the real markets. The blockchain application may have multiple markets, and each market may have multiple Orderbooks; however, each token pair can only have one order book per market.
 There is no global chain owner, but each market has its own chain owner that adds Order books and sets fees. This could be one person, a multisig, or a governance contract (DAO). When adding an order book, the market with a given market ID is checked, then looks up the owner _for that market_. Rather than having one owner that can create Order books for all markets, each market stores the information on which owner can update it.

@@ -43,6 +43,7 @@ IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.0/bnsd-0.21
 IMAGE_IOVNS_OPTS="-min_fee '0.5 IOV'"
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.5-iov2/tendermint-0.31.5-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
+--consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
 --p2p.persistent_peers=96d70db6a08e194a7ae64b525cb8d1287fe922db@104.155.68.141:26656 \
@@ -142,7 +143,9 @@ ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
 curl --fail https://rpc.boarnet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
-sed --in-place 's!^timeout_commit.*!timeout_commit = "5s"!' config/config.toml # options not available via command line
+sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
+sed --in-place 's!^create_empty_blocks .*!create_empty_blocks = false!' config/config.toml
+sed --in-place 's!^create_empty_blocks_interval .*!create_empty_blocks_interval = "300s"!' config/config.toml
 
 # initialize IOV Name Service (bnsd)
 ${DIR_IOVNS}/bnsd -home=${DIR_WORK} init -i | grep initialised

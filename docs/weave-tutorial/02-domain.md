@@ -8,22 +8,41 @@ The first thing we consider is the data we want to store, which is known as the 
 
 ## State
 
-State as in [Turing machine](https://en.wikipedia.org/wiki/Turing_machine), is how the system's data is presented and preserved. We are building an Order book application to solidify the state concept. Exchange topic is quite hot at the time of writing this tutorial.
+State as in [Turing machine](https://en.wikipedia.org/wiki/Turing_machine), is how the system's data is presented and preserved. We are building an Blog application to solidify the state concept. Blog applications are quite famous of its simplicity and informativeness as software tutorials. Let's follow this culture.
 
-- **Markets** will contain rules as to who (which public keys) may create an **order book** or who can cancel an order. The term _market_ here defines the state of an entity that represents the real markets. The blockchain application may have multiple markets, and each market may have multiple Orderbooks; however, each token pair can only have one order book per market.
-There is no global chain owner, but each market has its own chain owner that adds Order books and sets fees. This could be one person, a multisig, or a governance contract ([DAO](https://en.wikipedia.org/wiki/The_DAO_(organization))). When adding an order book, the market with a given market ID is checked, then looks up the owner _for that market_. Rather than having one owner that can create Order books for all markets, each market stores the information on which owner can update it.
+- **User** defines the user of the application. Users can post blogs, articles, set a deletion time for **their own** articles,comment on articles and like articles. _User state_ contains:
+  - **ID**: unique identifier of the user.
+  - **Username**: alias that is picked by the user.
+  - **Bio**: biography of the user. It could be empty.
 
-- **Order book** state will define which Ask/Bid market it holds and the number of available orders. An Order book will contain orders and trades.
+- **Blog** is where a user posts his article and give information on the overall blog. _Blog state_ contains:
+  - **ID**: unique identifier of the blog.
+  - **Owner**: owner of the blog.
+  - **Title**: title of the blog.
+  - **Description**: description of the blog.
+  - **CreatedAt**: creation time of the blog.
 
-- **Order** state will be created by traders who want to buy or sell tokens with a given price and amount. Orders may have two sides: **Ask** and **Bid**.
-- An order may have three states:
-  - **Open** means the order is waiting to be settled
-  - **Done** means the order has been settled
-  - **Cancel** means the order has been cancelled by the owner
+- **Article** is simple as it seems: article that a user wants to post to the blog. Only owner of the article is permissioned to delete or set deletion time for the article. _Article state_ contains:
+  - **ID**: unique identifier of the article.
+  - **BlogID**: blog identifier that article is posted at.
+  - **Title**: title of the article.
+  - **Content**: content of the article.
+  - **CommentCount**: total number of comments article has recieved.
+  - **LikeCount**: total number of likes article has recieved.
+  - **CreatedAt**: creation time of the article.
+  - **DeleteAt**: deletion time of the article. Could be nil or set to a future date. If in future, cron task will do its work and delete the article.
 
-- **Trade** state is a settled order.
+- **Comment** defines the comment that a user posted to an article. Every user can comment to articles including owner of the article. _Comment state_ contains:
+  - **ID**: unique identifier of the comment.
+  - **ArticleID**: article identifier that comment is posted to.
+  - **Owner**: owner of the comment.
 
-You can find more information about this topic on [tutorial repo](https://github.com/iov-one/tutorial/blob/master/x/orderbook/README.md 'README.md') It is good practice to define domain as _README_ in the module.
+- **Like** defines a users like to article. Every user can like articles except the owner of the article. _Like state_ contains:
+  - **ID**: unique identifier of the like.
+  - **ArticleID**: article identifier that like is posted to.
+  - **Owner**: owner of the like.
+
+You can find more information about this topic on [blog tutorial repo](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/README.md 'README.md') It is recommended to define domain as _README_ in the module.
 
 ## Primary Keys
 

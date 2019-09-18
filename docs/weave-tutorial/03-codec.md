@@ -12,107 +12,117 @@ Weave defines `Marshaller` and `Persistent` interface standards. These interface
 
 First imagine the shape of your classes. The product of your imagination will be called `Codec`. And the language of expressing the shape of the classes is: [proto3](https://developers.google.com/protocol-buffers/docs/proto3). There are several different `int encodings`, `byte slices`, `strings`, and nested structures; and fields may be repeated. So it is best to forget complex types with methods and instead focus on the actual data structure.
 
-Codec is the first component that needs to be designed. Keep in mind that this part is the most important as the whole module will depend on _codec_. Codec resembles _model_ in MVC pattern; however. codec not only defines the model representation but also marshalling/unmarshalling and interactions with messages. Codec defines the whole application state models and more. In this article, we will not go as far as explaining every proto message - one example for each message and state should be enough. Furthermore, if you want to see all the implementation, you can check out our [tutorial](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto).
+Codec is the first component that needs to be designed. Keep in mind that this part is the most important as the whole module will depend on _codec_. Codec resembles _model_ in MVC pattern; however. codec not only defines the model representation but also marshalling/unmarshalling and interactions with messages. Codec defines the whole application state models and more. In this article, we will not go as far as explaining every proto message - one example for each message and state should be enough. I advise you to open our [blog tutorial application](https://orkunkl.github.com/iov-one/blog-tutorial/blob/master/x/blog/codec.proto) to the side and follow the codec as we move forward with this tutorial.
 
 ## State
 
-In the previous section, we explained how to define your domain attributes and models. Here `Trade` is defined as proto message. The [x/codec.proto](https://github.com/iov-one/tutorial/blob/master/x/order book/codec.proto#L75-L88) file defines the `Trade` type rather simply, once you remove the comments, this is all that is left:
+In the previous section, we explained how to define your domain attributes and models. Here `Blog` is defined as proto message. The [x/codec.proto](https://orkunkl.github.com/iov-one/blog-tutorial/blob/master/x/blog/codec.proto#L22-L34) file defines the `Blog` type rather simply, once you remove the comments, this is all that is left:
 
 ```protobuf
-// Trade is a settled partial/full order
-// We store these as independent entities to help with queries to map
-// the prices over time. They are also referenced by the Orders, so we can
-// see how much was fulfilled.
-//
-// Ask and Bid tickers are "inherited" from the order book
-message Trade {
+message Blog {
   weave.Metadata metadata = 1;
+  // ID is blog's identifier
   bytes id = 2 [(gogoproto.customname) = "ID"];
-  bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
-  bytes order_id = 4 [(gogoproto.customname) = "OrderID"];
-  // Address of taker (this is an order that was instantly fulfilled)
-  bytes taker = 5 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
-  // Address of maker (this is an order that was stored first before fulfillment)
-  bytes maker = 6 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
-  // this is how much each side paid (they got the opposite one)
-  coin.Coin maker_paid = 7;
-  coin.Coin taker_paid = 8;
-  // executed_at defines execution time of an order
-  int64 executed_at = 9 [(gogoproto.casttype) = "github.com/iov-one/weave.UnixTime"];
+  // Owner is the owner address if the blog
+  bytes owner = 3 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
+  // Title is title of the blog
+  string title = 4;
+  // Description is description section of the blog
+  string description = 5;
+  // CreatedAt defines creation time of the blog
+  int64 created_at = 6 [(gogoproto.casttype) = "github.com/iov-one/weave.UnixTime"];
 }
 ```
 
-As you can see above, weave is heavily using `bytes` for identities, addresses, etc. At first glance, this might seem difficult to handle but if you take a look at [x/orderbook/bucket](https://github.com/iov-one/tutorial/blob/master/x/orderbook/bucket.go#L125) you can see it is useful for indexing and performance.
+<!---
+TODO refactor here when bucket is merged
+-->
+
+As you can see above, weave is heavily using `bytes` for identities, addresses, etc. At first glance, this might seem difficult to handle but if you take a look at [x/blog/bucket](https://github.com/iov-one/tutorial/blob/master/x/orderbook/bucket.go#L125) you can see it is useful for indexing and performance.
 
 Note that the package defined in the protobuf file must match the package name used by the Go language code in the same directory.
 
 You can also import types from one proto file into another. Make sure to use the full github path so that the generated Go code has properly set imports. The package name above is also used as a namespace for the imported protobuf definitions. This is how [x/cash](https://github.com/iov-one/weave/blob/master/x/cash/codec.proto) creates a wallet that contains an array of tokens of different currencies.
-Two critical points needs to be explained in state models and messages.
 
-Firstly, you must have noticed:
+Two critical points needs to be explained in state models and messages. You must have noticed the first one:
 
 ```protobuf
 weave.Metadata metadata = 1;
 ```
 
-`weave.Metadata` enables upgrading the code on chain without downtime. It is required if you want to use any [Weave provided extensions](https://github.com/iov-one/weave/tree/master/x). [Migrations](https://github.com/iov-one/weave/tree/v0.20.0/migration) package will be explained in more detail in further sections.
+`weave.Metadata` enables upgrading the code on chain without downtime. It is required if you want to use any [IOV provided extensions](https://github.com/iov-one/weave/tree/master/x). [Migrations](https://github.com/iov-one/weave/tree/v0.21.0/migration) package will be explained in more detail in further sections.
 
 Secondly, note how the magic `ID` field works. This will be explained in [Models](weave-tutorial/04-models.md) section.
 
-## Message Definitions
+## Message
+
+Here is a sample message that creates an article.
 
 ```protobuf
-// CreateOrderMsg will offer to sell some currency on an order book
-// at a given price.
-message CreateOrderMsg {
+message CreateArticle {
   weave.Metadata metadata = 1;
-  // Trader is the Address that will pay the offer, and get the matches.
-  // Defaults to x.MainSigner() if left blank
-  bytes trader = 2 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
-  // OrderBookID must support Offer.Ticker as one of the two sides,
-  // Which side this order will be, is automatically inferred
-  bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
-  // Offer is how much will be paid
-  coin.Coin offer = 4;
-  // Price is how much is requested for each unit of the offer token
-  Amount price = 5;
+  bytes blog_id = 2 [(gogoproto.customname) = "BlogID"];
+  string title = 3;
+  string content = 4;
+  int64 delete_at = 5 [(gogoproto.casttype) = "github.com/iov-one/weave.UnixTime"];
 }
 ```
 
+## Using Weave inbuilt types in codec
+
 Noticed `(gogoproto.casttype)` and `(gogoproto.customname)`?
 
-```protobuf
-bytes trader = 2 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
-```
+These are [gogoprotobuf](https://github.com/gogo/protobuf/blob/master/extensions.md#more-canonical-go-structures) field extensions that make go code and protobuf more interop and cleaner
 
-`(gogoproto.casttype)` indicates this field will be cast to `weave.Address`. Compiled codec.pb.go field:
+### Cast Type
 
-```go
-// Address of trader that created order (ad gets paid from it)
-    Trader      github_com_iov_one_weave.Address `protobuf:"bytes,3,opt,name=trader,proto3,casttype=github.com/iov-one/weave.Address" json:"trader,omitempty"`
-```
+`(gogoproto.casttype)` changes the generated field type. It assumes that this type is castable to the original goprotobuf field type.
 
 ```protobuf
-bytes order_book_id = 3 [(gogoproto.customname) = "OrderBookID"];
+int64 delete_at = 5 [(gogoproto.casttype) = "github.com/iov-one/weave.UnixTime"];
 ```
 
-`(gogoproto.customname)` indicates this field will be named as `OrderBookID`. Compiled codec.pb.go field:
+`(gogoproto.casttype)` indicates this field will be cast to `weave.UnixTime` which is a wrapper around [golang/time](https://godoc.org/time) with necessary. Compiled codec.pb.go field:
 
 ```go
-OrderBookID []byte `protobuf:"bytes,3,opt,name=order_book_id,json=orderBookId,proto3" json:"order_book_id,omitempty"`
+DeleteAt github_com_iov_one_weave.UnixTime `protobuf:"varint,5,opt,name=delete_at,json=deleteAt,proto3,casttype=github.com/iov-one/weave.UnixTime" json:"delete_at,omitempty"`
 ```
 
-Without it we would get:
+One more useful Weave cast type is `weave.Address`:
+
+```proto
+bytes owner = 3 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
+```
+
+This generates the field owner as `weave.Address`. This relieves us the burden of converting protobuf generated byte typed field to `weave.Address`.
+
+### Custom Name
+
+`(gogoproto.customname)` changes the generated fieldname. This is especially useful when generated methods conflict with fieldnames or specify generated names to be compatible with the existing code.
+
+```protobuf
+bytes blog_id = 2 [(gogoproto.customname) = "BlogID"];
+```
+
+`(gogoproto.customname)` indicates this field will be named as `BlogID`. Compiled codec.pb.go field:
 
 ```go
-OrderBookId []byte `protobuf:"bytes,3,opt,name=order_book_id,json=orderBookId,proto3" json:"order_book_id,omitempty"`
+BlogID []byte `protobuf:"bytes,2,opt,name=blog_id,json=blogId,proto3" json:"blog_id,omitempty"`
 ```
 
-As you can see above, we define necessary fields that will be used by `handler` to interact with application state.
+Without the `(gogoproto.customname)` tag, protoc would produce this code which does not follow the convention:
+
+```go
+BlogId []byte `protobuf:"bytes,2,opt,name=blog_id,json=blogId,proto3" json:"blog_id,omitempty"`
+```
+
+As you can see above, we defined necessary fields that will be used by `handler` to interact with application state.
 
 ## Compiling Proto Files
 
 To compile protobuf files, you need to have the [protoc](https://github.com/google/protobuf#protocol-compiler-installation) binary installed and a language-specific translator (gogo-protobuf in this case). This can be a bit of a pain, especially the first time, so the default **weave-starter-kit** [Makefile](https://github.com/iov-one/weave-starter-kit/blob/master/Makefile) contains helpers for you.
+
+## More on protobuf
 
 ### Prototool
 
@@ -189,11 +199,11 @@ plugins:
 After defining your state and messages run `make protoc`. This script will download `prototool` docker image and compile codec.proto file `codec.pb.go` file.
 Now we have the scaffold of our application thanks to auto-generated _codec.pb.go_ file.
 
-## Using Autogenerated Structs
+### Using Autogenerated Structs
 
 The first time through the above process may appear tedious, but once you get the hang of it, you just have to add a few lines to a _.proto_ file and type `make protoc`. Et voila! You have a bunch of fresh \*.pb.go files that provide efficient, portable serialization for your code.
 
-But how do you use those structs? Taking `Amount` from [x/codec.proto](https://orkunkl.github.com/iov-one/tutorial/blob/master/x/order book/codec.proto#L10-L23) as an example, we see a `x/codec.pb.go` file with `type Amount struct {...}` that closely mirrors the content of the codec.proto file, as well as many of methods. There are some auto-generated getters, which can be useful to fulfill interfaces or to query field of _nil_ objects without panicking. And then there are some (very long) **Marshal** and **Unmarshal** methods. These are the meat of the matter. They fulfill the Persistent interface and let us write code like this:
+But how do you use those structs? Taking `Amount` from [x/codec.proto](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto#L10-L23) as an example, we see a `x/codec.pb.go` file with `type Amount struct {...}` that closely mirrors the content of the codec.proto file, as well as many of methods. There are some auto-generated getters, which can be useful to fulfill interfaces or to query field of _nil_ objects without panicking. And then there are some (very long) **Marshal** and **Unmarshal** methods. These are the meat of the matter. They fulfill the Persistent interface and let us write code like this:
 
 ```go
 orig := Amount{Whole: 123, franctional: 2}
@@ -220,7 +230,7 @@ func (a *Amount) IsNegative() bool {
 
 This is a productive workflow and I recommend trying it out. You may find it doesn’t work for you and you can try other approaches, like copying the protobuf generated structs into some custom-written structs you like and then copying back into protobuf structs for serialization. You can also try playing with special [protobuf extensions](https://github.com/gogo/protobuf/blob/master/extensions.md) flags in your protobuf files to shape the auto-generated code into the exact shape you want.
 
-## Notes About oneof
+### Notes About oneof
 
 **oneof** is a powerful feature to produce union/sum types in your protobuf structures. For example, you may have a public key which may be one of many different algorithms and can define cases for each, which can be switched on in runtime. We also use this for the transaction to enumerate a set of possible messages that can be embedded in the transaction. A transaction may have any one of them and serialize and deserialize properly. Type-safety is enforced in compile-time and we can switch on the kind at runtime. (Example from [bcp-demo](https://github.com/iov-one/bcp-demo/blob/master/app/codec.proto)):
 

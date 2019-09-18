@@ -8,41 +8,41 @@ The first thing we consider is the data we want to store, which is known as the 
 
 ## State
 
-State as in [Turing machine](https://en.wikipedia.org/wiki/Turing_machine), is how the system's data is presented and preserved. We are building an Blog application to solidify the state concept. Blog applications are quite famous of its simplicity and informativeness as software tutorials. Let's follow this culture.
+State as in [Turing machine](https://en.wikipedia.org/wiki/Turing_machine), is how the system's data is presented and preserved. We are building an Blog application to solidify the state concept. Blog applications are quite famous for their simplicity and informativeness as software tutorials. Let's follow this style.
 
-- **User** defines the user of the application. Users can post blogs, articles, set a deletion time for **their own** articles,comment on articles and like articles. _User state_ contains:
-  - **ID**: unique identifier of the user.
-  - **Username**: alias that is picked by the user.
-  - **Bio**: biography of the user. It could be empty.
+- **User** defines the user of the application. Users can post blogs, articles, set a deletion time for **their own** articles, comment on articles, and like articles. _User state_ contains:
+  - **ID**: unique identifier of the user
+  - **Username**: alias that is picked by the user
+  - **Bio**: biography of the user. It could be empty
 
 - **Blog** is where a user posts his article and give information on the overall blog. _Blog state_ contains:
-  - **ID**: unique identifier of the blog.
-  - **Owner**: owner of the blog.
-  - **Title**: title of the blog.
-  - **Description**: description of the blog.
-  - **CreatedAt**: creation time of the blog.
+  - **ID**: unique identifier of the blog
+  - **Owner**: owner of the blog
+  - **Title**: title of the blog
+  - **Description**: description of the blog
+  - **CreatedAt**: creation time of the blog
 
-- **Article** is simple as it seems: article that a user wants to post to the blog. Only owner of the article is permissioned to delete or set deletion time for the article. _Article state_ contains:
-  - **ID**: unique identifier of the article.
-  - **BlogID**: blog identifier that article is posted at.
-  - **Title**: title of the article.
-  - **Content**: content of the article.
-  - **CommentCount**: total number of comments article has recieved.
-  - **LikeCount**: total number of likes article has recieved.
-  - **CreatedAt**: creation time of the article.
-  - **DeleteAt**: deletion time of the article. Could be nil or set to a future date. If in future, cron task will do its work and delete the article.
+- **Article** is simple as it seems: article that a user wants to post to the blog. Only owner of the article has the permissions to delete or set deletion time for the article. _Article state_ contains:
+  - **ID**: unique identifier of the article
+  - **BlogID**: blog identifier at which that article is posted
+  - **Title**: title of the article
+  - **Content**: content of the article
+  - **CommentCount**: total number of comments the article has recieved
+  - **LikeCount**: total number of likes the article has recieved
+  - **CreatedAt**: creation time of the article
+  - **DeleteAt**: deletion time of the article. Could be nil or set to a future date. If in future, cron task will do its work and delete the article
 
-- **Comment** defines the comment that a user posted to an article. Every user can comment to articles including owner of the article. _Comment state_ contains:
-  - **ID**: unique identifier of the comment.
-  - **ArticleID**: article identifier that comment is posted to.
-  - **Owner**: owner of the comment.
+- **Comment** defines the comment that a user posted to the article. Every user can comment to articles including owner of the article. _Comment state_ contains:
+  - **ID**: unique identifier of the comment
+  - **ArticleID**: article identifier to which that comment is posted
+  - **Owner**: owner of the comment
 
-- **Like** defines a users like to article. Every user can like articles except the owner of the article. _Like state_ contains:
-  - **ID**: unique identifier of the like.
-  - **ArticleID**: article identifier that like is posted to.
-  - **Owner**: owner of the like.
+- **Like** defines a users like of the article. Every user, except the owner of the article, can like articles. _Like state_ contains:
+  - **ID**: unique identifier of the like
+  - **ArticleID**: article identifier to which that like is posted
+  - **Owner**: owner of the like
 
-You can find more information about this topic on [blog tutorial repo](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/README.md 'README.md') It is recommended to define domain as _README_ in the module.
+You can find more information about this topic on [blog tutorial repo](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/README.md 'README.md'). It is recommended to define domain as _README_ in the module.
 
 ## Primary Keys
 

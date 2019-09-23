@@ -13,13 +13,13 @@ First ensure our `User` fulfills morm.Model:
 var _ morm.Model = (*User)(nil)
 ```
 
-This is just a helper that enforces User model to fulfill morm.Model interface so that if you forget to implement a method compiler will complain. Guaranteeing it _I am trying to implement this interface_.
+This is just a helper that enforces User model to fulfill morm.Model interface so that if you forget to implement a method, the compiler will complain. Guaranteeing it _I am trying to implement this interface_.
 
 Now let's explain our model's identity:
 
 ## Auto incremented identities
 
-`morm.Model` covers auto-incremented IDs for you. All you have to do is define `GetID` and `SetID` methods. If you defined `bytes id = 2 [(gogoproto.customname) = "ID"];` on `codec.proto` you do not even need to write `GetID` method by yourself, Thanks to prototool it will be generated automatically. You will only need to define `SetID` method.
+`morm.Model` covers auto-incremented IDs for you. All you have to do is define `GetID` and `SetID` methods. If you defined `bytes id = 2 [(gogoproto.customname) = "ID"];` on `codec.proto` you do not even need to write `GetID` method by yourself. Thanks to prototool it will be generated automatically. You will only need to define `SetID` method.
 
 ## Custom identity
 
@@ -58,7 +58,7 @@ func (m *User) Validate() error {
 }
 ```
 
-Here is a sample of username validation function:
+Here is a sample username validation function:
 
 ```go
 var validUsername = regexp.MustCompile(`^[a-zA-Z0-9_.-]{4,16}$`).MatchString
@@ -66,7 +66,7 @@ var validUsername = regexp.MustCompile(`^[a-zA-Z0-9_.-]{4,16}$`).MatchString
 
 If you need more complex validation rules for models you can implement custom validation function which uses `github.com/iov-one/weave/errors` as error handling.
 
-We recommend using `errors.AppendField`, It enables multi error validation so no info regarding the error's cause gets lost.
+We recommend using `errors.AppendField` as it enables multi-error validation so no information about the error's cause gets lost.
 
 ## Errors
 

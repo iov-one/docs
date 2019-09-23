@@ -6,15 +6,14 @@ sidebar_label: Models
 
 > [PR#6](https://github.com/iov-one/tutorial/pull/6): _Create models_
 
-We defined our state in [codec section](weave-tutorial/03-codec.md). To use models in Weave we have to wrap our model with some functionalities and enforce it as a **morm.Model**.
-
-Ensure our `OrderBook` fulfills morm.Model:
+We defined our state in [codec section](weave-tutorial/03-codec.md). Models are wrapped codec with functionalities to integrate codec with Weave.
+First ensure our `User` fulfills morm.Model:
 
 ```go
-var _ morm.Model = (*OrderBook)(nil)
+var _ morm.Model = (*User)(nil)
 ```
 
-This is just a helper that enforces OrderBook model to fulfill morm.Model interface so that if you forget to implement a method compiler will complain. Guaranteeing it _I am trying to implement this interface_.
+This is just a helper that enforces User model to fulfill morm.Model interface so that if you forget to implement a method compiler will complain. Guaranteeing it _I am trying to implement this interface_.
 
 Now let's explain our model's identity:
 
@@ -28,24 +27,6 @@ To use your custom identity, do not define `bytes id = 2 [(gogoproto.customname)
 
 Now you see how indexing works in Weave. Let's see the other wonders of the framework.
 
-To our model to fulfill **Model** it must be [Clonable](https://github.com/iov-one/weave/blob/master/orm/interfaces.go#L34).
-
-This is how you ensure it:
-
-```go
-func (o *OrderBook) Copy() orm.CloneableData {
-    return &OrderBook{
-        Metadata:      o.Metadata.Copy(),
-        ID:            copyBytes(o.ID),
-        MarketID:      copyBytes(o.MarketID),
-        AskTicker:     o.AskTicker,
-        BidTicker:     o.BidTicker,
-        TotalAskCount: o.TotalAskCount,
-        TotalBidCount: o.TotalBidCount,
-    }
-}
-```
-
 ## Validation
 
 We will want to fill in these Validate methods to enforce any invariants we demand of the data to keep our database clean. Anyone who has spent much time dealing with production applications knows how “invalid data” can start creeping in without a strict database schema, this is what we do in code.
@@ -53,32 +34,39 @@ We will want to fill in these Validate methods to enforce any invariants we dema
 We can do some basic checks and return an error if any of them does not pass:
 
 ```go
-func (o *OrderBook) Validate() error {
+func (m *User) Validate() error {
     var errs error
 
-    errs = errors.AppendField(errs, "Metadata", o.Metadata.Validate())
-    errs = errors.AppendField(errs, "ID", isGenID(o.ID, true))
-    errs = errors.AppendField(errs, "MarketID", isGenID(o.MarketID, false))
+    errs = errors.AppendField(errs, "Metadata", m.Metadata.Validate())
+    errs = errors.AppendField(errs, "ID", isGenID(m.ID, false))
 
-    if !coin.IsCC(o.AskTicker) {
-        errs = errors.AppendField(errs, "AskTicker", errors.ErrCurrency)
-    }
-    if !coin.IsCC(o.BidTicker) {
-        errs = errors.AppendField(errs, "BidTicker", errors.ErrCurrency)
+    if !validUsername(m.Username) {
+        errs = errors.AppendField(errs, "Username", errors.ErrModel)
     }
 
-    if o.TotalAskCount < 0 {
-        errs = errors.AppendField(errs, "TotalAskCount", errors.ErrModel)
+    if !validBio(m.Bio) {
+        errs = errors.AppendField(errs, "Bio", errors.ErrModel)
     }
-    if o.TotalBidCount < 0 {
-        errs = errors.AppendField(errs, "TotalBidCount", errors.ErrModel)
+
+    if err := m.RegisteredAt.Validate(); err != nil {
+        errs = errors.AppendField(errs, "RegisteredAt", m.RegisteredAt.Validate())
+    } else if m.RegisteredAt == 0 {
+        errs = errors.AppendField(errs, "RegisteredAt", errors.ErrEmpty)
     }
 
     return errs
 }
 ```
 
-We use `errors.AppendField`, It enables multi error validation.
+Here is a sample of username validation function:
+
+```go
+var validUsername = regexp.MustCompile(`^[a-zA-Z0-9_.-]{4,16}$`).MatchString
+```
+
+If you need more complex validation rules for models you can implement custom validation function which uses `github.com/iov-one/weave/errors` as error handling.
+
+We recommend using `errors.AppendField`, It enables multi error validation so no info regarding the error's cause gets lost.
 
 ## Errors
 

@@ -10,7 +10,7 @@ Before starting to setup your validator, please <a href="https://support.iov.one
 
 ## Familiarize yourself with Gitian
 
-Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artefacts and is the distribution method chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
+Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artefacts and is the <a href="https://medium.com/iov-internet-of-values/distribute-open-source-software-the-right-and-verifiable-way-fe12f58df062" target="_blank">distribution method</a> chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
 
 ## Use systemd for running a sentry node or validator
 
@@ -36,7 +36,7 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
-DIR_WORK=/home/iov/boarnet
+DIR_WORK=/home/iov/babynet
 
 # images
 IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.0/bnsd-0.21.0-linux-amd64.tar.gz
@@ -46,8 +46,8 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.persistent_peers=96d70db6a08e194a7ae64b525cb8d1287fe922db@104.155.68.141:26656 \
---rpc.laddr=tcp://0.0.0.0:16657 \
+--p2p.seeds=6cfa2e2f28602fe4779031ce6dc91a9e75ba764d@35.246.220.157:26656,0aa87eb8990603df79914c894a3165cf70880883@35.246.252.171:26656 \
+--rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
 
@@ -140,7 +140,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://rpc.boarnet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
+curl --fail https://gist.githubusercontent.com/davepuchyr/efbfcd7f894bd753eae5f5b26811cdda/raw/bdaafe91befea3394dc2ff337c6b24f08dc16ee1/genesis.json | jq '.' > config/genesis.json
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
@@ -183,7 +183,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.persistent_peers='ce812b7220b91acf11b8bb91905fe20466ffbd5c@35.195.61.59:26656' \
+--p2p.seeds=6cfa2e2f28602fe4779031ce6dc91a9e75ba764d@35.246.220.157:26656,0aa87eb8990603df79914c894a3165cf70880883@35.246.252.171:26656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

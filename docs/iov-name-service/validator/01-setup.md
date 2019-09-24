@@ -36,7 +36,7 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
-DIR_WORK=/home/iov/boarnet
+DIR_WORK=/home/iov/babynet
 
 # images
 IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.0/bnsd-0.21.0-linux-amd64.tar.gz
@@ -46,8 +46,8 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.persistent_peers=96d70db6a08e194a7ae64b525cb8d1287fe922db@104.155.68.141:26656 \
---rpc.laddr=tcp://0.0.0.0:16657 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@134.209.29.243:16656 \
+--rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
 
@@ -140,7 +140,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://rpc.boarnet.iov.one/genesis | jq '.result.genesis' > config/genesis.json
+curl --fail https://gist.githubusercontent.com/davepuchyr/efbfcd7f894bd753eae5f5b26811cdda/raw/c38d6833aa64905ab871d776b980755234681cb6/gistfile1.txt | jq '.' > config/genesis.json
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line

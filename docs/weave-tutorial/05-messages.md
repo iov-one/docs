@@ -32,30 +32,38 @@ When we define a concrete transaction type for one application, we define it in 
 
 Messages are similar to the `POST`, `DELETE`, `PUT` endpoints in a typical REST API. They are the way to effect a change in the system. Ignoring the issue of authentication and rate limitation, which is handled by the Decorators / Middleware, when we design Messages, we focus on all possible state transitions and the information they need in order to proceed.
 
-In the Order book example, we can imagine:
+In the blog example, we can imagine these possible messages:
 
-- Create market
-- Create order book
-- Create order
+- Create user
+- Create blog
+- Create article
+- Delete article
+- Create comment
+- Create like
 
 ## Dive into Code
 
 First create your `msg.go` file. This is where the magic will happen.
-Then create an **init()** function and register to migration schema:
+Then create an **init()** function and register to migration schema, we will explain `migration` concept in proceeding chapters:
 
 ```go
 func init() {
     // Migration needs to be registered for every message introduced in the codec.
-    migration.MustRegister(1, &CreateOrderBookMsg{}, migration.NoModification)
+    migration.MustRegister(1, &CreateUserMsg{}, migration.NoModification)
+    migration.MustRegister(1, &CreateBlogMsg{}, migration.NoModification)
+    migration.MustRegister(1, &CreateArticleMsg{}, migration.NoModification)
+    migration.MustRegister(1, &DeleteArticleMsg{}, migration.NoModification)
+    migration.MustRegister(1, &CreateCommentMsg{}, migration.NoModification)
+    migration.MustRegister(1, &CreateLikeMsg{}, migration.NoModification)
 }
 ```
 
 Define path that will be used for routing messages to Handler:
 
 ```go
-// Path implementes weave.Msg interface.
-func (CreateOrderBookMsg) Path() string {
-    return "order book/create_orderbook"
+// Path implements weave.Msg interface by returning the routing path for this message
+func (CreateUserMsg) Path() string {
+    return "blog/create_user"
 }
 ```
 
@@ -69,46 +77,66 @@ var _ weave.Msg = (*CreateOrderBookMsg)(nil)
 
 While validation of data models is much more like SQL constraints: “**max length 20**”, “**not null**”, “**constaint foo > 3**”, validation of messages is validating potentially malicious data coming in from external sources and should be validated more thoroughly. One may want to use regexp to avoid control characters or null bytes in a “string” input. Maybe restrict it to alphanumeric or ASCII characters, strip out HTML, or allow full UTF-8. Addresses must be checked to be the valid length. Amount being sent to be positive (else I send you -5 ETH and we have a **TakeMsg**, instead of **SendMsg**).
 
-Validate method on a message must only provide a sanity check for the data it represents and must not rely on any external state. Message can only ensure the data format and hardcoded logic. It cannot validate business logic. Business logic is validated in a **handler**.
+Validate method on a message must only provide a sanity check for the data it represents and must not rely on any external state. Message can only ensure the data format and hardcoded logic. It cannot validate business logic. Business logic is validated in a **handler**. Also time related validation must be done in **handler** because no current context information, which contains time information, is not present in the message validation context.
 
 The validation of messages should be a lot more thorough and well tested than the validation on data models, which is as much documentation of acceptable values as it is runtime security.
 
-`Validate` method of `CreateOrderBookMsg`:
+`Validate` method of `CreateUserMsg`:
 
 ```go
-// Validate ensures the CreateOrderBookMsg is valid
-func (m CreateOrderBookMsg) Validate() error {
+// Validate ensures the CreateUserMsg is valid
+func (m CreateUserMsg) Validate() error {
     var errs error
 
     errs = errors.AppendField(errs, "Metadata", m.Metadata.Validate())
-    errs = errors.AppendField(errs, "MarketID", validateID(m.MarketID))
+    if !validUsername(m.Username) {
+        errs = errors.AppendField(errs, "Username", errors.ErrModel)
+    }
 
-    if !coin.IsCC(m.AskTicker) {
-        errs = errors.AppendField(errs, "AskTicker", errors.ErrCurrency)
+    if !validBio(m.Bio) {
+        errs = errors.AppendField(errs, "Bio", errors.ErrModel)
     }
-    if !coin.IsCC(m.BidTicker) {
-        errs = errors.AppendField(errs, "BidTicker", errors.ErrCurrency)
-    }
-    if m.BidTicker <= m.AskTicker {
-        errs = errors.Append(errs,
-            errors.Field("BidTicker", errors.ErrCurrency, "ask must be before bid"))
-    }
+
     return errs
 }
 ```
 
+`CreateUserMsg` does not contain any ID because ID will be assigned to the object during runtime. External ID validation is demonstrated on `CreateCommentMsg`:
+
 ```go
-// validateID returns an error if this is not an 8-byte ID
-// as expected for orm.IDGenBucket
-func validateID(id []byte) error {
+// Validate ensures the CreateCommentMsg is valid
+func (m CreateCommentMsg) Validate() error {
+    var errs error
+
+    errs = errors.AppendField(errs, "Metadata", m.Metadata.Validate())
+    errs = errors.AppendField(errs, "ArticleID", isGenID(m.ArticleID, false))
+
+    if !validArticleContent(m.Content) {
+        errs = errors.AppendField(errs, "Content", errors.ErrModel)
+    }
+
+    return errs
+}
+```
+
+Weave buckets use keys as 8 bytes so ID must be 8 bytes long:
+
+```go
+// isGenID ensures that the ID is 8 byte input.
+// if allowEmpty is set, we also allow empty
+// TODO change with validateSequence when weave 0.22.0 is released
+func isGenID(id []byte, allowEmpty bool) error {
     if len(id) == 0 {
-        return errors.Wrap(errors.ErrEmpty, "id missing")
+        if allowEmpty {
+            return nil
+        }
+        return errors.Wrap(errors.ErrEmpty, "missing id")
     }
     if len(id) != 8 {
-        return errors.Wrap(errors.ErrInput, "id is invalid length (expect 8 bytes)")
+        return errors.Wrap(errors.ErrInput, "id must be 8 bytes")
     }
     return nil
 }
 ```
 
-You must have noticed we even validate if `ID`'s length is not 0 and equal to 8 and tickers are actually string tickers. **Remember** the more validation, the more solid your application is. If you **constrain** possible inputs, you can write **less** validation in the business logic.
+**Remember** the more validation, the more solid your application is. If you **constrain** possible inputs, you can write **less** validation in the business logic.

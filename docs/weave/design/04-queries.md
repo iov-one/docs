@@ -58,7 +58,7 @@ By default, we expect `Data` to include a raw key to match in that context. Howe
 
 ### Examples
 
-[namecoin.NewWalletBucket](https://github.com/iov-one/weave/blob/master/x/namecoin/wallet.go#L107-L113) adds a `name` field to the account, along with a secondary index. It is [registered under /wallets](https://github.com/iov-one/weave/blob/master/x/namecoin/handler.go#L52-L57) in the QueryHandler.
+[namecoin.NewWalletBucket](https://github.com/iov-one/weave/blob/v0.21.0/x/namecoin/wallet.go#L107-L113) adds a `name` field to the account, along with a secondary index. It is [registered under /wallets](https://github.com/iov-one/weave/blob/v0.21.0/x/namecoin/handler.go#L52-L57) in the QueryHandler.
 
 Path: `/`, Data: `0123456789` (hex):  
 db.Get(`0123456789`)
@@ -95,4 +95,4 @@ These then can be registered with a `Router` that also implements QueryHandler, 
 
 ## Merkle Proofs
 
-**Proofs are not yet implemented.** This is both due to prioritization of other features, and also as we wish to provide a solid proof format that is useful for IBC as well, and watching Cosmos-SDK development so we can maintain compatibility. As this format is recently stabilized inside the Cosmos hub, implementation in Weave should not be too far off. If want you can follow up the issue on [github](https://github.com/iov-one/weave/issues/5 "Define proofs for query #5").
+**Proofs are not yet implemented.** This is both due to prioritization of other features, and also as we wish to provide a solid proof format that is useful for IBC as well, and watching Cosmos-SDK development so we can maintain compatibility. As this format is recently stabilized inside the Cosmos hub, implementation in Weave should not be too far off. If want you can follow up the issue on [github](https://github.com/iov-one/weave/issues/5 'Define proofs for query #5').

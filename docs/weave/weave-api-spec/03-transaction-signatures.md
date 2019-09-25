@@ -31,7 +31,7 @@ Signature input body format is:
 | ------: | ------------ | ------------ | ----------------- | ---------------------- |
 |  4bytes | uint8        | ascii string | int64 (bigendian) | serialized transaction |
 
-- **version** is the current way to prefix the bytes. Its current value is hex `00xCA0xFE00`. Please refer to [iov-one/weave/sigs/SignCodeV1](https://github.com/iov-one/weave/blob/v0.20.0/x/sigs/controller.go#L14).
+- **version** is the current way to prefix the bytes. Its current value is hex `00xCA0xFE00`. Please refer to [iov-one/weave/sigs/SignCodeV1](https://github.com/iov-one/weave/blob/v0.21.0/x/sigs/controller.go#L14).
 
 After this arbitrary bytes is put together, which must feed the output of a hashing algorithm (or max 64 bytes) into the ed25519 signature calculation, this is then prehashed with **sha512** before fed into the public key signing/verification step. This step is applied to guarantee signing could be done by a ledger.
 

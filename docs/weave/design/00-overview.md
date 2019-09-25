@@ -34,7 +34,7 @@ Before including a transaction, or gossiping it to peers, every node will call `
 
 ## Execution of Blocks
 
-After a block is written to the chain, the Tendermint engine makes a number of calls to process it. These are our hooks to make any *writes* to the datastore.
+After a block is written to the chain, the Tendermint engine makes a number of calls to process it. These are our hooks to make any _writes_ to the datastore.
 
 - **BeginBlock**
 
@@ -73,6 +73,6 @@ type Persistent interface {
 
 Note that Marshal can work with a struct, while Unmarshal (almost) always requires a pointer to work properly. You may define these two functions for every persistent data structure in your code, using any codec you want. However, for simplicity and cross-language parsing on the client size, we recommend to define `.proto` files and compile them with protobuf.
 
-[gogo protobuf](https://github.com/gogo/protobuf) will autogenerate Marshal and Unmarshal functions requiring no reflection. See the [Makefile](https://github.com/iov-one/weave/blob/master/Makefile) for `tools` and `protoc` which show how to automate installing the protobuf compiler and compiling the files.
+[gogo protobuf](https://github.com/gogo/protobuf) will autogenerate Marshal and Unmarshal functions requiring no reflection. See the [Makefile](https://github.com/iov-one/weave/blob/v0.21.0/Makefile) for `tools` and `protoc` which show how to automate installing the protobuf compiler and compiling the files.
 
 However, if you have another favorite codec, feel free to use that. Or mix and match. Each struct can use its own Marshaller.

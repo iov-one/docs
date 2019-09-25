@@ -138,6 +138,6 @@ Since the request is with prefix, multiple values will be returned.
 
 ### Parsing responses
 
-The `key` and `value` values here are encoded with [ResultSet](https://github.com/iov-one/weave/blob/v0.20.0/spec/proto/app/results.proto#L5-L9). In order to decode ResultSet, import protobuf definition as mentioned in [Weave Transactions](weave/weave-api-spec/02-transaction.md). You can take a look at [iov-core](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L674-L679) implementation.
+The `key` and `value` values here are encoded with [ResultSet](https://github.com/iov-one/weave/blob/v0.21.0/spec/proto/app/results.proto#L5-L9). In order to decode ResultSet, import protobuf definition as mentioned in [Weave Transactions](weave/weave-api-spec/02-transaction.md). You can take a look at [iov-core](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L674-L679) implementation.
 
 **Important:** Every key will include the bucket's name as prefix. As you can see on [iov-core/iov-bns](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L159-L177) and [iov-core/iov-bns/bnsconnection/getAccount](https://github.com/iov-one/iov-core/blob/v0.15.0/packages/iov-bns/src/bnsconnection.ts#L341) every key field in the ResultSet must begin with `cash:`

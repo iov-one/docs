@@ -4,9 +4,9 @@ title: Flow of Transactions
 sidebar_label: Flow of Transactions
 ---
 
-Weave implements the complexity of the ABCI interface for you and only exposes a few key points for you to add your custom logic. We provide you a [default merklized key value store](https://github.com/iov-one/weave/blob/master/store/iavl/adapter.go) to store all the data, which exposes a simple interface, similar to LevelDB.
+Weave implements the complexity of the ABCI interface for you and only exposes a few key points for you to add your custom logic. We provide you a [default merklized key value store](https://github.com/iov-one/weave/blob/v0.21.0/store/iavl/adapter.go) to store all the data, which exposes a simple interface, similar to LevelDB.
 
-When you create a [new BaseApp](https://github.com/iov-one/weave/blob/master/app/base.go#L22-L33), you must provide:
+When you create a [new BaseApp](https://github.com/iov-one/weave/blob/v0.21.0/app/base.go#L22-L33), you must provide:
 
 - a merkelized data store (default provided)
 - a txdecoder to parse the incoming transaction bytes
@@ -17,7 +17,7 @@ The merkelized data store automatically supports `Queries` (with proofs), and th
 
 ## Transactions
 
-A transaction must be [Persistent](#Persistence) and contain the message we wish to process, as well as an envelope. It implements the minimal `Tx` interface, and can also implement a number of additional interfaces to be compatible with the particular middleware stack in use in your application. For example, supporting the [x/sigs/Decorator](https://github.com/iov-one/weave/blob/master/x/sigs/decorator.go#L53) or the [x/cash/FeeDecorator](https://github.com/iov-one/weave/blob/master/x/cash/staticfee.go#L114) require a Tx that fulfills interfaces to expose the signer or the fee information.
+A transaction must be [Persistent](#Persistence) and contain the message we wish to process, as well as an envelope. It implements the minimal `Tx` interface, and can also implement a number of additional interfaces to be compatible with the particular middleware stack in use in your application. For example, supporting the [x/sigs/Decorator](https://github.com/iov-one/weave/blob/v0.21.0/x/sigs/decorator.go#L53) or the [x/cash/FeeDecorator](https://github.com/iov-one/weave/blob/v0.21.0/x/cash/staticfee.go#L114) require a Tx that fulfills interfaces to expose the signer or the fee information.
 
 Once the transaction has been processed by the middleware stack, we can call `GetMsg()` to extract the actual message with the action we wish to perform.
 

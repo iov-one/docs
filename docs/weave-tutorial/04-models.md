@@ -28,7 +28,7 @@ To use your custom identity, do not define `bytes id = 2 [(gogoproto.customname)
 
 Now you see how indexing works in Weave. Let's see the other wonders of the framework.
 
-To our model to fulfill **Model** it must be [Clonable](https://github.com/iov-one/weave/blob/master/orm/interfaces.go#L34).
+To our model to fulfill **Model** it must be [Clonable](https://github.com/iov-one/weave/blob/v0.21.0/orm/interfaces.go#L34).
 
 This is how you ensure it:
 
@@ -82,7 +82,7 @@ We use `errors.AppendField`, It enables multi error validation.
 
 ## Errors
 
-Here are some Weave errors taken from [weave/errors](https://github.com/iov-one/weave/blob/master/errors/errors.go 'Weave errors'):
+Here are some Weave errors taken from [weave/errors](https://github.com/iov-one/weave/blob/v0.21.0/errors/errors.go 'Weave errors'):
 
 ```go
 // ErrUnauthorized is used whenever a request without sufficient
@@ -98,11 +98,11 @@ ErrNotFound = Register(3, "not found")
 ErrMsg = Register(4, "invalid message")
 ```
 
-What is with these `ErrXYZ()` calls, you may think? Well, we could return a “normal” error like `errors.New("fail")`, but we wanted two more features. First of all, it helps debugging enormously to have a stack trace of where the error occurred. For this, we use [pkg/errors](https://github.com/pkg/errors "go/pkg") that attach a stack trace to the error that can optionally be printed later with a `Printf("%+v", err)`. We also want to return a unique abci error code, which may be interpreted by client applications, either programmatically or to provide translations of the error message client side.
+What is with these `ErrXYZ()` calls, you may think? Well, we could return a “normal” error like `errors.New("fail")`, but we wanted two more features. First of all, it helps debugging enormously to have a stack trace of where the error occurred. For this, we use [pkg/errors](https://github.com/pkg/errors 'go/pkg') that attach a stack trace to the error that can optionally be printed later with a `Printf("%+v", err)`. We also want to return a unique abci error code, which may be interpreted by client applications, either programmatically or to provide translations of the error message client side.
 
-For these reasons, Weave provides some utility methods and common error types in the errors [package](https://godoc.org/github.com/iov-one/weave/errors). The ABCI Code attached to the error is then returned in the [DeliverTx Result](https://github.com/iov-one/weave/blob/v0.20.0/abci.go#L114-L126).
+For these reasons, Weave provides some utility methods and common error types in the errors [package](https://godoc.org/github.com/iov-one/weave/errors). The ABCI Code attached to the error is then returned in the [DeliverTx Result](https://github.com/iov-one/weave/blob/v0.21.0/abci.go#L114-L126).
 
-Every package ideally can define its own custom error types and error codes, generally in a file called [errors.go](https://github.com/iov-one/weave/blob/master/x/sigs/errors.go). The key elements are:
+Every package ideally can define its own custom error types and error codes, generally in a file called [errors.go](https://github.com/iov-one/weave/blob/v0.21.0/x/sigs/errors.go). The key elements are:
 
 ```go
 // ABCI Response Codes

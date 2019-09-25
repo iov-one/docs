@@ -20,11 +20,11 @@ In a nutshell, protobuf is an effective and easy-to-use serialization format. To
 
 ### Weave proto definitions
 
-_Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/master/spec/proto) for easy access and usage. Dive in to _weave/spec/proto_ to get some idea of how _Weave codec_ files are defined and structured.
+_Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/v0.21.0/spec/proto) for easy access and usage. Dive in to _weave/spec/proto_ to get some idea of how _Weave codec_ files are defined and structured.
 
 ## Weave/Tx (Transactions)
 
-Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.20.0/spec/proto/cmd/bnsd/app/codec.proto).
+Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.21.0/spec/proto/cmd/bnsd/app/codec.proto).
 
 All the required _proto_ files for connecting to `BNS` or any `Weave` based blockchain is using this `tx codec`.
 
@@ -108,7 +108,7 @@ To import the required tools to communicate and send transactions to _Weave/bnsd
 
 ### 1 - Import _bnsd_ protobuf definitions
 
-- Copy the entire [weave/spec/proto/](https://github.com/iov-one/weave/tree/master/spec/proto) into the repo, as the imports should refer to local files.
+- Copy the entire [weave/spec/proto/](https://github.com/iov-one/weave/tree/v0.21.0/spec/proto) into the repo, as the imports should refer to local files.
 
 ### 2 - Install your preferred language-specific protoc plugin
 

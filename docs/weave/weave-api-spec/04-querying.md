@@ -21,7 +21,7 @@ Via running the JSON-RPC/HTTP call below, **lovenet** testnet could be queried s
 ```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321",
 "method": "abci_query", "params": { "path": "/escrows/source", "data": "0000000000000000000000000000000000000000" } }' \
-https://bns.lovenet.iov.one/
+https://rpc.babynet.iov.one/
 ```
 
 ### Bucket paths
@@ -40,7 +40,7 @@ For accessing the data residing inside buckets, indexes are used. For example, t
 [//]: # 'TODO change testnet URLs to mainnet after it is launched'
 
 ```bash
-curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "CBC76ADED2C9DB439DB4C8D714CF26DAE5229A91" } }' https://bns.lovenet.iov.one/
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets", "data": "CBC76ADED2C9DB439DB4C8D714CF26DAE5229A91" } }' https://rpc.babynet.iov.one/
 ```
 
 - Path: `/`, Data: `0123456789` (hex) -> db.Get(`0123456789`)
@@ -72,7 +72,7 @@ There might be cases where you want to retrieve all the data which has the same 
     ```bash
     curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query",
     "params": { "path": "/wallets?prefix", "data": "" } }' \
-    https://bns.lovenet.iov.one/
+    https://rpc.babynet.iov.one/
     ```
 
   - For example, the query below will return all the tokens saved under token bucket in again ResultSet.
@@ -80,7 +80,7 @@ There might be cases where you want to retrieve all the data which has the same 
     ```bash
       curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query",
       "params": { "path": "/tokens?prefix", "data": "" } }' \
-      https://bns.lovenet.iov.one/
+      https://rpc.babynet.iov.one/
     ```
 
 - Path: `/wallets?prefix`, Data: `0123456789` (hex) -> db.Iterator(`0123456789`, `012345678A`)
@@ -91,7 +91,7 @@ There might be cases where you want to retrieve all the data which has the same 
 Since Weave queries are routed to tendermint ABCI protocol, tendermint forces responses to be in `key/value` format. Reference: [tendermint/abci-spec#query](https://tendermint.readthedocs.io/en/v0.21.0/abci-spec.html#query).
 
 ```bash
-curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "CBC76ADED2C9DB439DB4C8D714CF26" } }' https://bns.lovenet.iov.one/
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321", "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "CBC76ADED2C9DB439DB4C8D714CF26" } }' https://rpc.babynet.iov.one/
 ```
 
 When the curl command above is executed, this response will be received:
@@ -117,7 +117,7 @@ For non-existent objects Weave returns the current block height. Such as:
 ```bash
 curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321",
 "method": "abci_query", "params": { "path": "/wallets?prefix", "data": "0123456789" } }' \
-https://bns.lovenet.iov.one/
+https://rpc.babynet.iov.one/
 ```
 
 The response will be:

@@ -40,7 +40,7 @@ DIR_WORK=/home/iov/babynet
 
 # images
 IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.0/bnsd-0.21.0-linux-amd64.tar.gz
-IMAGE_IOVNS_OPTS="-min_fee '0.5 IOV'"
+IMAGE_IOVNS_OPTS=""
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.5-iov2/tendermint-0.31.5-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \

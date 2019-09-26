@@ -25,7 +25,7 @@ cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
 
-This document assumes that `curl`, `expr`, `grep`, `jq`, `sed`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
+This document assumes that `basename`, `curl`, `expr`, `grep`, `jq`, `sed`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
 sudo su # make life easier for the next ~100 lines
@@ -39,7 +39,7 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/babynet
 
 # images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.0/bnsd-0.21.0-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.1/bnsd-0.21.1-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.5-iov2/tendermint-0.31.5-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
@@ -127,8 +127,8 @@ systemctl daemon-reload
 
 # download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum bnsd*.gz       | fgrep 5b4ac76b4c0a06afdcd36687cec0352f33f46e41a60f61cdf7802225ed5ba1e8 && tar xvf bnsd*.gz || echo "BAD BINARY!"
-wget ${IMAGE_TM}    && sha256sum tendermint*.gz | fgrep 421548f02dadca48452375b5905fcb49a267981b537c143422dde0591e46dc93 && tar xvf tendermint*.gz || echo "BAD BINARY!"
+wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | fgrep a5f94af8cc1b606844dcb267ef93a365a1123145313054285e1f47a474d1744d && tar xvf $(basename $IMAGE_IOVNS) || echo "BAD BINARY!"
+wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM) | fgrep 421548f02dadca48452375b5905fcb49a267981b537c143422dde0591e46dc93 && tar xvf $(basename $IMAGE_TM) || echo "BAD BINARY!"
 
 exit # root
 

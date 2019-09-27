@@ -7,7 +7,7 @@ sidebar_label: Buckets
 > [PR#8](https://github.com/iov-one/tutorial/pull/8): _Create buckets_ > \
 > [PR#9](https://github.com/iov-one/tutorial/pull/9): _Add indexer for market using marketID, askTicker, bidTicker_
 
-In Weave framework, Buckets are the standard way to access and manipulate data, which is stored in \*_Key-Value Database_. Weave buckets could be found similar to [BoltDB](https://github.com/boltdb/bolt#using-buckets 'Bolt Repo') or [LevelDB](https://github.com/google/leveldb 'LevelDB Repo') design. Any extension can use one or multiple Buckets to store and access data. Buckets offer the following advantages:
+In Weave framework, Buckets are the standard way to access and manipulate data, which is stored in _Key-Value Database_. Weave buckets could be found similar to [BoltDB](https://github.com/boltdb/bolt#using-buckets 'Bolt Repo') or [LevelDB](https://github.com/google/leveldb 'LevelDB Repo') design. Any extension can use one or multiple Buckets to store and access data. Buckets offer the following advantages:
 
 - Isolation between extensions (each Bucket has a unique prefix that is transparently prepended to the keys)
 - Type safety (enforce all data stored in a Bucket is the same type, to avoid parse errors later on)
@@ -28,10 +28,10 @@ type SimpleObj struct {
 Easiest way to achieve this is to use `ModelBucket`.
 
 ```go
-b := orm.NewModelBucket("market", &Market{})
+b := orm.NewModelBucket("user", &User{})
 ```
 
-`orm.NewModelBucket` wraps `Market` in SimpleObj internally:
+`orm.NewModelBucket` wraps `User` in SimpleObj internally:
 
 ```go
 // NewModelBucket returns a ModelBucket instance. This implementation relies on
@@ -40,6 +40,10 @@ b := orm.NewModelBucket("market", &Market{})
 func NewModelBucket(name string, m Model, opts ...ModelBucketOption) ModelBucket {
     b := NewBucket(name, NewSimpleObj(nil, m))
 ```
+
+<!---
+TODO refactor here when blog is upgraded to v0.22.0
+-->
 
 And be sure protobuf objects implemented `CloneableData`:
 
@@ -57,64 +61,61 @@ This basically consists of adding _Copy()_ and _Validate()_ to the objects in `c
 
 ## Dive into Code
 
-Let's define `MarketBucket` that will hold `Market` information and write a function that creates a market. This is a basic `morm/model_bucket` without any secondary index.
+Let's define `UserBucket` that will hold `User` information and write a function that creates an user. This is a basic `morm/model_bucket` without any secondary index.
 
 ```go
-type MarketBucket struct {
+type UserBucket struct {
     morm.ModelBucket
 }
 
-func NewMarketBucket() *MarketBucket {
-    b := morm.NewModelBucket("market", &Market{})
-    return &MarketBucket{
-        ModelBucket: b,
+// NewUserBucket returns a new user bucket
+func NewUserBucket() *UserBucket {
+    return &UserBucket{
+        morm.NewModelBucket("user", &User{}),
     }
 }
 ```
 
-Now create your `OrderBookBucket` with secondary indexes. Secondary indexes enable you to insert and query models with ease. Think of this as a SQL index.
+We will demonstrate secondary index usage with `ArticleBucket.`. Secondary indexes enable you to insert and query models with ease. Think of this as a SQL index.
 
 ```go
-type OrderBookBucket struct {
+type ArticleBucket struct {
     morm.ModelBucket
 }
 
-// NewOrderBookBucket initates order book with required indexes
-func NewOrderBookBucket() *OrderBookBucket {
-    b := morm.NewModelBucket("order book", &OrderBook{},
-        morm.WithIndex("market", marketIDindexer, false),
-        morm.WithIndex("marketWithTickers", marketIDTickersIndexer, true),
-    )
-
-    return &OrderBookBucket{
-        ModelBucket: b,
+// NewArticleBucket returns a new article bucket
+func NewArticleBucket() *ArticleBucket {
+    return &ArticleBucket{
+        morm.NewModelBucket("article", &Article{},
+            morm.WithIndex("blog", articleBlogIDIndexer, false),
+            morm.WithIndex("timedBlog", blogTimedIndexer, false)),
     }
 }
 ```
 
-Let's explain what the heck is `morm.WithIndex("market", marketIDindexer, false)`.
+Let's explain what the heck is `morm.WithIndex("blog", articleBlogIDIndexer, false)`?
 
 ## Secondary Indexes
 
-Sometimes we need another index for the data. Generally, we will look up an order book from the market it belongs to and its index in the market. But what if we want to list all Orderbooks of a market overall Order books? For this, we need to add a secondary index on the Order books to query by market. This is a typical case and Weave provides nice support for this functionality.
+Sometimes we need another index for the data. Generally, we will look up an article from the blog it belongs to and its index in the article. But what if we want to list all articles of a blog overall articles? For this, we need to add a secondary index on the articles to query by blog. This is a typical case and Weave provides nice support for this functionality.
 
-We add an indexing method to take any object, enforce the type to be a proper Order book, then extract the index we want. This can be a field or any deterministic transformation of one (or multiple) fields. The output of the index becomes key in another query. Bucket provides a simple method to query by index.
+We add an indexing method to take any object, enforce the type to be a proper Article, then extract the index we want. This can be a field or any deterministic transformation of one (or multiple) fields. The output of the index becomes key in another query. Bucket provides a simple method to query by index.
 
-**marketIDindexer** is a secondary index with only market ID. This is a simple index form to implement.
-It binds OrderBook to a MarketId(_bytes_)
+**articleBlogIDIndexer** is a secondary index with only **BlogID**. This is a simple index form to implement. It binds article to a BlogID(_bytes_)
 
 Weave uses uniformed _bytes_ as indexes. This improves performance.
 
 ```go
-func marketIDindexer(obj orm.Object) ([]byte, error) {
+// articleBlogIDIndexer enables querying articles by blog ids
+func articleBlogIDIndexer(obj orm.Object) ([]byte, error) {
     if obj == nil || obj.Value() == nil {
         return nil, nil
     }
-    ob, ok := obj.Value().(*OrderBook)
+    article, ok := obj.Value().(*Article)
     if !ok {
-        return nil, errors.Wrapf(errors.ErrState, "expected order book, got %T", obj.Value())
+        return nil, errors.Wrapf(errors.ErrState, "expected article, got %T", obj.Value())
     }
-    return ob.MarketID, nil
+    return article.BlogID, nil
 }
 ```
 
@@ -125,22 +126,25 @@ Don't worry. Weave is like a Swiss Army knife with a lot of blockchain features.
 Here is how we create compound index for morm buckets:
 
 ```go
-func BuildMarketIDTickersIndex(order book *OrderBook) []byte {
-    askTickerByte := make([]byte, tickerByteSize)
-    copy(askTickerByte, order book.AskTicker)
-
-    bidTickerByte := make([]byte, tickerByteSize)
-    copy(bidTickerByte, order book.BidTicker)
-
-    return bytes.Join([][]byte{order book.MarketID, askTickerByte, bidTickerByte}, nil)
+// BuildArticleUserIndex indexByteSize = 8(ArticleID) + 8(UserID)
+func BuildArticleUserIndex(comment *Comment) []byte {
+    return bytes.Join([][]byte{comment.ArticleID, comment.Owner}, nil)
 }
 ```
 
-_BuildMarketIDTickersIndex = indexByteSize = 8(MarketID) + ask ticker size + bid ticker size_
+Sample compound article and user index for comments = `0000000100000001` where `00000001` is the article's ID and latter `00000001` is user ID.
 
-Sample market id index with tickers = `000000056665820070797900`
+We can query an users comments on an article with a single index thanks to the code above.
 
-`000000056665820070797900` = 00000005(**MarketID = 5**) + 6665200(**BAR ticker in bytes**) + 70797900(**FOO ticker in bytes**)
+## Querying buckets
+
+On [Weave API spec](weave/weave-api-spec/weave-query-spec) documentation querying `bns` buckets has been explained. If we were to give an example of querying on comment bucket it would have been via RPC endpoints:
+
+```sh
+curl -X POST -d '{ "json-rpc": 2.0, "id": "foobar321",
+"method": "abci_query", "params": { "path": "/comment/articleuser", "data": "0000000100000001" } }' \
+https://rpc.blog.testnet.iov.one/
+```
 
 ## Custom Buckets
 

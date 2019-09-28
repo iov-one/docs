@@ -10,7 +10,7 @@ sidebar_label: Buckets
 In Weave framework, Buckets are the standard way to access and manipulate data, which is stored in _Key-Value Database_. Weave buckets could be found similar to [BoltDB](https://github.com/boltdb/bolt#using-buckets 'Bolt Repo') or [LevelDB](https://github.com/google/leveldb 'LevelDB Repo') design. Any extension can use one or multiple Buckets to store and access data. Buckets offer the following advantages:
 
 - Isolation between extensions (each Bucket has a unique prefix that is transparently prepended to the keys)
-- Type safety (enforce all data stored in a Bucket is the same type, to avoid parse errors later on)
+- Type safety (enforce all data stored in a Bucket to be the same type, to avoid parse errors later on)
 - Indexes (Buckets are well integrated with the secondary indexes and keep them in sync every time data is modified)
 - Querying (Buckets can easily register query handlers including prefix queries and secondary index queries)
 
@@ -76,7 +76,7 @@ func NewUserBucket() *UserBucket {
 }
 ```
 
-We will demonstrate secondary index usage with `ArticleBucket.`. Secondary indexes enable you to insert and query models with ease. Think of this as a SQL index.
+We will demonstrate secondary index usage with `ArticleBucket`. Secondary indexes enable you to insert and query models with ease. Think of this as a SQL index.
 
 ```go
 type ArticleBucket struct {
@@ -97,11 +97,11 @@ Let's explain what the heck is `morm.WithIndex("blog", articleBlogIDIndexer, fal
 
 ## Secondary Indexes
 
-Sometimes we need another index for the data. Generally, we will look up an article from the blog it belongs to and its index in the article. But what if we want to list all articles of a blog overall articles? For this, we need to add a secondary index on the articles to query by blog. This is a typical case and Weave provides nice support for this functionality.
+Sometimes we need another index for the data. Generally, we will look up an article from the blog it belongs to and its index in the article. But what if we want to list all articles of a blog in all article instances? For this, we need to add a secondary index on the articles to query by blog. This is a typical case and Weave provides nice support for this functionality.
 
 We add an indexing method to take any object, enforce the type to be a proper Article, then extract the index we want. This can be a field or any deterministic transformation of one (or multiple) fields. The output of the index becomes key in another query. Bucket provides a simple method to query by index.
 
-**articleBlogIDIndexer** is a secondary index with only **BlogID**. This is a simple index form to implement. It binds article to a BlogID(_bytes_)
+**articleBlogIDIndexer** is a secondary index with only **BlogID**. This is a simple index form to implement. It binds Article to a BlogID(_bytes_).
 
 Weave uses uniformed _bytes_ as indexes. This improves performance.
 

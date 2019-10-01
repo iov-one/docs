@@ -6,68 +6,25 @@ sidebar_label: Handlers
 
 ## Message Handlers
 
-A message is a statement of intention, and wrapped in a transaction,
-while provides authorization to this intention. Once this message
-ends up in the ABCI application and is to be processed, we send it
-to a [Handler](https://godoc.org/github.com/iov-one/weave#Handler)
-which we have registered for this application.
+A message is a statement of intention, and wrapped in a transaction, while provides authorization to this intention. Once this message ends up in the ABCI application and is to be processed, we send it to a [Handler](https://godoc.org/github.com/iov-one/weave#Handler) which we have registered for this application.
 
 ## Check vs Deliver
 
-If you look at the definition of a _Handler_, you will see it is
-responsible for _Check_ and _Deliver_. These are similar logic, but
-there is an important distinction. _Check_ is performed when
-a client proposes the transaction to the mempool, before it is
-added to a block. It is meant as a quick filter to weed out garbage
-transactions before writing them to the blockchain. The state it
-provides is a scratch buffer around the last committed state and
-will be discarded next block, so any writes here are never written
-to disk.
+If you look at the definition of a _Handler_, you will see it is responsible for _Check_ and _Deliver_. These are similar logic, but there is an important distinction. _Check_ is performed when a client proposes the transaction to the mempool, before it is added to a block. It is meant as a quick filter to weed out garbage transactions before writing them to the blockchain. The state it provides is a scratch buffer around the last committed state and will be discarded next block, so any writes here are never written to disk.
 
-_Deliver_ is performed after the transaction was written to
-the block. Upon consensus, every node will process the block
-by calling _BeginBlock_, _Deliver_ for every transaction in the block,
-and finally _EndBlock_ and _Commit_. _Deliver_ will be called in
-the same order on every node and must make the **exact same changes**
-on every node, both now and in the future when the blocks are
-replayed. Even the slightest deviation will cause the merkle root
-of the store at the end of the block to differ with other nodes,
-and thus kick the deviating nodes out of consensus.
-(Note that _Check_ may actually vary between nodes without breaking
-consensus rules, although we generally keep this deterministic as well).
+_Deliver_ is performed after the transaction was written to the block. Upon consensus, every node will process the block by calling _BeginBlock_, _Deliver_ for every transaction in the block, and finally _EndBlock_ and _Commit_. _Deliver_ will be called in the same order on every node and must make the **exact same changes** on every node, both now and in the future when the blocks are replayed. Even the slightest deviation will cause the merkle root of the store at the end of the block to differ with other nodes, and thus kick the deviating nodes out of consensus. (Note that _Check_ may actually vary between nodes without breaking consensus rules, although we generally keep this deterministic as well).
 
-**This is a very powerful concept and means that when modifying a given state,
-users must not worry about any concurrent access or writing collision
-since by definition, any write access is guaranteed to occur sequentially and
-in the same order on each node**
+**This is a very powerful concept and means that when modifying a given state, users must not worry about any concurrent access or writing collision since by definition, any write access is guaranteed to occur sequentially and in the same order on each node**
 
 ## Writing a Handler
 
-We usually can write a separate handler for each message type,
-although you can register multiple messages with the same
-handler if you reuse most of the code. Let's focus on the
-simplest cases, and the handlers for creating a Blog and
-adding a Post to an existing blog.
+We usually can write a separate handler for each message type, although you can register multiple messages with the same handler if you reuse most of the code. Let's focus on the simplest cases, and the handlers for creating a Blog and adding a Post to an existing blog.
 
-Note that we can generally assume that _Handlers_ are wrapped
-by a `Savepoint Decorator`, and that if _Deliver_ returns an error after updating some
-objects, those update will be discarded. This means you can
-treat _Handlers_ as atomic actions, all or none, and not worry
-too much about cleaning up partially finished state changes
-if a later portion fails.
+Note that we can generally assume that _Handlers_ are wrapped by a `Savepoint Decorator`, and that if _Deliver_ returns an error after updating some objects, those update will be discarded. This means you can treat _Handlers_ as atomic actions, all or none, and not worry too much about cleaning up partially finished state changes if a later portion fails.
 
 ## Validation
 
-Remember that we have to fulfill both _Check_ and _Deliver_ methods,
-and they share most of the same validation logic. A typical
-approach is to define a _validate_ method that parses the
-proper message out of the transaction, verify all authorization
-preconditions are fulfilled by the transaction, and possibly
-check the current state of the blockchain to see if the action
-is allowed. If the _validate_ method doesn't return an error,
-then _Check_ will return the expected cost of the transaction,
-while _Deliver_ will actually perform the action and update
-the blockchain state accordingly.
+Remember that we have to fulfill both _Check_ and _Deliver_ methods, and they share most of the same validation logic. A typical approach is to define a _validate_ method that parses the proper message out of the transaction, verify all authorization preconditions are fulfilled by the transaction, and possibly check the current state of the blockchain to see if the action is allowed. If the _validate_ method doesn't return an error, then _Check_ will return the expected cost of the transaction, while _Deliver_ will actually perform the action and update the blockchain state accordingly.
 
 ## Examples
 
@@ -229,12 +186,7 @@ func (h CreateCommentHandler) Deliver(ctx weave.Context, store weave.KVStore, tx
 
 As you noticed most of the hard work done in `validate` method and `Deliver` methods are used to handle database related work.
 
-Once `validate` is implemented, `Check` must ensure it is valid
-and then return a rough cost of the message, which may be based
-on the storage cost of the text of the post. This return value
-is similar to the concept of _gas_ in ethereum, although it doesn't
-count to the fees yet, but rather is used by tendermint to prioritize
-the transactions to fit in a block.
+Once `validate` is implemented, `Check` must ensure it is valid and then return a rough cost of the message, which may be based on the storage cost of the text of the post. This return value is similar to the concept of _gas_ in ethereum, although it doesn't count to the fees yet, but rather is used by tendermint to prioritize the transactions to fit in a block.
 
 Here is an example of more dynamic fee deduction:
 
@@ -657,7 +609,9 @@ func TestCreateArticle(t *testing.T) {
 }
 ```
 
-Test case above has quite amount of necessary boiler plate. Every test case including cases that tests missing message fields which depends on message validation. Usual test work flow is:
+Test case above has quite amount of necessary boiler plate. Every test case including cases that tests missing message fields which depends on message validation.
+
+Usual test work flow is:
 
 1. Define variables and constants that would be used in state
 2. Create states

@@ -69,6 +69,8 @@ cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovn
 [Unit]
 Description=IOV Name Service
 After=network-online.target
+Requires=iovns-tm.service
+PartOf=iovns-tm.service
 
 [Service]
 Type=simple
@@ -81,8 +83,8 @@ ExecStart=__DIR_IOVNS__/bnsd \
    -bind=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_IOVNS_OPTS
 LimitNOFILE=4096
-#Restart=on-failure
-#RestartSec=3
+Restart=on-failure
+RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns
@@ -96,6 +98,7 @@ cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > i
 [Unit]
 Description=Tendermint for IOV Name Service
 After=iovns.service
+Requires=iovns.service
 
 [Service]
 Type=simple
@@ -107,14 +110,14 @@ ExecStart=__DIR_IOVNS__/tendermint node \
    --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_TM_OPTS
 LimitNOFILE=4096
-#Restart=on-failure
-#RestartSec=3
+Restart=on-failure
+RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns-tm
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target iovns.service
 __EOF_IOVNS_TM_SERVICE__
 
 # hack around ancient versions of systemd
@@ -154,9 +157,6 @@ exit # iov
 
 journalctl -f | grep iovns & # watch the chain sync
 systemctl start iovns.service
-systemctl start iovns-tm.service
-
-exit # root
 ```
 
 At this point you're running a full-node that can be examined at `http://localhost:16657/status`.

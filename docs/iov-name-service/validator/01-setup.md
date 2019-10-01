@@ -25,7 +25,7 @@ cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
 
-This document assumes that `curl`, `expr`, `grep`, `jq`, `sed`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
+This document assumes that `basename`, `curl`, `expr`, `grep`, `jq`, `sed`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
 sudo su # make life easier for the next ~100 lines
@@ -36,17 +36,17 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
-DIR_WORK=/home/iov/babynet
+DIR_WORK=/home/iov/clapnet
 
 # images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.0/bnsd-0.21.0-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.1/bnsd-0.21.1-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.5-iov2/tendermint-0.31.5-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=6cfa2e2f28602fe4779031ce6dc91a9e75ba764d@35.246.220.157:26656,0aa87eb8990603df79914c894a3165cf70880883@35.246.252.171:26656 \
+--p2p.seeds=e3d86db16407d697f1a421488f575d03bc50ca03@34.89.193.166:26656,f2d148fc612dcff642ee6552c14eef5e71eb5716@35.242.228.188:26656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -69,6 +69,8 @@ cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovn
 [Unit]
 Description=IOV Name Service
 After=network-online.target
+Requires=iovns-tm.service
+PartOf=iovns-tm.service
 
 [Service]
 Type=simple
@@ -81,8 +83,8 @@ ExecStart=__DIR_IOVNS__/bnsd \
    -bind=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_IOVNS_OPTS
 LimitNOFILE=4096
-#Restart=on-failure
-#RestartSec=3
+Restart=on-failure
+RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns
@@ -96,6 +98,7 @@ cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > i
 [Unit]
 Description=Tendermint for IOV Name Service
 After=iovns.service
+Requires=iovns.service
 
 [Service]
 Type=simple
@@ -107,14 +110,14 @@ ExecStart=__DIR_IOVNS__/tendermint node \
    --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_TM_OPTS
 LimitNOFILE=4096
-#Restart=on-failure
-#RestartSec=3
+Restart=on-failure
+RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns-tm
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=multi-user.target iovns.service
 __EOF_IOVNS_TM_SERVICE__
 
 # hack around ancient versions of systemd
@@ -127,8 +130,8 @@ systemctl daemon-reload
 
 # download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum bnsd*.gz       | fgrep 5b4ac76b4c0a06afdcd36687cec0352f33f46e41a60f61cdf7802225ed5ba1e8 && tar xvf bnsd*.gz || echo "BAD BINARY!"
-wget ${IMAGE_TM}    && sha256sum tendermint*.gz | fgrep 421548f02dadca48452375b5905fcb49a267981b537c143422dde0591e46dc93 && tar xvf tendermint*.gz || echo "BAD BINARY!"
+wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | fgrep a5f94af8cc1b606844dcb267ef93a365a1123145313054285e1f47a474d1744d && tar xvf $(basename $IMAGE_IOVNS) || echo "BAD BINARY!"
+wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM) | fgrep 421548f02dadca48452375b5905fcb49a267981b537c143422dde0591e46dc93 && tar xvf $(basename $IMAGE_TM) || echo "BAD BINARY!"
 
 exit # root
 
@@ -140,7 +143,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://gist.githubusercontent.com/davepuchyr/efbfcd7f894bd753eae5f5b26811cdda/raw/bdaafe91befea3394dc2ff337c6b24f08dc16ee1/genesis.json | jq '.' > config/genesis.json
+curl --fail https://gist.githubusercontent.com/davepuchyr/09963fdd594e7aeb46b6ecde319c7ee3/raw/a0a9a20975333c7237bab3687df34283423e733f/genesis_clapnet.json | jq '.' > config/genesis.json
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
@@ -154,9 +157,6 @@ exit # iov
 
 journalctl -f | grep iovns & # watch the chain sync
 systemctl start iovns.service
-systemctl start iovns-tm.service
-
-exit # root
 ```
 
 At this point you're running a full-node that can be examined at `http://localhost:16657/status`.
@@ -183,7 +183,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=6cfa2e2f28602fe4779031ce6dc91a9e75ba764d@35.246.220.157:26656,0aa87eb8990603df79914c894a3165cf70880883@35.246.252.171:26656 \
+--p2p.seeds=e3d86db16407d697f1a421488f575d03bc50ca03@34.89.193.166:26656,f2d148fc612dcff642ee6552c14eef5e71eb5716@35.242.228.188:26656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

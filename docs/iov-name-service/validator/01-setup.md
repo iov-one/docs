@@ -36,7 +36,7 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
-DIR_WORK=/home/iov/babynet
+DIR_WORK=/home/iov/clapnet
 
 # images
 IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.1/bnsd-0.21.1-linux-amd64.tar.gz
@@ -46,7 +46,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=6cfa2e2f28602fe4779031ce6dc91a9e75ba764d@35.246.220.157:26656,0aa87eb8990603df79914c894a3165cf70880883@35.246.252.171:26656 \
+--p2p.seeds=e3d86db16407d697f1a421488f575d03bc50ca03@34.89.193.166:26656,f2d148fc612dcff642ee6552c14eef5e71eb5716@35.242.228.188:26656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -143,7 +143,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://gist.githubusercontent.com/davepuchyr/efbfcd7f894bd753eae5f5b26811cdda/raw/bdaafe91befea3394dc2ff337c6b24f08dc16ee1/genesis.json | jq '.' > config/genesis.json
+curl --fail https://gist.githubusercontent.com/davepuchyr/09963fdd594e7aeb46b6ecde319c7ee3/raw/a0a9a20975333c7237bab3687df34283423e733f/genesis_clapnet.json | jq '.' > config/genesis.json
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
@@ -183,7 +183,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=6cfa2e2f28602fe4779031ce6dc91a9e75ba764d@35.246.220.157:26656,0aa87eb8990603df79914c894a3165cf70880883@35.246.252.171:26656 \
+--p2p.seeds=e3d86db16407d697f1a421488f575d03bc50ca03@34.89.193.166:26656,f2d148fc612dcff642ee6552c14eef5e71eb5716@35.242.228.188:26656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

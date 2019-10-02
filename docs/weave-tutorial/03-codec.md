@@ -88,7 +88,7 @@ DeleteAt github_com_iov_one_weave.UnixTime `protobuf:"varint,5,opt,name=delete_a
 
 One more useful Weave cast type is `weave.Address`:
 
-```proto
+```protobuf
 bytes owner = 3 [(gogoproto.casttype) = "github.com/iov-one/weave.Address"];
 ```
 

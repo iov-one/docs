@@ -74,9 +74,6 @@ const siteConfig = {
 
   // Show documentation's last contributor's name.
   enableUpdateBy: true,
-
-  // Show documentation's last update time.
-  enableUpdateTime: true,
 };
 
 module.exports = siteConfig;

@@ -72,7 +72,8 @@
       "weave-tutorial/models",
       "weave-tutorial/messages",
       "weave-tutorial/buckets",
-      "weave-tutorial/handlers"
+      "weave-tutorial/handlers",
+      "weave-tutorial/application"
     ]
   }
 }

@@ -47,24 +47,3 @@ message Tx {
 You must be thinking: **why the number tags matter anyway?**
 
 Hereby with this [link](https://developers.google.com/protocol-buffers/docs/proto3#assigning-field-numbers), I encourage you to find your own enlightment.
-
-## Batch transactions
-
-```protobuf
-// ExecuteBatchMsg encapsulates multiple messages to support batch transaction
-message ExecuteBatchMsg {
-  message Union {
-    // No recursive batches!
-    oneof sum {
-      cash.SendMsg cash_send_msg = 51;
-      multisig.CreateMsg multisig_create_msg = 56;
-      multisig.UpdateMsg multisig_update_msg = 57;
-
-      blog.CreateUserMsg blog_create_user_msg = 100;
-    }
-  }
-  repeated Union messages = 1 [(gogoproto.nullable) = false];
-}
-```
-
-Batch transaction's skeleton is defined with `ExecuteBatchMsg`. If you need to have the benefits of batch messages insert modules here.

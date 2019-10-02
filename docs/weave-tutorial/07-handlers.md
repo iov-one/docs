@@ -6,15 +6,15 @@ sidebar_label: Handlers
 
 ## Message Handlers
 
-A message is a statement of intention, and wrapped in a transaction, while provides authorization to this intention. Once this message ends up in the ABCI application and is to be processed, we send it to a [Handler](https://godoc.org/github.com/iov-one/weave#Handler) which we have registered for this application.
+A message is a statement of intent, and wrapped in a transaction, which provides authorization to this intention. Once this message ends up in the ABCI application and is to be processed, we send it to a [Handler](https://godoc.org/github.com/iov-one/weave#Handler) which we have registered for this application.
 
 ## Check vs Deliver
 
 If you look at the definition of a _Handler_, you will see it is responsible for _Check_ and _Deliver_. These are similar logic, but there is an important distinction. _Check_ is performed when a client proposes the transaction to the mempool, before it is added to a block. It is meant as a quick filter to weed out garbage transactions before writing them to the blockchain. The state it provides is a scratch buffer around the last committed state and will be discarded next block, so any writes here are never written to disk.
 
-_Deliver_ is performed after the transaction was written to the block. Upon consensus, every node will process the block by calling _BeginBlock_, _Deliver_ for every transaction in the block, and finally _EndBlock_ and _Commit_. _Deliver_ will be called in the same order on every node and must make the **exact same changes** on every node, both now and in the future when the blocks are replayed. Even the slightest deviation will cause the merkle root of the store at the end of the block to differ with other nodes, and thus kick the deviating nodes out of consensus. (Note that _Check_ may actually vary between nodes without breaking consensus rules, although we generally keep this deterministic as well).
+_Deliver_ is performed after the transaction was written to the block. Upon consensus, every node will process the block by calling _BeginBlock_, _Deliver_ for every transaction in the block, and finally _EndBlock_ and _Commit_. _Deliver_ will be called in the same order on every node and must make the **exact same changes** on every node, both now and in the future when the blocks are replayed. Even the slightest deviation will cause the merkle root of the store at the end of the block to differ with other nodes, and thus kick the deviating nodes out of consensus. Note that _Check_ may actually vary between nodes without breaking consensus rules, although we generally keep this deterministic as well.
 
-**This is a very powerful concept and means that when modifying a given state, users must not worry about any concurrent access or writing collision since by definition, any write access is guaranteed to occur sequentially and in the same order on each node**
+**This is a very powerful concept and means that when modifying a given state, users need not worry about any concurrent access or writing collision since by definition, any write access is guaranteed to occur sequentially and in the same order on each node**
 
 ## Writing a Handler
 
@@ -46,7 +46,12 @@ func NewCreateBlogHandler(auth x.Authenticator) weave.Handler {
 }
 ```
 
-First we define what the `CreateBlogHandler` which components it will be operating on. `x.Authenticator` will handle the authentication and `BlogBucket` will be the gateway to the blog data. `CreateBlogHandler` is just a struct to wrap the components that is required to make handler logic work, such as **authentication** and **data access**. Authentication is handled by `x.Authenticator` and blog data access is by `BlogBucket` that we defined in previous chapter. `var _ weave.Handler = CreateBlogHandler{}` is just a helper to ensure `CreateBlogHandler` is a `weave.Handler`. `NewCreateBlogHandler` wraps the components and returns the struct.
+First we define what the `CreateBlogHandler` components will contain:
+
+1. `x.Authenticator` will handle the authentication
+2. `BlogBucket` will be the gateway to the blog data
+
+`CreateBlogHandler` is a struct to wrap the components that are required to make handler logic work, such as **authentication** and **data access**. Authentication is handled by `x.Authenticator` and blog data access is by `BlogBucket` that we defined in previous chapter. `var _ weave.Handler = CreateBlogHandler{}` is a helper to ensure `CreateBlogHandler` is a `weave.Handler`. `NewCreateBlogHandler` wraps the components and returns the struct.
 
 First of all, we implement the `validate` function that validates the message with static checks:
 
@@ -79,13 +84,13 @@ func (h CreateBlogHandler) validate(ctx weave.Context, store weave.KVStore, tx w
 
 Let's go over the `validate` method piece by piece:
 
-1. Message is validated with static checks such as missing title check
-2. Execution time of the transaction which will be used as creation time of the blog, is extracted from `BlockTime` info that lives in the `Context` of the handler.
+1. Message is validated with static checks, such as missing title check
+2. Execution time of the transaction, which will be used as creation time of the blog, is extracted from `BlockTime` info that lives in the `Context` of the handler.
 3. `Blog` instance is created with the values taken from `msg`
 
-I did not mention the error checks between these steps but they are obvious and intuitive yet very important. Go does good job with forcing developer to pay attention to errors.
+I did not mention the error checks between these steps but they are obvious and intuitive, yet very important. Go does a good job with forcing developer to pay attention to errors.
 
-Then implement `Check` method that checks constraints like if **fee** is sufficent to execute the transaction and transactions is eligible to enter the mempool using validation:
+Then implement `Check` method that checks constraints scuah asif **fee** is sufficent to execute the transaction and if transactions is eligible to enter the mempool using validation:
 
 ```go
 // Check verifies it is properly formed and returns
@@ -217,7 +222,8 @@ In order to test a handler, we need four things :
 - An Authenticator associated with our context
 - A Tx object to process (eg. to check or to deliver)
 
-There is a ready to use in memory storage available in the [store package](https://github.com/iov-one/weave/blob/master/store/btree.go#L31-L36). There are also util functions available that we can use to create a weave context with a list of signers (eg. authorized addresses) via an [Authenticator](weave/design/permissions)
+There is a ready-to-use in memory storage available in the [store package](https://github.com/iov-one/weave/blob/master/store/btree.go#L31-L36). There are also util functions available that we can use to create a weave context with a list of signers (eg. authorized addresses) via an [Authenticator](weave/design/permissions)
+
 The function below shows how to use them:
 
 ```go
@@ -445,9 +451,9 @@ func TestCreateArticle(t *testing.T) {
 }
 ```
 
-Test case above has quite amount of necessary boiler plate. Every test case including cases that tests missing message fields which depends on message validation.
+Test case above has quite an amount of necessary boiler plate. Every test case including cases that test missing message fields which depends on message validation. 
 
-Usual test work flow is:
+TheUsual test work flow is:
 
 1. Define variables and constants that would be used in state
 2. Create states
@@ -459,7 +465,7 @@ Usual test work flow is:
    2. Configure authentication  
    3. Configure router
    4. Wrap transaction
-   5. Save the instances that test is depend on in database
+   5. Save the instances that test is dependent on to database
    6. Run `Check` method and check for errors
    7. Run `Deliver` method and check for errors
    8. Check if the response values are equal to expected values

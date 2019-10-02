@@ -64,8 +64,6 @@
           "weave/weave-api-spec/modules"
         ]
       }
-<<<<<<< HEAD
-=======
     ],
     "Weave Tutorial": [
       "weave-tutorial/overview",
@@ -75,7 +73,6 @@
       "weave-tutorial/messages",
       "weave-tutorial/buckets",
       "weave-tutorial/handlers"
->>>>>>> Write handler documentation (#111)
     ]
   }
 }

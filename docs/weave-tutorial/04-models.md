@@ -4,8 +4,6 @@ title: Models
 sidebar_label: Models
 ---
 
-> [PR#6](https://github.com/iov-one/tutorial/pull/6): _Create models_
-
 We defined our state in [codec section](weave-tutorial/03-codec.md). Models are wrapped codec with functionalities to integrate codec with Weave.
 First ensure our `User` fulfills morm.Model:
 

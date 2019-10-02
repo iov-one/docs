@@ -4,9 +4,6 @@ title: Buckets
 sidebar_label: Buckets
 ---
 
-> [PR#8](https://github.com/iov-one/tutorial/pull/8): _Create buckets_ > \
-> [PR#9](https://github.com/iov-one/tutorial/pull/9): _Add indexer for market using marketID, askTicker, bidTicker_
-
 In Weave framework, Buckets are the standard way to access and manipulate data, which is stored in _Key-Value Database_. Weave buckets could be found similar to [BoltDB](https://github.com/boltdb/bolt#using-buckets 'Bolt Repo') or [LevelDB](https://github.com/google/leveldb 'LevelDB Repo') design. Any extension can use one or multiple Buckets to store and access data. Buckets offer the following advantages:
 
 - Isolation between extensions (each Bucket has a unique prefix that is transparently prepended to the keys)

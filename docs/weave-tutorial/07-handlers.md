@@ -451,9 +451,9 @@ func TestCreateArticle(t *testing.T) {
 }
 ```
 
-Test case above has quite an amount of necessary boiler plate. Every test case including cases that test missing message fields which depends on message validation. 
+Test case above has quite an amount of necessary boiler plate. Every test case including cases that test missing message fields which depends on message validation.
 
-TheUsual test work flow is:
+The usual test work flow is:
 
 1. Define variables and constants that would be used in state
 2. Create states

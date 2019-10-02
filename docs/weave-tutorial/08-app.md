@@ -46,9 +46,7 @@ Previous sections are about building your own module, now we will proceed wrappi
 - **Makefile**`: contains build scripting and tooling commands
 - **app**: contains blockchain application components such as `tx`, `crontask`, and `codec.proto` of the main application.
 
-## App
-
-This section tells where Weave gets it's charm thus the *extensibility* feature that we have been mentioning over and over in this tutorial. A blockchain application generally depends on authentication mechanisms, networking, database, and application logic. Generally in blockchain application codebases, only thing you can do is to write an application with the existing components and mechanisms that blockchain developers and see if the solution works out for you. Solution is not enough for you, I wish you good luck on implementing your requirements on a broadly used blockchain project `¯\_(ツ)_/¯`
+This section tells where Weave gets it's charm thus the *extensibility* feature that we have been mentioning over and over in this tutorial. A blockchain application generally depends on authentication mechanisms, networking, database, and application logic. Generally in blockchain application codebases, only thing you can do is to write an application with the existing components and mechanisms that blockchain developers and see if the solution works out for you. I wish you good luck on modifying a broadly used and older blockchain projects to fit the requirements **¯\\\_(ツ)_/¯**
 
 ### Authenticator
 
@@ -109,7 +107,7 @@ func QueryRouter() weave.QueryRouter {
 
 ### Chain
 
-`Chain(authFn x.Authenticator, minFee coin.Coin)` method chains the decorators in an absolute *execution order*. This defines the production line of blockhain application starting from transactions entry to the blockchains endpoints to transaction saving.
+`Chain(authFn x.Authenticator, minFee coin.Coin)` method chains the decorators in an absolute *execution order*. This defines the production line of blockhain application starting from transactions entry to the blockchains endpoints and transaction saving.
 
 ```go
 // Chain returns a chain of decorators, to handle authentication,
@@ -144,7 +142,7 @@ func Chain(authFn x.Authenticator, minFee coin.Coin) app.Decorators {
 
 ### Cron stack
 
-Cron stack is minimal application that runs different from the main decorators that runs scheduled cron jobs in the background.
+Cron stack is minimal application that runs different from the main decorators that runs scheduled jobs in the background.
 
 ```go
 // CronStack wires up a standard router with a cron specific decorator chain.
@@ -187,7 +185,7 @@ func Stack(issuer weave.Address, minFee coin.Coin) weave.Handler {
 
 ### Key Value Store
 
-Application'ss database is provided by `CommitKvStore` method. `CommitKVStore` returns an initialized KVStore that persists the data to the named path.
+Application's database is provided by `CommitKvStore` method. `CommitKVStore` returns an initialized KVStore that persists the data to the named path.
 
 ```go
 // CommitKVStore returns an initialized KVStore that persists

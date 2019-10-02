@@ -222,7 +222,9 @@ The function below shows how to use them:
 
 ```go
 func TestCreateArticle(t *testing.T) {
-    blogOwner := weavetest.NewCondition()
+	// Blog owner address
+	blogOwner := weavetest.NewCondition()
+	// Signer address for negative testing
     signer := weavetest.NewCondition()
 
     now := weave.AsUnixTime(time.Now())
@@ -378,178 +380,11 @@ func TestCreateArticle(t *testing.T) {
 				"DeleteAt":     nil,
 			},
 		},
-		// TODO add metadata test
-		"failure missing blog id": {
-			msg: &CreateArticleMsg{
-				Metadata: &weave.Metadata{Schema: 1},
-				Title:    "insanely good title",
-				Content:  "best content in the existence",
-				DeleteAt: future,
-			},
-			signer:   signer,
-			expected: nil,
-			wantCheckErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       errors.ErrEmpty,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-			wantDeliverErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       errors.ErrEmpty,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-		},
-		"failure missing title": {
-			msg: &CreateArticleMsg{
-				Metadata: &weave.Metadata{Schema: 1},
-				BlogID:   ownedBlog.ID,
-				Content:  "best content in the existence",
-				DeleteAt: future,
-			},
-			signer:   signer,
-			expected: nil,
-			wantCheckErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        errors.ErrModel,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-			wantDeliverErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        errors.ErrModel,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-		},
-		"failure missing content": {
-			msg: &CreateArticleMsg{
-				Metadata: &weave.Metadata{Schema: 1},
-				BlogID:   ownedBlog.ID,
-				Title:    "insanely good title",
-				DeleteAt: future,
-			},
-			signer:   signer,
-			expected: nil,
-			wantCheckErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      errors.ErrModel,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-			wantDeliverErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      errors.ErrModel,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-		},
-		"failure blog is not owned by signer": {
-			msg: &CreateArticleMsg{
-				Metadata: &weave.Metadata{Schema: 1},
-				BlogID:   notOwnedBlog.ID,
-				Title:    "insanely good title",
-				Content:  "best content in the existence",
-				DeleteAt: future,
-			},
-			signer:   signer,
-			expected: nil,
-			wantCheckErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-			wantDeliverErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-		},
-		"failure missing signer": {
-			msg: &CreateArticleMsg{
-				Metadata: &weave.Metadata{Schema: 1},
-				BlogID:   ownedBlog.ID,
-				Title:    "insanely good title",
-				Content:  "best content in the existence",
-				DeleteAt: future,
-			},
-			expected: nil,
-			wantCheckErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-			wantDeliverErrs: map[string]*errors.Error{
-				"Metadata":     nil,
-				"ID":           nil,
-				"BlogID":       nil,
-				"Owner":        nil,
-				"Title":        nil,
-				"Content":      nil,
-				"CommentCount": nil,
-				"LikeCount":    nil,
-				"CreatedAt":    nil,
-				"DeleteAt":     nil,
-			},
-		},
+		/* --------- *** -----------
+
+		   CHECK OUT THE REPO FOR MORE TEST EXAMPLES
+
+		   --------- *** -----------  */
 	}
 	for testName, tc := range cases {
 		t.Run(testName, func(t *testing.T) {
@@ -575,6 +410,7 @@ func TestCreateArticle(t *testing.T) {
 
 			tx := &weavetest.Tx{Msg: tc.msg}
 
+			// Get current block time from context
 			ctx := weave.WithBlockTime(context.Background(), time.Now().Round(time.Second))
 
 			if _, err := rt.Check(ctx, kv, tx); err != nil {

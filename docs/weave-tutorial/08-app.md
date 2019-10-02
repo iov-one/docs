@@ -1,7 +1,7 @@
 ---
-id: app
+id: application
 title: Wrapping up the Application
-sidebar_label: app 
+sidebar_label: Application
 ---
 
 Previous sections are about building your own module, now we will proceed wrapping the module with blockchain application. In order to run blockchain application, you need to wrap the module with components such as decorators, and bind the module's handlers and to the base blockchain application.

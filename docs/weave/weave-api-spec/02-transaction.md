@@ -30,7 +30,7 @@ All the required _proto_ files for connecting to `BNS` or any `Weave` based bloc
 
 On the first line of the `codec.proto`
 
-```proto
+```protobuf
 syntax = "proto3";
 ```
 
@@ -38,13 +38,13 @@ This line indicates the protobuf file uses `proto3` as language syntax,
 
 Next we define the package to which this codec belongs.
 
-```proto
+```protobuf
 package bnsd;
 ```
 
 Every codec message that will be used to interact with `bnsd` is boiled down to this codec file via _imports_
 
-```proto
+```protobuf
 import "cmd/bnsd/x/username/codec.proto";
 import "migration/codec.proto";
 import "x/aswap/codec.proto";
@@ -60,7 +60,7 @@ import "x/validators/codec.proto";
 
 ### Tx message
 
-```proto
+```protobuf
 message Tx {
   cash.FeeInfo fees = 1;
   repeated sigs.StdSignature signatures = 2;

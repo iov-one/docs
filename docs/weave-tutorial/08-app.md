@@ -4,9 +4,11 @@ title: Wrapping up the Application
 sidebar_label: Application
 ---
 
-Previous sections are about building your own module, now we will proceed to wrapping the module with blockchain application. In order to run blockchain application, you need to wrap the module with components such as decorators, and bind the module's handlers and to the base blockchain application.
+Weave layered approach could be represented as a pyramid. On layer 2, which is the bottom layer, modules(`x/`) are connected to the layer 1 which messages are routed. Layer 1 abstracts: Key-Value Database config, authentication mechanism, time based operation scheduler, and a genesis file that will be fed into the database.
 
-`cmd` folder is where the blockchain infrastructure lives:
+Previous sections are about building a module(`layer 2`), now we will proceed to wrapping the module with blockchain application(`layer 1`). In order to run blockchain application, you need to wrap the module with components such as decorators, and bind the module's handlers and to the underlying blockchain application.
+
+`cmd` folder is where the layer 2 lives:
 
 ```sh
 ./cmd

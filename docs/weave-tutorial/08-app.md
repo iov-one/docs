@@ -4,7 +4,7 @@ title: Wrapping up the Application
 sidebar_label: Application
 ---
 
-Previous sections are about building your own module, now we will proceed wrapping the module with blockchain application. In order to run blockchain application, you need to wrap the module with components such as decorators, and bind the module's handlers and to the base blockchain application.
+Previous sections are about building your own module, now we will proceed to wrapping the module with blockchain application. In order to run blockchain application, you need to wrap the module with components such as decorators, and bind the module's handlers and to the base blockchain application.
 
 `cmd` folder is where the blockchain infrastructure lives:
 
@@ -44,9 +44,9 @@ Previous sections are about building your own module, now we will proceed wrappi
 
 - **main.go**: main entry point for `cmd/blog` app. Contains command line tooling.
 - **Makefile**`: contains build scripting and tooling commands
-- **app**: contains blockchain application components such as `tx`, `crontask`, and `codec.proto` of the main application.
+- **app**: contains blockchain application components, such as `tx`, `crontask`, and `codec.proto`, of the main application.
 
-This section tells where Weave gets it's charm thus the *extensibility* feature that we have been mentioning over and over in this tutorial. A blockchain application generally depends on authentication mechanisms, networking, database, and application logic. Generally in blockchain application codebases, only thing you can do is to write an application with the existing components and mechanisms that blockchain developers and see if the solution works out for you. I wish you good luck on modifying a broadly used and older blockchain projects to fit the requirements **¯\\\_(ツ)_/¯**
+This section tells where Weave gets its charm, and thus the *extensibility* feature that we have been mentioning over and over in this tutorial. A blockchain application generally depends on authentication mechanisms, networking, database, and application logic. Generally in blockchain application codebases, the only thing you can do is write an application with the existing components and mechanisms that blockchain developers and see if the solution works out for you. I wish you good luck in modifying a broadly used and older blockchain project to fit the requirements **¯\\\_(ツ)_/¯**
 
 ### Authenticator
 
@@ -131,18 +131,18 @@ func Chain(authFn x.Authenticator, minFee coin.Coin) app.Decorators {
 - `utils.NewKeyLogging` enables logging in application
 - `utils.NewRecovery`: Recovery is a decorator to recover from panics in transactions, so we can log them as errors
 - `utils.NewKeyTagger`:
-  - **KeyTagger** is a decorate that records all _Set/Delete_ operations performed by it's children and adds all those keys as DeliverTx tags
-  - Tags is the hex encoded key, value is **s** (for set) or *d* (for delete)
+  - **KeyTagger** is a decorater that records all _Set/Delete_ operations performed by its children and adds all those keys as DeliverTx tags
+  - Tags is the hex-encoded key, value is **s** (for set) or *d* (for delete)
   - Desired behavior, impossible as tendermint will collapse multiple tags with same key: Tags are added as `Key=<bucket name>, Value=<hex of remainder>,` like `Key=cash, Value=00CAFE00`
 - `utils.NewSavepoint`: explained in [](link)
 - `sigs.NewDecorator`: returns a default authentication decorator, which appends the chainID before checking the signature, and requires at least one signature to be present
-- `multisig.NewDecorator`: returns a default multisig decorator that manages multi signature wallets
-- `cash.NewFeeDecorator`: returns a static fee ecorator with the given minimum fee, and all collected fees going to a default address
+- `multisig.NewDecorator`: returns a default multisig decorator that manages multi-signature wallets
+- `cash.NewFeeDecorator`: returns a static fee decorator with the given minimum fee, and all collected fees going to a default address
 - `batch.NewDecorator`: returns a batch transanction decorator
 
 ### Cron stack
 
-Cron stack is minimal application that runs different from the main decorators that runs scheduled jobs in the background.
+Cron stack is minimal application that runs differently from the main decorators that runs scheduled jobs in the background.
 
 ```go
 // CronStack wires up a standard router with a cron specific decorator chain.
@@ -185,7 +185,7 @@ func Stack(issuer weave.Address, minFee coin.Coin) weave.Handler {
 
 ### Key Value Store
 
-Application's database is provided by `CommitKvStore` method. `CommitKVStore` returns an initialized KVStore that persists the data to the named path.
+The application's database is provided by `CommitKvStore` method. `CommitKVStore` returns an initialized KVStore that persists the data to the named path.
 
 ```go
 // CommitKVStore returns an initialized KVStore that persists
@@ -214,7 +214,7 @@ func CommitKVStore(dbPath string) (weave.CommitKVStore, error) {
 
 ## Application
 
-`Application` method initializes the component with given application parameters
+`Application` method initializes the component with given application parameters.
 
 ```go
 // Application constructs a basic ABCI application with
@@ -236,7 +236,7 @@ func Application(name string, h weave.Handler, tx weave.TxDecoder, dbPath string
 
 ## Controller
 
-`Controllers` are helpers that capsulates complex application logic to an API that is used around application. If your module requires complex logic, I recommend you to implement one. You can find examples of a controller at [x/cash](https://github.com/iov-one/weave/blob/master/x/cash/controller.go)
+`Controllers` are helpers that capsulates complex application logic to an API that is used around application. If your module requires complex logic, I recommend you implement one. You can find examples of a controller at [x/cash](https://github.com/iov-one/weave/blob/master/x/cash/controller.go).
 
 In `app.go` implement a method to create controllers. Here is the example from [app.go](https://github.com/iov-one/blog-tutorial/blob/master/cmd/blog/app/app.go#L32-L35)
 

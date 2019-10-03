@@ -4,9 +4,9 @@ title: Batch Transactions
 sidebar_label: Batch Transactions
 ---
 
-I don't think you will not have patience to wait for posting thousands of transactions one by one right?
+I don't think you will have the patience to wait for thousands of transactions to post one by one, right?
 
-Via wrapping vanilla `Messages` into a `repeated` **Union** object that includes variety of messages, we can achieve the ease of use of batch transactions; thus, this will prevent the blockhain from being flooded by thousands of messages.
+Via wrapping vanilla `Messages` into a `repeated` **Union** object that includes variety of messages, we can achieve the ease-of-use of batch transactions; this will prevent the blockhain from being flooded by thousands of messages.
 
 ```protobuf
 // ExecuteBatchMsg encapsulates multiple messages to support batch transaction

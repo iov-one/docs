@@ -4,7 +4,7 @@ title: Application Level Codec
 sidebar_label: Application Level Codec
 ---
 
-We created a `codec` in [Codec documentation](weave-tutorial/codec), only thing left for the codec is wrapping it up with a generalizable transaction format. With this we will define a standart way of communications in Weave based chains. Application level codec is placed at `cmd/blog` where the application wraps up.
+We created a `codec` in [Codec documentation](weave-tutorial/codec), so the only thing left with the codec is to wrap it up with a generalizable transaction format. With this we will define a standard way of communication in Weave-based chains. Application-level codec is placed at `cmd/blog` where the application wraps up.
 
 ```protobuf
 message Tx {
@@ -36,14 +36,14 @@ message Tx {
 }
 ```
 
-**Tx** contains the message the general application message. It cointains fee info, signatures, multisig, and one of the module messages. When extending the **Tx**, follow the rules:
+**Tx** contains the message the general application message. It contains fee info, signatures, multisig, and one of the module messages. When extending the **Tx**, follow these rules:
 
 - Range 1-50 is reserved for middlewares
 - Range 51+ is reserved for different message types
-- Keep the **same numbers** for the same message types in Weave based applications to sustain compatibility between blockchains. For example, `FeeInfo` field is used by both and indexed at first position.
+- Keep the **same numbers** for the same message types in Weave-based applications to sustain compatibility between blockchains. For example, `FeeInfo` field is used by both and indexed at first position
 - Skip unused fields (leave index unused or comment out for clarity)
-- When there is a gap in message sequence numbers - that most likely means some old fields got deprecated. This is done to maintain binary compatibility.
+- When there is a gap in message sequence numbers - that most likely means some old fields got deprecated. This is done to maintain binary compatibility
 
-You must be thinking: **why the number tags matter anyway?**
+You must be thinking: **why do the number tags matter anyway?**
 
-Hereby with this [link](https://developers.google.com/protocol-buffers/docs/proto3#assigning-field-numbers), I encourage you to find your own enlightment.
+With this [link](https://developers.google.com/protocol-buffers/docs/proto3#assigning-field-numbers), I encourage you to find your own enlightment.

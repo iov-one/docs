@@ -36,7 +36,8 @@ message Tx {
 }
 ```
 
-**Tx** contains the message the general application message. It contains fee info, signatures, multisig, and one of the module messages. When extending the **Tx**, follow these rules:
+**Tx** contains middleware messages also application messages. Example middlewares are: *fee info*, *signatures*, *multisig*
+When extending the **Tx**, follow these rules:
 
 - Range 1-50 is reserved for middlewares
 - Range 51+ is reserved for different message types

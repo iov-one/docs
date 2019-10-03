@@ -48,7 +48,7 @@ Previous sections are about building a module(`layer 2`), now we will proceed to
 - **Makefile**`: contains build scripting and tooling commands
 - **app**: contains blockchain application components, such as `tx`, `crontask`, and `codec.proto`, of the main application.
 
-This section tells where Weave gets its charm, and thus the *extensibility* feature that we have been mentioning over and over in this tutorial. A blockchain application generally depends on authentication mechanisms, networking, database, and application logic. Generally in blockchain application codebases, the only thing you can do is write an application with the existing components and mechanisms that blockchain developers and see if the solution works out for you. I wish you good luck in modifying a broadly used and older blockchain project to fit the requirements **¯\\\_(ツ)_/¯**
+This section tells where Weave gets its charm, and thus the *extensibility* feature that we have been mentioning over and over in this tutorial. A blockchain application generally depends on authentication mechanisms, networking, database, and application logic. Generally in blockchain application codebases, the only thing you can do is write an application with the already existing spaghetti projects and see if the solution works out for you. I wish you good luck in modifying a broadly used and older blockchain project to fit the requirements **¯\\\_(ツ)_/¯**
 
 ### Authenticator
 

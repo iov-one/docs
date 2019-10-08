@@ -73,7 +73,9 @@
       "weave-tutorial/messages",
       "weave-tutorial/buckets",
       "weave-tutorial/handlers",
-      "weave-tutorial/application"
+      "weave-tutorial/application",
+      "weave-tutorial/app-level-codec",
+      "weave-tutorial/batch-txs"
     ]
   }
 }

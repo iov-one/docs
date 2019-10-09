@@ -4,7 +4,9 @@ title: Application Level Codec
 sidebar_label: Application Level Codec
 ---
 
-We created a `codec` in [Codec documentation](weave-tutorial/codec), so the only thing left with the codec is to wrap it up with a generalizable transaction format. With this we will define a standard way of communication in Weave-based chains. Application-level codec is placed at `cmd/blog` where the application wraps up.
+We created the modules that are necessary for application that did not exist as IOV provided modules. But the blog modules would not be enough by itself to provide the necessary functionality such as sending tokens, multisig contracts, migration logic. So we need to put together all these modules somehow. And on the other side we still have not did anything transaction format definition. In the next sections we will explain how put the modules together in a layered approach and then preparing the blockchain infrastructure. But first we define the skeleton of application specific transaction and which messages the blockchain will support.
+
+As you remember, we created a `codec` in [Codec documentation](weave-tutorial/codec) and defined the messages that blog application will support. Where this wrapping and putting together codec files takes place at `app/codec` file.
 
 ```protobuf
 message Tx {
@@ -36,8 +38,8 @@ message Tx {
 }
 ```
 
-**Tx** contains middleware messages also application messages. Example middlewares are: *fee info*, *signatures*, *multisig*
-When extending the **Tx**, follow these rules:
+As you can see in the last field, `oneof sum`, messages are defined. `oneof sum` means `Tx` will contain only and only one of the following messages. Besides that **Tx** contains middleware messages. Example middlewares are: *fee info*, *signatures*, *multisig*
+When extending the **Tx** and adding custom modules, follow these rules:
 
 - Range 1-50 is reserved for middlewares
 - Range 51+ is reserved for different message types

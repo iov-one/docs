@@ -36,7 +36,7 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
-DIR_WORK=/home/iov/clapnet
+DIR_WORK=/home/iov/mainnet
 
 # images
 IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.2/bnsd-0.21.2-linux-amd64.tar.gz
@@ -46,7 +46,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=e3d86db16407d697f1a421488f575d03bc50ca03@34.89.193.166:26656,f2d148fc612dcff642ee6552c14eef5e71eb5716@35.242.228.188:26656 \
+--p2p.seeds=352ba402a2461020689c86cab599c8a44bd49a33@35.198.191.90:26656,88af4a6c555c058e530c124babfa9f9fb12a01b2@35.234.78.200:26656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -143,7 +143,8 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://gist.githubusercontent.com/davepuchyr/09963fdd594e7aeb46b6ecde319c7ee3/raw/a0a9a20975333c7237bab3687df34283423e733f/genesis_clapnet.json | jq '.' > config/genesis.json
+curl --fail https://gist.githubusercontent.com/webmaster128/9a87d0967fe2caa95d84ee6288c648c2/raw/70c95107b2b4cb8ed3c0d24ae1f3f43a55d81cff/genesis.json > config/genesis.json
+sha256sum config/genesis.json | grep 6c80ea4724726bedd2d36e73bf025007ef898fcb06be17e3ba3e51f32d29b8fa || echo "BAD GENESIS FILE!"
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
@@ -183,7 +184,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=e3d86db16407d697f1a421488f575d03bc50ca03@34.89.193.166:26656,f2d148fc612dcff642ee6552c14eef5e71eb5716@35.242.228.188:26656 \
+--p2p.seeds=352ba402a2461020689c86cab599c8a44bd49a33@35.198.191.90:26656,88af4a6c555c058e530c124babfa9f9fb12a01b2@35.234.78.200:26656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

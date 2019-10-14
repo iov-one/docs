@@ -4,9 +4,9 @@ title: Application Level Codec
 sidebar_label: Application Level Codec
 ---
 
-We created the modules that are necessary for application that did not exist as IOV provided modules. But the blog modules would not be enough by itself to provide the necessary functionality such as sending tokens, multisig contracts, migration logic. So we need to put together all these modules somehow. And on the other side we still have not did anything transaction format definition. In the next sections we will explain how put the modules together in a layered approach and then preparing the blockchain infrastructure. But first we define the skeleton of application specific transaction and which messages the blockchain will support.
+We created the modules that are necessary for application that did not exist as IOV-provided modules. However, the blog modules would not be enough by themselves to provide the necessary functionality such as sending tokens, multisig contracts, and migration logic. So we need to put together all these modules somehow. And on the other side we still have not done anything to define the transaction. In the next sections we will explain how put the modules together in a layered approach and then how to prepare the blockchain infrastructure. First, however, we define the skeleton of application specific transaction and which messages the blockchain will support.
 
-As you remember, we created a `codec` in [Codec documentation](weave-tutorial/codec) and defined the messages that blog application will support. Where this wrapping and putting together codec files takes place at `app/codec` file.
+As you remember, we created a `codec` in [Codec documentation](weave-tutorial/codec) and defined the messages that blog application will support. This wrapping and putting together of codec files takes place at `app/codec` file.
 
 ```protobuf
 message Tx {
@@ -38,7 +38,7 @@ message Tx {
 }
 ```
 
-As you can see in the last field, `oneof sum`, messages are defined. `oneof sum` means `Tx` will contain only and only one of the following messages. Besides that **Tx** contains middleware messages. Example middlewares are: *fee info*, *signatures*, *multisig*
+As you can see in the last field, `oneof sum`, messages are defined. `oneof sum` means `Tx` will contain one (and only one) of the following messages. Apart from that, **Tx** contains middleware messages, some examples of middlewares are *fee info*, *signatures*, and *multisig*.
 When extending the **Tx** and adding custom modules, follow these rules:
 
 - Range 1-50 is reserved for middlewares

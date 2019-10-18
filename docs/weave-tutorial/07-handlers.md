@@ -4,7 +4,9 @@ title: Handlers
 sidebar_label: Handlers
 ---
 
-## Message Handlers
+> code reference (handler): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/handler.go
+
+> code reference (test): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/handler_test.go
 
 A message is a statement of intent, and wrapped in a transaction, which provides authorization to this intention. Once this message ends up in the ABCI application and is to be processed, we send it to a [Handler](https://godoc.org/github.com/iov-one/weave#Handler) which we have registered for this application.
 

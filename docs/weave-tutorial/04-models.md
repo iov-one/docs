@@ -4,6 +4,10 @@ title: Models
 sidebar_label: Models
 ---
 
+> code reference (model): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/model.go
+
+> code reference (test): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/model_test.go
+
 We defined our state in [codec section](weave-tutorial/03-codec.md). Models are wrapped codec with functionalities to integrate codec with Weave.
 First ensure our `User` fulfills morm.Model:
 

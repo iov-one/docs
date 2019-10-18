@@ -4,6 +4,10 @@ title: Buckets
 sidebar_label: Buckets
 ---
 
+> code reference (bucket): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/bucket.go
+
+> code reference (test): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/bucket_test.go
+
 In Weave framework, Buckets are the standard way to access and manipulate data, which is stored in _Key-Value Database_. Weave buckets could be found similar to [BoltDB](https://github.com/boltdb/bolt#using-buckets 'Bolt Repo') or [LevelDB](https://github.com/google/leveldb 'LevelDB Repo') design. Any extension can use one or multiple Buckets to store and access data. Buckets offer the following advantages:
 
 - Isolation between extensions (each Bucket has a unique prefix that is transparently prepended to the keys)

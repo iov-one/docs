@@ -4,7 +4,9 @@ title: Messages
 sidebar_label: Messages
 ---
 
-Messages are requests for a change in the state, the action part of a transaction. They also need to be persisted (to be sent over the wire and stored on the blockchain), and must also be validated. They are later passed into [Handlers](https://godoc.org/github.com/iov-one/weave#Handler) to be processed and effect change in the blockchain state.
+> code reference (msg): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/msg.go
+
+> code reference (test): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/msg_test.go
 
 ## Messages vs. Transactions
 

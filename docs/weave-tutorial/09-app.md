@@ -4,6 +4,10 @@ title: Wrapping up the Application
 sidebar_label: Application
 ---
 
+> code reference (init): https://github.com/iov-one/blog-tutorial/blob/master/cmd/blog/app/init.go
+
+> code reference (app): https://github.com/iov-one/blog-tutorial/blob/master/cmd/blog/app/app.go
+
 Weave layered approach could be represented as a pyramid. On layer 2, which is the bottom layer, modules(`x/`) are connected to layer 1 which messages are routed. Layer 1 abstracts: Key-Value Database config, authentication mechanism, time-based operation scheduler, and a genesis file that will be fed into the database.
 
 Previous sections are about building a module(`layer 2`), now we will proceed to wrapping the module with blockchain application(`layer 1`). In order to run blockchain application, you need to wrap the module with components, such as decorators, and bind the module's handlers to the underlying blockchain application.

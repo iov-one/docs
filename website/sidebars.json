@@ -76,6 +76,9 @@
       "weave-tutorial/app-level-codec",
       "weave-tutorial/application",
       "weave-tutorial/batch-txs"
+    ],
+    "IOV Core Tutorial": [
+      "iov-core-tutorial/introduction"
     ]
   }
 }

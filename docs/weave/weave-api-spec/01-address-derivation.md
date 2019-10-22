@@ -106,6 +106,6 @@ tiov16xrvuk2867536tj5j6zzhy205efzrzac8g7zhc
 - [Token finder](https://iov-one.github.io/token-finder/)
   ([source](https://github.com/iov-one/token-finder)) is helpful for debugging
   HD key and address derivation.
-- [The HdPaths class in IOV-Core](https://github.com/iov-one/iov-core/blob/master/packages/iov-keycontrol/src/hdpaths.ts),
+- [The HdPaths class in IOV Core](https://github.com/iov-one/iov-core/blob/master/packages/iov-keycontrol/src/hdpaths.ts),
   which shows the various derivation paths used in our software.
   

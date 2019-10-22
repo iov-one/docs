@@ -4,11 +4,11 @@ title: IOV-Core
 sidebar_label: IOV-core
 ---
 
-When you are building a web-based application, a desktop application or a block explorer, the natural way to connect to the IOV Name Service is to use the multi-package typescript library: [IOV-Core](https://github.com/iov-one/iov-core).
+When you are building a web-based application, a desktop application or a block explorer, the natural way to connect to the IOV Name Service is to use the multi-package typescript library: [IOV Core](https://github.com/iov-one/iov-core).
 
 ## What is IOV-core?
 
-[IOV-Core](https://github.com/iov-one/iov-core) is a powerful typescript library which contains multiple packages to:
+[IOV Core](https://github.com/iov-one/iov-core) is a powerful typescript library which contains multiple packages to:
 - manage all your private keys with [iov-keycontrol](https://github.com/iov-one/iov-core/tree/master/packages/iov-keycontrol)
 - connect to the IOV Name Service with [iov-bns](https://github.com/iov-one/iov-core/tree/master/packages/iov-bns)
 - experiment with all its features using a CLI with [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli)

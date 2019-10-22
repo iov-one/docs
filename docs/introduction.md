@@ -24,7 +24,7 @@ We're building an interoperability solution for the blockchain industry that is 
 
 **IOV Name Service (IOVNS)** is our DNS for crypto-addresses. It is used to register human friendly addresses.
 
-**IOV-Core** is the client for the IOV Name Service and for Weave based blockchains. It is designed to run in standard JavaScript environments so that third party app developers can build wallets, blockexplorers, e-commerce payment apps, DEXes, social media tipping apps, etc. that run in standard web browsers.
+**IOV Core** is the client for the IOV Name Service and for Weave based blockchains. It is designed to run in standard JavaScript environments so that third party app developers can build wallets, blockexplorers, e-commerce payment apps, DEXes, social media tipping apps, etc. that run in standard web browsers.
 
 **IOV Weave** is a framework to quickly build your custom ABCI application to power a blockchain based on the best-of-class BFT Proof-of-stake Tendermint consensus engine. We built IOV Name Service using Weave.
 

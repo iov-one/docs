@@ -1,6 +1,6 @@
 ---
 id: iov-core
-title: IOV Core
+title: IOV-Core
 sidebar_label: IOV-core
 ---
 

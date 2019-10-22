@@ -17,7 +17,7 @@ If you have never used tendermint before, you should read the [ABCI Overview](ht
     +---------+                     +------------+                      +----------+
 ```
 
-`blog` and `tendermint` run on the same computer and communicate via a binary protocol over localhost or a unix socket. Together they form a "blockchain". In a real setup, you would have dozens (or hundreds) of computers running this backend communicating over a self-adjusting p2p gossip network to replicate the state. For application development (and demos) one copy will work, but has none of the fault tolerance of a real blockchain.
+`blog` and `tendermint` run on the same computer and communicate via a binary protocol over localhost or a UNIX socket. Together they form a 'blockchain.' In a real setup, you would have dozens (or hundreds) of computers running this backend communicating over a self-adjusting p2p gossip network to replicate the state. For application development (and demos) one copy will work, but has none of the fault tolerance of a real blockchain.
 
 You can connect to tendermint rpc via various client libraries. We recommend [IOV Core](iov-core-tutorial/introduction) which has very good support for weave-based apps, as well as different blockchains (such as Ethereum and Lisk).
 
@@ -35,7 +35,7 @@ You can connect to tendermint rpc via various client libraries. We recommend [IO
 ## Installing backend applications
 
 * Clone blog app `git clone https://github.com/iov-one/blog-tutorial/`
-* Checkout compatible blog app weave version of tendermint from [compatibility chart](https://github.com/iov-one/weave/blob/master/COMPATIBILITY.md). Blog applications latests version supports tendermint `v0.31.5`. Make sure you are installed the compatible version of tendermint.
+* Checkout compatible blog app weave version of tendermint from [compatibility chart](https://github.com/iov-one/weave/blob/master/COMPATIBILITY.md). Blog applications latest version supports tendermint `v0.31.5`. Make sure you are installed the compatible version of tendermint.
 
 **Note** we use ``go mod`` for dependency management. This is enabled by default in go 1.12+. If you are running go 1.11.4+, you must run the following in the terminal (or add to `~/.bashrc`): `export GO111MODULE=on`
 
@@ -71,7 +71,7 @@ rm -rf ~/.blog
 make inittm
 ```
 
-You can take a look in this directory if you are curious. The mostimportant piece for us is `~/.blog/config/genesis.json`. You may also notice `~/.blog/config/config.toml` with lots of [options to set](https://tendermint.com/docs/tendermint-core/configuration.html#options) for power users.
+You can take a look in this directory if you are curious. The most important piece for us is `~/.blog/config/genesis.json`. You may also notice `~/.blog/config/config.toml` with lots of [options to set](https://tendermint.com/docs/tendermint-core/configuration.html#options) for power users.
 
 We want to add a bunch of tokens to the account we just made before launching the blockchain. And we'd also like to enable the indexer, so we can search for our transactions by id (default state is off). But rather than have you fiddle with the config files by hand, you can just run this to do the setup:
 
@@ -81,7 +81,7 @@ blog init CASH bech32:tiov1qrw95py2x7fzjw25euuqlj6dq6t0jahe7rh8wp
 
 Make sure you enter the same hex address, this account gets the tokens. You can take another look at `~/.blog/config/genesis.json` after running this command. The important change was to "app_state". You can also create this by hand later to give many people starting balances, but let's keep it simple for now and get something working. Feel free to wipe out the directory later and reinitialize another blockchain with custom configuration to experiment.
 
-You may ask where this address comes from. It is a demo account derived from our test mnemonic: `dad kiss slogan offer outer bomb usual dream awkward jeans enlist mansion` using the hd derivation path: `m/44'/988'/0'`. This is the path used by our wallet, so you can enter your mnemonic in our web-wallet and see this account. Note that you can define the addresses both in *hex:* and *bech32:* formats (if prefix is ommitted, hex is assumed)
+You may ask from where this address comes. It is a demo account derived from our test mnemonic: `dad kiss slogan offer outer bomb usual dream awkward jeans enlist mansion` using the hd derivation path: `m/44'/988'/0'`. This is the path used by our wallet, so you can enter your mnemonic in our web-wallet and see this account. Note that you can define the addresses both in *hex:* and *bech32:* formats (if prefix is omitted, hex is assumed)
 
 ## Start the Blockchain
 
@@ -96,14 +96,14 @@ blog start
 
 hint: For help and explanations for the tendermint node commands: `tendermint node --help`
 
-This connects over `tcp://localhost:26658` by default, to use unix sockets (arguably more secure), try the following:
+This connects over `tcp://localhost:26658` by default, to use UNIX sockets (arguably more secure), try the following:
 
 ```sh
 tendermint node --home ~/.blog --proxy_app=unix://$HOME/abci.socket > ~/.blog/tendermint.log &
 blog start -bind=unix://$HOME/abci.socket
 ```
 
-Open a new window and type in `tail -f  ~/.blog/tendermint.log` and you will be able to see the output. That means the blockchain is working away and producing new blocks, one a second.
+Open a new window and type in `tail -f  ~/.blog/tendermint.log` and you will be able to see the output. That means the blockchain is working away and producing new blocks, one per second.
 
 ![image](assets/tail-log.png)
 

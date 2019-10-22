@@ -21,7 +21,7 @@
         ]
       }
     ],
-    "Weave Overview": [
+    "IOV Weave SDK": [
       "weave/welcome",
       {
         "type": "subcategory",
@@ -63,23 +63,25 @@
           "weave/weave-api-spec/weave-query-spec",
           "weave/weave-api-spec/modules"
         ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Tutorial",
+        "ids": [
+          "weave/tutorial/installation",
+          "weave/tutorial/overview",
+          "weave/tutorial/domain",
+          "weave/tutorial/codec",
+          "weave/tutorial/models",
+          "weave/tutorial/messages",
+          "weave/tutorial/buckets",
+          "weave/tutorial/handlers",
+          "weave/tutorial/app-level-codec",
+          "weave/tutorial/application",
+          "weave/tutorial/batch-txs"
+        ]
       }
     ],
-    "Weave Tutorial": [
-      "weave-tutorial/installation",
-      "weave-tutorial/overview",
-      "weave-tutorial/domain",
-      "weave-tutorial/codec",
-      "weave-tutorial/models",
-      "weave-tutorial/messages",
-      "weave-tutorial/buckets",
-      "weave-tutorial/handlers",
-      "weave-tutorial/app-level-codec",
-      "weave-tutorial/application",
-      "weave-tutorial/batch-txs"
-    ],
-    "IOV Core Tutorial": [
-      "iov-core-tutorial/introduction"
-    ]
+    "IOV Core Tutorial": ["iov-core-tutorial/introduction"]
   }
 }

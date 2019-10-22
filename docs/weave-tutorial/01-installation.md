@@ -37,7 +37,7 @@ You can connect to tendermint rpc via various client libraries. We recommend [IO
 * Clone blog app `git clone https://github.com/iov-one/blog-tutorial/`
 * Checkout compatible blog app weave version of tendermint from [compatibility chart](https://github.com/iov-one/weave/blob/master/COMPATIBILITY.md). Blog applications latest version supports tendermint `v0.31.5`. Make sure you are installed the compatible version of tendermint.
 
-**Note** we use ``go mod`` for dependency management. This is enabled by default in go 1.12+. If you are running go 1.11.4+, you must run the following in the terminal (or add to `~/.bashrc`): `export GO111MODULE=on`
+**Note** we use ``go mod`` for dependency management. This is enabled by default in Go 1.12+. If you are running Go 1.11.4+, you must run the following in the terminal (or add to `~/.bashrc`): `export GO111MODULE=on`
 
 ```sh
 # cd into to your workspace that is not in your $GOPATH

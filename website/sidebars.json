@@ -66,6 +66,7 @@
       }
     ],
     "Weave Tutorial": [
+      "weave-tutorial/installation",
       "weave-tutorial/overview",
       "weave-tutorial/domain",
       "weave-tutorial/codec",

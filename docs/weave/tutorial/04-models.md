@@ -8,7 +8,7 @@ sidebar_label: Models
 
 > code reference (test): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/model_test.go
 
-We defined our state in [codec section](weave-tutorial/03-codec.md). Models are wrapped codec with functionalities to integrate codec with Weave.
+We defined our state in [codec section](weave/tutorial/03-codec.md). Models are wrapped codec with functionalities to integrate codec with Weave.
 First ensure our `User` fulfills morm.Model:
 
 ```go
@@ -88,7 +88,7 @@ ErrNotFound = Register(3, "not found")
 ErrMsg = Register(4, "invalid message")
 ```
 
-What is with these `ErrXYZ()` calls, you may think? Well, we could return a “normal” error like `errors.New("fail")`, but we wanted two more features. First of all, it helps debugging enormously to have a stack trace of where the error occurred. For this, we use [pkg/errors](https://github.com/pkg/errors "go/pkg") that attach a stack trace to the error that can optionally be printed later with a `Printf("%+v", err)`. We also want to return a unique abci error code, which may be interpreted by client applications, either programmatically or to provide translations of the error message client side.
+What is with these `ErrXYZ()` calls, you may think? Well, we could return a “normal” error like `errors.New("fail")`, but we wanted two more features. First of all, it helps debugging enormously to have a stack trace of where the error occurred. For this, we use [pkg/errors](https://github.com/pkg/errors 'go/pkg') that attach a stack trace to the error that can optionally be printed later with a `Printf("%+v", err)`. We also want to return a unique abci error code, which may be interpreted by client applications, either programmatically or to provide translations of the error message client side.
 
 For these reasons, Weave provides some utility methods and common error types in the errors [package](https://godoc.org/github.com/iov-one/weave/errors). The ABCI Code attached to the error is then returned in the [DeliverTx Result](https://github.com/iov-one/weave/blob/v0.20.0/abci.go#L114-L126).
 

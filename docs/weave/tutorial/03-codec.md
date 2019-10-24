@@ -52,7 +52,7 @@ weave.Metadata metadata = 1;
 
 `weave.Metadata` enables upgrading the code on chain without downtime. It is required if you want to use any [IOV-provided extensions](https://github.com/iov-one/weave/tree/master/x). [Migrations](https://github.com/iov-one/weave/tree/v0.21.0/migration) package will be explained in more detail in further sections.
 
-Secondly, note how the magic `ID` field works. This will be explained in [Models](weave-tutorial/04-models.md) section.
+Secondly, note how the magic `ID` field works. This will be explained in [Models](weave/tutorial/04-models.md) section.
 
 ## Message
 

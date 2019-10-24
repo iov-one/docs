@@ -66,6 +66,8 @@ Here is a sample username validation function:
 var validUsername = regexp.MustCompile(`^[a-zA-Z0-9_.-]{4,16}$`).MatchString
 ```
 
+Note that model validation is run just before [saving](https://github.com/iov-one/weave/blob/v0.21.0/orm/model_bucket.go#L207-L209) the model instance to data store.
+
 If you need more complex validation rules for models you can implement custom validation function which uses `github.com/iov-one/weave/errors` as error handling.
 
 We recommend using `errors.AppendField` as it enables multi-error validation so no information about the error's cause gets lost.

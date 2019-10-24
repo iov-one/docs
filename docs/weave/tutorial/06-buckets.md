@@ -58,7 +58,7 @@ And be sure protobuf objects implemented `CloneableData`:
 
 Bucket name must comply with `^[a-z_]{3,10}$` regex rule, meaning names must be between 3 to 10 characters and all lower case.
 
-This basically consists of adding _Copy()_ and _Validate()_ to the objects in `codec.pb.go`. On [Models](weave-tutorial/04-models.md) section, we implemented _Copy()_ and _Validate()_ as you remember. Now it makes sense, right?
+This basically consists of adding _Copy()_ and _Validate()_ to the objects in `codec.pb.go`. On [Models](weave/tutorial/04-models.md) section, we implemented _Copy()_ and _Validate()_ as you remember. Now it makes sense, right?
 
 ## Dive into Code
 

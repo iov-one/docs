@@ -139,4 +139,6 @@ func isGenID(id []byte, allowEmpty bool) error {
 }
 ```
 
+Note that message validation is run in `Validate` step of handlers which we will explain in next [sections](weave/tutorial/07-handlers.md#validation).
+
 **Remember:** the more validation, the more solid your application becomes. If you **constrain** possible inputs, you can write **less** validation in the business logic.

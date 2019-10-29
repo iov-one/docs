@@ -87,7 +87,7 @@ func (h CreateBlogHandler) validate(ctx weave.Context, store weave.KVStore, tx w
 Let's go over the `validate` method piece by piece:
 
 1. Message is validated with static checks, such as missing title check
-2. Execution time of the transaction, which will be used as creation time of the blog, is extracted from `BlockTime` info that lives in the `Context` of the handler.
+2. Execution time of the transaction, which will be used as creation time of the blog, is extracted from `BlockTime` info that lives in the `Context` of the handler
 3. `Blog` instance is created with the values taken from `msg`
 
 I did not mention the error checks between these steps but they are obvious and intuitive, yet very important. Go does a good job with forcing developer to pay attention to errors.

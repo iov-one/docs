@@ -1,0 +1,88 @@
+{
+  "version-0.0.2-docs": {
+    "Introduction": [
+      "version-0.0.2-intro"
+    ],
+    "IOV Name Service": [
+      {
+        "type": "subcategory",
+        "label": "Validator",
+        "ids": [
+          "version-0.0.2-iov-name-service/validator/rewards",
+          "version-0.0.2-iov-name-service/validator/setup",
+          "version-0.0.2-iov-name-service/validator/troubleshooter",
+          "version-0.0.2-iov-name-service/validator/faq"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Clients",
+        "ids": [
+          "version-0.0.2-iov-name-service/clients/iov-core",
+          "version-0.0.2-iov-name-service/clients/rest-api"
+        ]
+      }
+    ],
+    "IOV Weave SDK": [
+      "version-0.0.2-weave/welcome",
+      {
+        "type": "subcategory",
+        "label": "Basics",
+        "ids": [
+          "version-0.0.2-weave/basics/blockchain",
+          "version-0.0.2-weave/basics/consensus",
+          "version-0.0.2-weave/basics/authentication",
+          "version-0.0.2-weave/basics/state"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Design",
+        "ids": [
+          "version-0.0.2-weave/design/overview",
+          "version-0.0.2-weave/design/extension",
+          "version-0.0.2-weave/design/transaction-flow",
+          "version-0.0.2-weave/design/permissions",
+          "version-0.0.2-weave/design/queries"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Configuration",
+        "ids": [
+          "version-0.0.2-weave/configuration/application"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "API specifications",
+        "ids": [
+          "version-0.0.2-weave/weave-api-spec/address-derivation",
+          "version-0.0.2-weave/weave-api-spec/weave-transaction-spec",
+          "version-0.0.2-weave/weave-api-spec/tx-sign-spec",
+          "version-0.0.2-weave/weave-api-spec/weave-query-spec",
+          "version-0.0.2-weave/weave-api-spec/modules"
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "Tutorial",
+        "ids": [
+          "version-0.0.2-weave/tutorial/installation",
+          "version-0.0.2-weave/tutorial/domain",
+          "version-0.0.2-weave/tutorial/codec",
+          "version-0.0.2-weave/tutorial/models",
+          "version-0.0.2-weave/tutorial/messages",
+          "version-0.0.2-weave/tutorial/buckets",
+          "version-0.0.2-weave/tutorial/handlers",
+          "version-0.0.2-weave/tutorial/app-level-codec",
+          "version-0.0.2-weave/tutorial/application",
+          "version-0.0.2-weave/tutorial/batch-txs"
+        ]
+      }
+    ],
+    "IOV Core": [
+      "version-0.0.2-iov-core-tutorial/introduction"
+    ]
+  }
+}

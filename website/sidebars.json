@@ -48,9 +48,7 @@
         "type": "subcategory",
         "label": "Configuration",
         "ids": [
-          "weave/configuration/application",
-          "weave/configuration/tendermint",
-          "weave/configuration/validators"
+          "weave/configuration/application"
         ]
       },
       {

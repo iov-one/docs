@@ -139,6 +139,52 @@ func isGenID(id []byte, allowEmpty bool) error {
 }
 ```
 
+## Testing Message Validation
+
+Testing logic of message validation is not different than model validation testing. First layout success case then the expected failure cases with different field values:
+
+```go
+func TestValidateCreateUserMsg(t *testing.T) {
+	cases := map[string]struct {
+		msg      weave.Msg
+		wantErrs map[string]*errors.Error
+	}{
+		"success": {
+			msg: &CreateUserMsg{
+				Metadata: &weave.Metadata{Schema: 1},
+				Username: "Crpto0X",
+				Bio:      "Best hacker in the universe",
+			},
+			wantErrs: map[string]*errors.Error{
+				"Metadata": nil,
+				"Username": nil,
+				"Bio":      nil,
+			},
+		},
+		// add missing metadata test
+		"failure missing username": {
+			msg: &CreateUserMsg{
+				Metadata: &weave.Metadata{Schema: 1},
+				Bio:      "Best hacker in the universe",
+			},
+			wantErrs: map[string]*errors.Error{
+				"Metadata": nil,
+				"Username": errors.ErrModel,
+				"Bio":      nil,
+			},
+		},
+	}
+	for testName, tc := range cases {
+		t.Run(testName, func(t *testing.T) {
+			err := tc.msg.Validate()
+			for field, wantErr := range tc.wantErrs {
+				assert.FieldError(t, err, field, wantErr)
+			}
+		})
+	}
+}
+```
+
 Note that message validation is run in `Validate` step of handlers which we will explain in next [sections](weave/tutorial/07-handlers.md#validation).
 
 **Remember:** the more validation, the more solid your application becomes. If you **constrain** possible inputs, you can write **less** validation in the business logic.

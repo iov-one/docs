@@ -74,19 +74,19 @@ Merkle trees are like binary trees, but hash the children at each level. This al
 
 ## Running an Existing Application
 
-A good way to get familiar with setting up and running an application is to follow the steps in the [mycoin](mycoind/installation.html) sample application. You can run this on your local machine. If you don't have a modern Go development environment already set up, please [follow these instructions](mycoind/setup.html).
+A good way to get familiar with setting up and running an application is to follow the steps in the [blog tutorial](weave/tutorial/01-installation.md) sample application. You can run this on your local machine. If you don't have a modern Go development environment already set up, please [follow these instructions](weave/tutorial/01-installation.md#Requirements).
 
 To connect a node to the BNS testnet on a cloud server, the steps to set up an instance on Digital Ocean are explored in this [blog post](https://medium.com/iov-internet-of-values/a-guide-to-deploy-a-validator-on-hugnet-3335192e11d5).
 
-Once you can run the blockchain, you will probably want to connect with it. You can view a sample wallet app for the BNS testnet at <https://wallet.hugnet.iov.one> Those that are comfortable with Javascript, should check out our [IOV Core Library](mycoind/iovcore.html) which allows easy access to the blockchain from a browser or node environment.
+Once you can run the blockchain, you will probably want to connect with it. You can view a sample wallet app for the BNS testnet at <https://wallet.hugnet.iov.one> Those that are comfortable with Javascript, should check out our [IOV Core Library](iov-core-tutorial/01-introduction.md) which allows easy access to the blockchain from a browser or node environment.
 
 ## Configuring your Blockchain
 
-When you ran the `mycoind` tutorial, you ran the following lines to configure the blockchain:
+When you ran the `blog` tutorial, you ran the following lines to configure the blockchain:
 
 ```{.sourceCode .console}
-tendermint init --home ~/.mycoind
-mycoind init CASH bech32:tiov1qrw95py2x7fzjw25euuqlj6dq6t0jahe7rh8wp
+tendermint init --home ~/.blog
+blog init CASH bech32:tiov1qrw95py2x7fzjw25euuqlj6dq6t0jahe7rh8wp
 ```
 
 This is nice for automatic initialization for dev mode, but for deploying a real network, we need to look under the hood and figure out how to configure it manually.

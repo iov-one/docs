@@ -1,7 +1,8 @@
 ---
-id: validators
+id: version-0.0.1-validators
 title: Validators
 sidebar_label: Validators
+original_id: validators
 ---
 
 ## !! Warning this document is out of date. Will be updated in future !!

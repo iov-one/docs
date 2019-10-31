@@ -1,10 +1,11 @@
 ---
-id: extension
+id: version-0.0.1-extension
 title: Extension
 sidebar_label: Extension
+original_id: extension
 ---
 
-[IOV Weave](https://github.com/iov-one/weave) doesn't just produce a `bnsd` and `bnscli` executable, but was designed from the ground up to be extremely flexible for many common use cases. One can easily extend the functionality of `bnsd` by adding more *extensions* on top of it, which we do when building the full-fledged [bnsd](https://github.com/iov-one/weave/tree/v0.21.0/cmd/bnsd/) application, which will form the basis of the [iov](https://iov.one) blockchain. You can also chose not to import any of the modules of bnsd and just use the building blocks to build an entirely different system (like utxo chain).
+[IOV Weave](https://github.com/iov-one/weave) doesn't just produce a `mycoind` executable, but was designed from the ground up to be extremely flexible for many common use cases. One can easily extend the functionality of `mycoind` by adding more *extensions* on top of it, which we do when building the full-fledged [bnsd](https://github.com/iov-one/weave/tree/v0.21.0/cmd/bnsd/) application, which will form the basis of the [iov](https://iov.one) blockchain. You can also chose not to import any of the modules of mycoind and just use the building blocks to build an entirely different system (like utxo chain).
 
 Note that even pieces as fundamental as [signature validation](https://github.com/iov-one/weave/tree/v0.21.0/x/sigs) or [isolating failed transactions](https://github.com/iov-one/weave/blob/v0.21.0/x/utils/savepoint.go) are implemented as importable modules and wired up together when you construct the application.
 

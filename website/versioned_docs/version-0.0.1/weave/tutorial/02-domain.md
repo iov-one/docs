@@ -1,7 +1,8 @@
 ---
-id: domain
+id: version-0.0.1-domain
 title: Defining the Domain
 sidebar_label: Domain
+original_id: domain
 ---
 
 The first thing we consider is the data we want to store, which is known as the state. After that, we can focus on the messages, which trigger state transitions. All blockchain state must be stored in our Merkle-ized store, which provides validity hashes and proofs. This is exposed to the application as a basic key-value store, which also allows in-order iteration over the keys. On top of this we have built some tools, such as secondary indexes and sequences, similar to how [Storm adds an ORM](https://github.com/asdine/storm#simple-crud-system) on top of [BoltDB’s key-value store](https://github.com/boltdb/bolt#using-buckets). We have avoided struct tags and tried to type as strictly as we can (without using generics).
@@ -30,8 +31,21 @@ State as in [Turing machine](https://en.wikipedia.org/wiki/Turing_machine), is h
   - **BlogID**: blog identifier at which that article is posted
   - **Title**: title of the article
   - **Content**: content of the article
+  - **CommentCount**: total number of comments the article has recieved
+  - **LikeCount**: total number of likes the article has recieved
   - **CreatedAt**: creation time of the article
   - **DeleteAt**: deletion time of the article. Could be nil or set to a future date. If in future, cron task will do its work and delete the article
+
+- **Comment** defines the comment that a user posted to the article. Every user can comment to articles including owner of the article. _Comment state_ contains:
+
+  - **ID**: unique identifier of the comment
+  - **ArticleID**: article identifier to which that comment is posted
+  - **Owner**: owner of the comment
+
+- **Like** defines a users like of the article. Every user, except the owner of the article, can like articles. _Like state_ contains:
+  - **ID**: unique identifier of the like
+  - **ArticleID**: article identifier to which that like is posted
+  - **Owner**: owner of the like
 
 You can find more information about this topic on [blog tutorial repo](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/README.md 'README.md'). It is recommended to define domain as _README_ in the module.
 

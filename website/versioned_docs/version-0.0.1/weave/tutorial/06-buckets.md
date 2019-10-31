@@ -1,7 +1,8 @@
 ---
-id: buckets
+id: version-0.0.1-buckets
 title: Buckets
 sidebar_label: Buckets
+original_id: buckets
 ---
 
 > code reference (bucket): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/bucket.go
@@ -127,22 +128,15 @@ Don't worry. Weave is like a Swiss Army knife with a lot of blockchain features.
 Here is how we create compound index for morm buckets:
 
 ```go
-// BuildBlogTimedIndex produces 8 bytes BlogID || big-endian createdAt
-// This allows lexographical searches over the time ranges (or earliest or latest)
-// of all articles within one blog
-func BuildBlogTimedIndex(article *Article) ([]byte, error) {
-	res := make([]byte, 16)
-	copy(res, article.BlogID)
-	// this would violate lexographical ordering as negatives would be highest
-	if article.CreatedAt < 0 {
-		return nil, errors.Wrap(errors.ErrState, "cannot index negative creation times")
-	}
-	binary.BigEndian.PutUint64(res[8:], uint64(article.CreatedAt))
-	return res, nil
+// BuildArticleUserIndex indexByteSize = 8(ArticleID) + 8(UserID)
+func BuildArticleUserIndex(comment *Comment) []byte {
+    return bytes.Join([][]byte{comment.ArticleID, comment.Owner}, nil)
 }
 ```
 
-We can query all articles that are posted in a blog over the time ranges(earliest or latest)
+Sample compound article and user index for comments = `0000000100000001` where `00000001` is the article's ID and latter `00000001` is user ID.
+
+We can query an users comments on an article with a single index thanks to the code above.
 
 ## Querying buckets
 

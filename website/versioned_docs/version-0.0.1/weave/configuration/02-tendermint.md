@@ -1,7 +1,8 @@
 ---
-id: tendermint 
-title: Tendermint 
-sidebar_label: Tendermint 
+id: version-0.0.1-tendermint
+title: Tendermint
+sidebar_label: Tendermint
+original_id: tendermint
 ---
 
 ## !! Warning this document is out of date. Will be updated in future !!

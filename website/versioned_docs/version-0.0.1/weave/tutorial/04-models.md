@@ -1,7 +1,8 @@
 ---
-id: models
+id: version-0.0.1-models
 title: Models
 sidebar_label: Models
+original_id: models
 ---
 
 > code reference (model): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/model.go

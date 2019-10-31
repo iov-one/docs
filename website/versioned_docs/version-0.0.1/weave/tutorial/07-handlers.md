@@ -1,7 +1,8 @@
 ---
-id: handlers
+id: version-0.0.1-handlers
 title: Handlers
 sidebar_label: Handlers
+original_id: handlers
 ---
 
 > code reference (handler): https://github.com/iov-one/blog-tutorial/blob/master/x/blog/handler.go

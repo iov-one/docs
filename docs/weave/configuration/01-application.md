@@ -12,7 +12,7 @@ The application is given `genesis.json` the first time it starts up via the `Ini
 
 ## App State
 
-If the backend ABCI app is Weave-based, such as `mycoind` or `bns`, the app_state contains one key for each extension that it wishes to initialize. Each element is an array of an extension-specific format, which is fed into `Initialized.FromGenesis` from the given extension.
+If the backend ABCI app is Weave-based, such as `bnsd`, the app_state contains one key for each extension that it wishes to initialize. Each element is an array of an extension-specific format, which is fed into `Initialized.FromGenesis` from the given extension.
 
 The example below shows the allocation of balances to a set of accounts:
 
@@ -33,4 +33,4 @@ The example below shows the allocation of balances to a set of accounts:
 
 This format is application-specific and extremely important to set the initial conditions of a blockchain, as the data is one of the largest distinguishing factors of a chain and a fork.
 
-`mycoind init` will set up one account with a lot of tokens of one name. For anything more complex, you will want to set this up by hand. Note that you should make sure someone has saved the private keys for all addresses or the tokens will never be usable. Also, for cash, ticker must be three or four upper-case letters.
+`bnsd init` will set up one account with a lot of tokens of one name. For anything more complex, you will want to set this up by hand. Note that you should make sure someone has saved the private keys for all addresses or the tokens will never be usable. Also, for cash, ticker must be three or four upper-case letters.

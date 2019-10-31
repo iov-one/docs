@@ -38,8 +38,6 @@ In the blog example, we can imagine these possible messages:
 - Create blog
 - Create article
 - Delete article
-- Create comment
-- Create like
 
 ## Dive into Code
 
@@ -53,8 +51,6 @@ func init() {
     migration.MustRegister(1, &CreateBlogMsg{}, migration.NoModification)
     migration.MustRegister(1, &CreateArticleMsg{}, migration.NoModification)
     migration.MustRegister(1, &DeleteArticleMsg{}, migration.NoModification)
-    migration.MustRegister(1, &CreateCommentMsg{}, migration.NoModification)
-    migration.MustRegister(1, &CreateLikeMsg{}, migration.NoModification)
 }
 ```
 
@@ -101,22 +97,16 @@ func (m CreateUserMsg) Validate() error {
 }
 ```
 
-`CreateUserMsg` does not contain any ID because ID will be assigned to the object during runtime. External ID validation is demonstrated on `CreateCommentMsg`:
+`CreateUserMsg` does not contain any ID because ID will be assigned to the object during runtime. External ID validation is demonstrated on `CreateArticleMsg`:
 
 ```go
-// Validate ensures the CreateCommentMsg is valid
-func (m CreateCommentMsg) Validate() error {
+// Validate ensures the CreateArticleMsg is valid
+func (m CreateArticleMsg) Validate() error {
     var errs error
 
-    errs = errors.AppendField(errs, "Metadata", m.Metadata.Validate())
-    errs = errors.AppendField(errs, "ArticleID", isGenID(m.ArticleID, false))
-
-    if !validArticleContent(m.Content) {
-        errs = errors.AppendField(errs, "Content", errors.ErrModel)
-    }
-
-    return errs
-}
+    //errs = errors.AppendField(errs, "Metadata", m.Metadata.Validate())
+    errs = errors.AppendField(errs, "BlogID", isGenID(m.BlogID, false))
+    ...
 ```
 
 Weave buckets use keys as 8 bytes so ID must be 8 bytes long:

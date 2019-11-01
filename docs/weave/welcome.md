@@ -6,9 +6,9 @@ sidebar_label: Welcome
 
 ![image](assets/weave-logo.jpg)
 
-[IOV Weave](https://github.com/iov-one/weave) is a framework to quickly build your custom [ABCI application](https://github.com/tendermint/abci) to power a blockchain based on the best-of-class BFT Proof-of-stake [Tendermint consensus engine](https://tendermint.com). It provides much commonly used functionality that can quickly be imported in your custom chain, as well as a simple framework for adding the custom functionality unique to your project.
+[IOV Weave](https://github.com/iov-one/weave) is a framework for quickly building your custom [ABCI application](https://github.com/tendermint/abci) to power a blockchain based on the best-of-class BFT Proof-of-stake [Tendermint consensus engine](https://tendermint.com). It provides much commonly used functionality that can quickly be imported in your custom chain, as well as a simple framework for adding the custom functionality unique to your project.
 
-Some of the highlights of Weave include a Merkle-tree backed data store, a highly configurable extension system that also applies to the core logic such as fees and signature validation. Weave also brings powerful customizations initialised from the genesis file. In addition there is a simple ORM which sits on top of a key-value store that also has proveable secondary indexes. There is a flexible permissioning system to use contracts as first-class actors, “No empty blocks” for quick synchronizing on quiet chains, and the ability to introduce “product fees” for transactions that need to charge more than the basic anti-spam fees. We have also added support for "migrations" that can switch on modules, or enable logic updates, via on-chain feature switch transactions.
+Some of the highlights of Weave include a Merkle-tree-backed data store, a highly configurable extension system that also applies to the core logic, such as fees and signature validation. Weave also brings powerful customizations initialised from the genesis file. In addition there is a simple ORM which sits on top of a key-value store that also has proveable secondary indexes. There is a flexible permissioning system to use contracts as first-class actors, “No empty blocks” for quick synchronizing on quiet chains, and the ability to introduce “product fees” for transactions that need to charge more than the basic anti-spam fees. We have also added support for "migrations" that can switch on modules, or enable logic updates, via on-chain feature switch transactions.
 
 ## Existing Modules
 
@@ -38,7 +38,7 @@ If you are new to blockchains (or Tendermint), this is a crash course in just en
 
 ### Immutable Event Log
 
-If you are coming from working on typical databases, you can think of the blockchain as an immutable [transaction log](https://en.wikipedia.org/wiki/Transaction_log). If you have worked with [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) you can consider a block as a set of events that can always be replayed to create a [materialized view](https://docs.microsoft.com/en-us/azure/architecture/patterns/materialized-view). Maybe you have a more theoretical background and recognize that a blockchain is a fault tolerant form of [state machine replication](https://en.wikipedia.org/wiki/State_machine_replication#Ordering_Inputs). [Read more](weave/basics/01-blockchain.md#immutable-event-log)
+If you are coming from working on typical databases, you can think of the blockchain as an immutable [transaction log](https://en.wikipedia.org/wiki/Transaction_log). If you have worked with [Event Sourcing](https://martinfowler.com/eaaDev/EventSourcing.html) you can consider a block as a set of events that can always be replayed to create a [materialized view](https://docs.microsoft.com/en-us/azure/architecture/patterns/materialized-view). Maybe you have a more theoretical background and recognize that a blockchain is a fault-tolerant form of [state machine replication](https://en.wikipedia.org/wiki/State_machine_replication#Ordering_Inputs). [Read more](weave/basics/01-blockchain.md#immutable-event-log)
 
 ### General Purpose Computer
 
@@ -54,7 +54,7 @@ All Proof-of-Work systems use probabilistic finality, where the resource cost of
 
 ### Immediate finality
 
-An alternative approach to guarantee consistency came out of academic research into Byzantine Fault Tolerance during the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) . [Read more](weave/basics/02-consensus.md#immediate-finality)
+An alternative approach to guarantee consistency came out of academic research into Byzantine-Fault Tolerance during the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf) . [Read more](weave/basics/02-consensus.md#immediate-finality)
 
 ### Authentication
 
@@ -78,7 +78,7 @@ A good way to get familiar with setting up and running an application is to foll
 
 To connect a node to the BNS testnet on a cloud server, the steps to set up an instance on Digital Ocean are explored in this [blog post](https://medium.com/iov-internet-of-values/a-guide-to-deploy-a-validator-on-hugnet-3335192e11d5).
 
-Once you can run the blockchain, you will probably want to connect with it. You can view a sample wallet app for the BNS testnet at <https://wallet.hugnet.iov.one> Those who are comfortable with Javascript, should check out our [IOV Core Library](iov-core-tutorial/01-introduction.md) which allows easy access to the blockchain from your browser or node environment.
+Once you can run the blockchain, you will probably want to connect with it. You can view a sample wallet app for the BNS testnet at <https://wallet.hugnet.iov.one> Those who are comfortable with Javascript, should check out our [IOV Core Library](iov-core-tutorial/01-introduction.md) which allows easy access to the blockchain from their browser or node environment.
 
 ## Configuring your Blockchain
 
@@ -109,7 +109,7 @@ Before we get into the structure of the application, there are a few design prin
 
 ### Determinism
 
-The big key to blockchain development is determinism. Two binaries with the same state must **ALWAYS** produce the same result when passed a given transaction. [Read More](design/overview.html#determinism)
+The big key to blockchain development is determinism. Two binaries with the same state must **always** produce the same result when passed a given transaction. [Read More](design/overview.html#determinism)
 
 ### Abstract Block Chain Interface (ABCI)
 

@@ -135,7 +135,7 @@ Testing logic of message validation is not different than model validation testi
 
 ```go
 func TestValidateCreateUserMsg(t *testing.T) {
-	cases := map[string]struct {
+    cases := map[string]struct {
 		msg      weave.Msg
 		wantErrs map[string]*errors.Error
 	}{

@@ -4,7 +4,7 @@ title: Consensus
 sidebar_label: Consensus 
 ---
 
-Consensus is the algorithm by which a set of computers come to agreement on which possible state is correct, and thus guarantee one consistent, global view of the state of the system.
+Consensus is the algorithm by which a set of computers come to agreement about which possible state is correct, and thus guarantee one consistent, global view of the state of the system.
 
 ## Probabilistic Finality
 
@@ -16,6 +16,6 @@ Another issue here is that any state may have to be reverted, and the data store
 
 ## Immediate finality
 
-An alternative approach used to guarantee consistency comes out of academic research into Byzantine Fault Tolerance from the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf). [Tendermint](https://tendermint.com/) uses an algorithm very similar to PBFT with optimizations learned from blockchain developments to create an extremely secure consensus algorithm. All nodes vote in multiple rounds, and only produce blocks when they are guaranteed that the block is the "correct" global consensus. Even in the case of omnipotent network manipulation, this algorithm will never produce two blocks at the same height (a fork) if less than one third of the nodes are actively collaborating to break the system. This is possibly the strongest guarantee of any production blockchain consensus algorithm.
+An alternative approach used to guarantee consistency comes out of academic research into Byzantine Fault-Tolerance from the 80s and 90s, which "culminated" in [PBFT](http://pmg.csail.mit.edu/papers/osdi99.pdf). [Tendermint](https://tendermint.com/) uses an algorithm very similar to PBFT with optimizations learned from blockchain developments to create an extremely secure consensus algorithm. All nodes vote in multiple rounds, and only produce blocks when they are guaranteed that the block is the "correct" global consensus. Even in the case of omnipotent network manipulation, this algorithm will never produce two blocks at the same height (a fork) if less than one third of the nodes are actively collaborating to break the system. This is possibly the strongest guarantee of any production blockchain consensus algorithm.
 
-The benefit of this approach is that any block that has over two-thirds of the signature is [provably correct by light clients](https://blog.cosmos.network/light-clients-in-tendermint-consensus-1237cfbda104). The state is never rolled back and clients can take actions based on that state. This opens the possibility of blockchain payments to be settled in the order of a second or two, similar latency with using a credit card in a store. It also allows reasonably responsive applications to be built on a blockchain.
+The benefit of this approach is that any block that has over two-thirds of the signature is [provably correct by light clients](https://blog.cosmos.network/light-clients-in-tendermint-consensus-1237cfbda104). The state is never rolled back and clients can take actions based on that state. This opens the possibility of settling blockchain payments within one or two seconds, similar latency to using a credit card in a store. It also allows reasonably responsive applications to be built on a blockchain.

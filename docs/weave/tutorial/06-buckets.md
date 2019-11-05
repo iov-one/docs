@@ -127,15 +127,22 @@ Don't worry. Weave is like a Swiss Army knife with a lot of blockchain features.
 Here is how we create compound index for morm buckets:
 
 ```go
-// BuildArticleUserIndex indexByteSize = 8(ArticleID) + 8(UserID)
-func BuildArticleUserIndex(comment *Comment) []byte {
-    return bytes.Join([][]byte{comment.ArticleID, comment.Owner}, nil)
+// BuildBlogTimedIndex produces 8 bytes BlogID || big-endian createdAt
+// This allows lexographical searches over the time ranges (or earliest or latest)
+// of all articles within one blog
+func BuildBlogTimedIndex(article *Article) ([]byte, error) {
+	res := make([]byte, 16)
+	copy(res, article.BlogID)
+	// this would violate lexographical ordering as negatives would be highest
+	if article.CreatedAt < 0 {
+		return nil, errors.Wrap(errors.ErrState, "cannot index negative creation times")
+	}
+	binary.BigEndian.PutUint64(res[8:], uint64(article.CreatedAt))
+	return res, nil
 }
 ```
 
-Sample compound article and user index for comments = `0000000100000001` where `00000001` is the article's ID and latter `00000001` is user ID.
-
-We can query an users comments on an article with a single index thanks to the code above.
+We can query all articles that are posted in a blog over the time ranges(earliest or latest)
 
 ## Querying buckets
 

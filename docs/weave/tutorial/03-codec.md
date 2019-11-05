@@ -203,28 +203,20 @@ Now we have the scaffold of our application thanks to the auto-generated _codec.
 
 The first time through the above process may appear tedious, but once you get the hang of it, you just have to add a few lines to a _.proto_ file and type `make protoc`. Et voila! You have a bunch of fresh \*.pb.go files that provide efficient, portable serialization for your code.
 
-But how do you use those structs? Taking `Amount` from [x/codec.proto](https://github.com/iov-one/tutorial/blob/master/x/orderbook/codec.proto#L10-L23) as an example, we see a `x/codec.pb.go` file with `type Amount struct {...}` that closely mirrors the content of the codec.proto file, as well as many of the methods. There are some auto-generated getters, which can be useful to fulfill interfaces or to query field of _nil_ objects without panicking. And then there are some (very long) **Marshal** and **Unmarshal** methods. These are the meat of the matter. They fulfill the Persistent interface and let us write code like this:
+But how do you use those structs? Taking `User` from [x/blog/codec.proto](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/codec.proto#L10-L20) as an example, we see a `x/blog/codec.pb.go` file with `type User struct {...}` that closely mirrors the content of the codec.proto file, as well as many of the methods. There are some auto-generated getters, which can be useful to fulfill interfaces or to query field of _nil_ objects without panicking. And then there are some (very long) **Marshal** and **Unmarshal** methods. These are the meat of the matter. They fulfill the Persistent interface and let us write code like this:
 
 ```go
-orig := Amount{Whole: 123, franctional: 2}
+orig := User{...}
 bz, err := orig.Marshal()
-parsed := Amount{}
+parsed := User{}
 err = parsed.Unmarshal(bz)
 ```
 
-This is fine, but what happens when I want to add custom logic to my Amount struct, perhaps adding validation logic, or code to add two coins? Luckily for us, Go allows you two write methods for your structs in any file in the same package. That means that we can just inherit the struct definition and all the serialization logic and just append the methods we care about. [x/amount.go](https://github.com/iov-one/tutorial/blob/master/x/orderbook/amount.go) is a great example of extending the functionality, with code like:
+This is fine, but what happens when I want to add custom logic to my User struct, perhaps adding validation logic, or code to add two coins? Luckily for us, Go allows you two write methods for your structs in any file in the same package. That means that we can just inherit the struct definition and all the serialization logic and just append the methods we care about. [x/blog/model.go](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/model.go#L15-L18) is a great example of extending the functionality, with code like:
 
 ```go
-// IsPositive returns true if the value is greater than 0
-func (a *Amount) IsPositive() bool {
-    return a.Whole > 0 ||
-        (a.Whole == 0 && a.Fractional > 0)
-}
-
-// IsNegative returns true if the value is less than 0
-func (a *Amount) IsNegative() bool {
-    return a.Whole < 0 ||
-        (a.Whole == 0 && a.Fractional < 0)
+func (u *User) IsRegisteredAfterDate(date time.Time) bool {
+  return u.RegisteredAt.Time().After(date)
 }
 ```
 

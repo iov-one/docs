@@ -58,6 +58,10 @@ rm `which tendermint`
 rm `which blog`
 ```
 
+## Fork Weave Starter Kit
+
+We have created the [Weave starter kit](https://github.com/iov-one/weave-starter-kit) to increase project development speed and reduce burden of copying code around when beginning a project. It contains the boiler plate code and has already written code logic that you can get hints.
+
 ## Initialize the Blockchain
 
 Before we start the blockchain, we need to set up the initial state. This is defined in a genesis block. Both `tendermint` and `blog` have a directory to store configuration and internal database state. By default those are `~/.tendermint` and `~/.blog`. However, to make things simpler, we will ask them both to put everything in the same directory.

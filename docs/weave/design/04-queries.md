@@ -58,16 +58,16 @@ By default, we expect `Data` to include a raw key to match in that context. Howe
 
 ### Examples
 
-[namecoin.NewWalletBucket](https://github.com/iov-one/weave/blob/v0.21.0/x/namecoin/wallet.go#L107-L113) adds a `name` field to the account, along with a secondary index. It is [registered under /wallets](https://github.com/iov-one/weave/blob/v0.21.0/x/namecoin/handler.go#L52-L57) in the QueryHandler.
+[blog.NewBlogBucket](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/bucket.go#L26-L33) keeps blogs, along with a secondary index named as `user` that indexes blogs to users. It is registered under ["/blogs"](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/handler.go#L20-L26) in the QueryHandler
 
 Path: `/`, Data: `0123456789` (hex):  
 db.Get(`0123456789`)
 
-Path: `/wallets`, Data: `00CAFE00` (hex):  
-namecoin.NewWalletBucket().Get(`00CAFE00`)
+Path: `/blogs`, Data: `00CAFE00` (hex):
+blog.NewBlogBucket().One(`00CAFE00`)
 
-Path: `/wallets/name`, Data: "John" (raw):  
-namecoin.NewWalletBucket().Index("name").Get("John")
+Path: `/blogs/user`, Data: `A230B....` (address):  
+blog.NewBlogBucket().ByIndex("user").Get(address)
 
 Path: `/?prefix`, Data: `0123456789` (hex):  
 db.Iterator(`0123456789`, `012345678A`)

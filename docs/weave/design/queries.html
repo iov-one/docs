@@ -94,13 +94,13 @@
 <li><code>?prefix</code> =&gt; <code>Data</code> is a raw prefix (query returns N results, all items that start with this prefix)</li>
 </ul>
 <h3><a class="anchor" aria-hidden="true" id="examples"></a><a href="#examples" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h3>
-<p><a href="https://github.com/iov-one/weave/blob/v0.21.0/x/namecoin/wallet.go#L107-L113">namecoin.NewWalletBucket</a> adds a <code>name</code> field to the account, along with a secondary index. It is <a href="https://github.com/iov-one/weave/blob/v0.21.0/x/namecoin/handler.go#L52-L57">registered under /wallets</a> in the QueryHandler.</p>
+<p><a href="https://github.com/iov-one/blog-tutorial/blob/master/x/blog/bucket.go#L26-L33">blog.NewBlogBucket</a> keeps blogs, along with a secondary index named as <code>user</code> that indexes blogs to users. It is registered under <a href="https://github.com/iov-one/blog-tutorial/blob/master/x/blog/handler.go#L20-L26">&quot;/blogs&quot;</a> in the QueryHandler</p>
 <p>Path: <code>/</code>, Data: <code>0123456789</code> (hex):<br>
 db.Get(<code>0123456789</code>)</p>
-<p>Path: <code>/wallets</code>, Data: <code>00CAFE00</code> (hex):<br>
-namecoin.NewWalletBucket().Get(<code>00CAFE00</code>)</p>
-<p>Path: <code>/wallets/name</code>, Data: &quot;John&quot; (raw):<br>
-namecoin.NewWalletBucket().Index(&quot;name&quot;).Get(&quot;John&quot;)</p>
+<p>Path: <code>/blogs</code>, Data: <code>00CAFE00</code> (hex):
+blog.NewBlogBucket().One(<code>00CAFE00</code>)</p>
+<p>Path: <code>/blogs/user</code>, Data: <code>A230B....</code> (address):<br>
+blog.NewBlogBucket().ByIndex(&quot;user&quot;).Get(address)</p>
 <p>Path: <code>/?prefix</code>, Data: <code>0123456789</code> (hex):<br>
 db.Iterator(<code>0123456789</code>, <code>012345678A</code>)</p>
 <h3><a class="anchor" aria-hidden="true" id="weave-response-types"></a><a href="#weave-response-types" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Weave Response Types</h3>

@@ -228,13 +228,18 @@ This is a productive workflow and I recommend trying it out. You may find it doe
 
 ```protobuf
 oneof sum {
-  cash.SendMsg send_msg = 1;
-  namecoin.CreateTokenMsg new_token_msg = 2;
-  namecoin.SetWalletNameMsg set_name_msg = 3;
-  escrow.CreateMsg create_escrow_msg = 4;
-  escrow.ReleaseMsg release_escrow_msg = 5;
-  escrow.ReturnMsg return_escrow_msg = 6;
-  escrow.UpdatePartiesMsg update_escrow_msg = 7;
+  cash.SendMsg cash_send_msg = 51;
+  multisig.CreateMsg multisig_create_msg = 56;
+  multisig.UpdateMsg multisig_update_msg = 57;
+  validators.ApplyDiffMsg validators_apply_diff_msg = 58;
+  ExecuteBatchMsg execute_batch_msg = 60;
+  migration.UpgradeSchemaMsg migration_upgrade_schema_msg = 69;
+  blog.CreateUserMsg blog_create_user_msg = 100;
+  blog.CreateBlogMsg blog_create_blog_msg = 101;
+  blog.ChangeBlogOwnerMsg blog_change_blog_owner_msg = 102;
+  blog.CreateArticleMsg blog_create_article_msg = 103;
+  blog.DeleteArticleMsg blog_delete_article_msg = 104;
+  blog.CancelDeleteArticleTaskMsg blog_cancel_delete_article_task_msg = 105;
 }
 ```
 
@@ -242,31 +247,20 @@ The only problem is that, to some people, the generated code is ugly. This deriv
 
 ```go
 type Tx struct {
-    // msg is a sum type over all allowed messages on this chain.
-    //
-    // Types that are valid to be assigned to Sum:
-    //  *Tx_SendMsg
-    //  *Tx_CreateTokenMsg
-    //  *Tx_SetNameMsg
-    //  *Tx_CreateMsg
-    //  *Tx_ReleaseMsg
-    //  *Tx_ReturnMsg
-    //  *Tx_UpdateEscrowMsg
-    Sum isTx_Sum `protobuf_oneof:"sum"`
-...
-}
-
-type isTx_Sum interface {
-    isTx_Sum()
-    MarshalTo([]byte) (int, error)
-    Size() int
-}
-
-type Tx_SendMsg struct {
-    SendMsg *cash.SendMsg `protobuf:"bytes,1,opt,name=send_msg,json=sendMsg,oneof"`
-}
-type Tx_CreateTokenMsg struct {
-    CreateTokenMsg *namecoin.CreateTokenMsg `protobuf:"bytes,2,opt,name=new_token_msg,json=newTokenMsg,oneof"`
+  // Types that are valid to be assigned to Sum:
+  //  *Tx_CashSendMsg
+	//	*Tx_MultisigCreateMsg
+	//	*Tx_MultisigUpdateMsg
+	//	*Tx_ValidatorsApplyDiffMsg
+	//	*Tx_ExecuteBatchMsg
+	//	*Tx_MigrationUpgradeSchemaMsg
+	//	*Tx_BlogCreateUserMsg
+	//	*Tx_BlogCreateBlogMsg
+	//	*Tx_BlogChangeBlogOwnerMsg
+	//	*Tx_BlogCreateArticleMsg
+	//	*Tx_BlogDeleteArticleMsg
+	//	*Tx_BlogCancelDeleteArticleTaskMsg
+	Sum isTx_Sum `protobuf_oneof:"sum"`
 }
 ```
 

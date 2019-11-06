@@ -210,42 +210,36 @@ err = parsed.Unmarshal(bz)
 <h3><a class="anchor" aria-hidden="true" id="notes-about-oneof"></a><a href="#notes-about-oneof" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Notes About oneof</h3>
 <p><strong>oneof</strong> is a powerful feature to produce union/sum types in your protobuf structures. For example, you may have a public key which may be one of many different algorithms and can define cases for each, which can be switched on in runtime. We also use this for the transaction to enumerate a set of possible messages that can be embedded in the transaction. A transaction may have any one of them and serialize and deserialize properly. Type-safety is enforced in compile-time and we can switch on the kind at runtime. (Example from <a href="https://github.com/iov-one/bcp-demo/blob/master/app/codec.proto">bcp-demo</a>):</p>
 <pre><code class="hljs css language-protobuf"><span class="hljs-keyword">oneof</span> sum {
-  cash.SendMsg send_msg = <span class="hljs-number">1</span>;
-  namecoin.CreateTokenMsg new_token_msg = <span class="hljs-number">2</span>;
-  namecoin.SetWalletNameMsg set_name_msg = <span class="hljs-number">3</span>;
-  escrow.CreateMsg create_escrow_msg = <span class="hljs-number">4</span>;
-  escrow.ReleaseMsg release_escrow_msg = <span class="hljs-number">5</span>;
-  escrow.ReturnMsg return_escrow_msg = <span class="hljs-number">6</span>;
-  escrow.UpdatePartiesMsg update_escrow_msg = <span class="hljs-number">7</span>;
+  cash.SendMsg cash_send_msg = <span class="hljs-number">51</span>;
+  multisig.CreateMsg multisig_create_msg = <span class="hljs-number">56</span>;
+  multisig.UpdateMsg multisig_update_msg = <span class="hljs-number">57</span>;
+  validators.ApplyDiffMsg validators_apply_diff_msg = <span class="hljs-number">58</span>;
+  ExecuteBatchMsg execute_batch_msg = <span class="hljs-number">60</span>;
+  migration.UpgradeSchemaMsg migration_upgrade_schema_msg = <span class="hljs-number">69</span>;
+  blog.CreateUserMsg blog_create_user_msg = <span class="hljs-number">100</span>;
+  blog.CreateBlogMsg blog_create_blog_msg = <span class="hljs-number">101</span>;
+  blog.ChangeBlogOwnerMsg blog_change_blog_owner_msg = <span class="hljs-number">102</span>;
+  blog.CreateArticleMsg blog_create_article_msg = <span class="hljs-number">103</span>;
+  blog.DeleteArticleMsg blog_delete_article_msg = <span class="hljs-number">104</span>;
+  blog.CancelDeleteArticleTaskMsg blog_cancel_delete_article_task_msg = <span class="hljs-number">105</span>;
 }
 </code></pre>
 <p>The only problem is that, to some people, the generated code is ugly. This derives from the fact that there is no clean way to express sum types in Go, and you have to force an interface with private methods to close the set of possible types. Although some people have been so revolted by this code that they preferred to <a href="https://github.com/tendermint/go-amino" title="go-amino">write their own serialization library</a>, I would suggest just taking a deep breath and getting to know it. Here are the relevant pieces:</p>
 <pre><code class="hljs css language-go"><span class="hljs-keyword">type</span> Tx <span class="hljs-keyword">struct</span> {
-    <span class="hljs-comment">// msg is a sum type over all allowed messages on this chain.</span>
-    <span class="hljs-comment">//</span>
-    <span class="hljs-comment">// Types that are valid to be assigned to Sum:</span>
-    <span class="hljs-comment">//  *Tx_SendMsg</span>
-    <span class="hljs-comment">//  *Tx_CreateTokenMsg</span>
-    <span class="hljs-comment">//  *Tx_SetNameMsg</span>
-    <span class="hljs-comment">//  *Tx_CreateMsg</span>
-    <span class="hljs-comment">//  *Tx_ReleaseMsg</span>
-    <span class="hljs-comment">//  *Tx_ReturnMsg</span>
-    <span class="hljs-comment">//  *Tx_UpdateEscrowMsg</span>
+  <span class="hljs-comment">// Types that are valid to be assigned to Sum:</span>
+  <span class="hljs-comment">//  *Tx_CashSendMsg</span>
+    <span class="hljs-comment">//  *Tx_MultisigCreateMsg</span>
+    <span class="hljs-comment">//  *Tx_MultisigUpdateMsg</span>
+    <span class="hljs-comment">//  *Tx_ValidatorsApplyDiffMsg</span>
+    <span class="hljs-comment">//  *Tx_ExecuteBatchMsg</span>
+    <span class="hljs-comment">//  *Tx_MigrationUpgradeSchemaMsg</span>
+    <span class="hljs-comment">//  *Tx_BlogCreateUserMsg</span>
+    <span class="hljs-comment">//  *Tx_BlogCreateBlogMsg</span>
+    <span class="hljs-comment">//  *Tx_BlogChangeBlogOwnerMsg</span>
+    <span class="hljs-comment">//  *Tx_BlogCreateArticleMsg</span>
+    <span class="hljs-comment">//  *Tx_BlogDeleteArticleMsg</span>
+    <span class="hljs-comment">//  *Tx_BlogCancelDeleteArticleTaskMsg</span>
     Sum isTx_Sum <span class="hljs-string">`protobuf_oneof:"sum"`</span>
-...
-}
-
-<span class="hljs-keyword">type</span> isTx_Sum <span class="hljs-keyword">interface</span> {
-    isTx_Sum()
-    MarshalTo([]<span class="hljs-keyword">byte</span>) (<span class="hljs-keyword">int</span>, error)
-    Size() <span class="hljs-keyword">int</span>
-}
-
-<span class="hljs-keyword">type</span> Tx_SendMsg <span class="hljs-keyword">struct</span> {
-    SendMsg *cash.SendMsg <span class="hljs-string">`protobuf:"bytes,1,opt,name=send_msg,json=sendMsg,oneof"`</span>
-}
-<span class="hljs-keyword">type</span> Tx_CreateTokenMsg <span class="hljs-keyword">struct</span> {
-    CreateTokenMsg *namecoin.CreateTokenMsg <span class="hljs-string">`protobuf:"bytes,2,opt,name=new_token_msg,json=newTokenMsg,oneof"`</span>
 }
 </code></pre>
 <p>We now have some intermediate structs that give us a layer of unidirection in order to enforce the fact we can now securely switch over all possible <code>tx.Sum</code> fields, with <a href="https://github.com/iov-one/bcp-demo/blob/master/app/tx.go#L33-61">code like this</a>:</p>
@@ -267,7 +261,7 @@ err = parsed.Unmarshal(bz)
     <span class="hljs-keyword">return</span> t.UpdateEscrowMsg, <span class="hljs-literal">nil</span>
 }
 </code></pre>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated by Orkun Külçe</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/weave/tutorial/domain"><span class="arrow-prev">← </span><span>Domain</span></a><a class="docs-next button" href="/docs/weave/tutorial/models"><span>Models</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#create-codec-file">Create Codec file</a></li><li><a href="#state">State</a></li><li><a href="#message">Message</a></li><li><a href="#using-weave-inbuilt-types-in-codec">Using Weave inbuilt types in codec</a><ul class="toc-headings"><li><a href="#cast-type">Cast Type</a></li><li><a href="#custom-name">Custom Name</a></li></ul></li><li><a href="#compiling-proto-files">Compiling Proto Files</a></li><li><a href="#more-on-protobuf">More on protobuf</a><ul class="toc-headings"><li><a href="#prototool">Prototool</a></li><li><a href="#using-autogenerated-structs">Using Autogenerated Structs</a></li><li><a href="#notes-about-oneof">Notes About oneof</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2019 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated by orkunkl</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/weave/tutorial/domain"><span class="arrow-prev">← </span><span>Domain</span></a><a class="docs-next button" href="/docs/weave/tutorial/models"><span>Models</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#create-codec-file">Create Codec file</a></li><li><a href="#state">State</a></li><li><a href="#message">Message</a></li><li><a href="#using-weave-inbuilt-types-in-codec">Using Weave inbuilt types in codec</a><ul class="toc-headings"><li><a href="#cast-type">Cast Type</a></li><li><a href="#custom-name">Custom Name</a></li></ul></li><li><a href="#compiling-proto-files">Compiling Proto Files</a></li><li><a href="#more-on-protobuf">More on protobuf</a><ul class="toc-headings"><li><a href="#prototool">Prototool</a></li><li><a href="#using-autogenerated-structs">Using Autogenerated Structs</a></li><li><a href="#notes-about-oneof">Notes About oneof</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2019 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

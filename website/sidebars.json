@@ -41,7 +41,8 @@
           "weave/design/extension",
           "weave/design/transaction-flow",
           "weave/design/permissions",
-          "weave/design/queries"
+          "weave/design/queries",
+          "weave/design/prototool"
         ]
       },
       {

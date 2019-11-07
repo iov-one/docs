@@ -76,7 +76,8 @@
           "weave/tutorial/handlers",
           "weave/tutorial/app-level-codec",
           "weave/tutorial/application",
-          "weave/tutorial/batch-txs"
+          "weave/tutorial/batch-txs",
+          "weave/tutorial/cron-tasks"
         ]
       }
     ],

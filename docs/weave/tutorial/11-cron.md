@@ -61,7 +61,7 @@ type Ticker interface {
 }
 ```
 
-Default Ticker implementation processes messages in order of execution time, starting with the oldest, in short words FIFO. But if you require a LIFO task queue you can implement it very easily by just changing few lines of code.
+Default Ticker implementation processes messages in order of execution time, starting with the oldest, in short words FIFO. But if you require a LIFO task queue you can implement it easily.
 
 ## Tutorial
 
@@ -112,11 +112,161 @@ _weave.Scheduler_ will be initiated and passed to the handler on the application
 	}
 ```
 
-If the create message contains a DeleteAt value, `deleteArticleMsg` iniated and scheduled it with no condition - scheduler will not be accesible to outer world. We want everyone to be able to schedule a article for their own article.
-Let's say we wanted a message that could be executed only when an **admin's** condition is present in the context. For this, the handler that will execute message must check the if the admin's condition is in the context and then execute accordingly. In order to pass this authentication information to the CRON handler you need to feed the condition to the scheduler:
+If the create message contains a DeleteAt value, `deleteArticleMsg` initiated and scheduled with no condition - the scheduler will not be accesible to the outer world. We want everyone to be able to schedule a article for their own article.
+
+Let's say we want a message that could be executed only when an **admin's** condition is present in the context. For this, the handler that will execute message must check the if the admin's condition is in the context and then execute accordingly. In order to pass this authentication information to the CRON handler you need to feed the condition to the scheduler:
 
 `taskID, err = h.scheduler.Schedule(store, article.DeleteAt.Time(), adminCond, deleteArticleMsg)`
 
-## Executor
+In the code example above we also defined a `taskID` that will be used to identify the task among other deletion tasks, with this information we can delete or modify the task after scheduling process is over.
 
----> Document cron executor
+As you can see `deleteArticleTask` is saved to the store with article ID and task owner address to authorize modification to the task.
+
+Via the article ID field, scheduled tasks could be queried with articles.
+
+## Executor Handler
+
+Executor Handler in this context refers to the handler that will execute the task that is received from the application ticker. We implemented the deletion scheduling logic within `CreateArticleHandler`, now we have to implement the consumer logic, which is `CronDeleteArticleHandler`.
+
+`Deliver` method of `CronDeleteArticleHandler`:
+
+```go
+// Deliver stages a scheduled deletion if all preconditions are met
+func (h CronDeleteArticleHandler) Deliver(ctx weave.Context, store weave.KVStore, tx weave.Tx) (*weave.DeliverResult, error) {
+	msg, err := h.validate(ctx, store, tx)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := h.b.Delete(store, msg.ArticleID); err != nil {
+		return nil, errors.Wrapf(err, "cannot delete article with ID %s", msg.ArticleID)
+	}
+
+	return &weave.DeliverResult{}, nil
+}
+```
+
+As you can see there is no authentication checks, it is because we designed cron handlers to be inaccesible to the world via a query so we can implement our execution without any fears of exploitation.
+
+This handler will receive the `DeleteArticleMsg`, delete the article from the store using the article ID data that is passed along with the message.
+
+## Task Cancellation
+
+If we need the ability to do execution in distant future, we also need the ability to cancel the same execution. As you remember we saved the scheduled task information to the store to be used in various post-submission activities. Deletion is the simplest example of this case. As you read many many times, and probably got very used to, every action in Weave goes through an handler. We will create a handler that is called `CancelDeleteArticleTaskHandler`.
+
+`validate` method:
+
+```go
+// validate does all common pre-processing between Check and Deliver
+func (h CancelDeleteArticleTaskHandler) validate(ctx weave.Context, store weave.KVStore, tx weave.Tx) (*CancelDeleteArticleTaskMsg, error) {
+	var msg CancelDeleteArticleTaskMsg
+
+	if err := weave.LoadMsg(tx, &msg); err != nil {
+		return nil, errors.Wrap(err, "load msg")
+	}
+
+	var task DeleteArticleTask
+	if err := h.b.One(store, msg.TaskID, &task); err != nil {
+		return nil, errors.Wrapf(err, "delete task with id %s not found", msg.TaskID)
+	}
+
+	signer := x.MainSigner(ctx, h.auth).Address()
+	if !task.TaskOwner.Equals(signer) {
+		return nil, errors.Wrapf(errors.ErrUnauthorized, "signer %s is unauthorized to cancel scheduled delete article task with id %s", signer, msg.TaskID)
+	}
+
+	return &msg, nil
+}
+```
+
+Since cancellation of tasks requries to be initiated by a user signed message, we need to explicitly check if user signature is in the context, same as every other regular handler.
+
+If the task desired to be cancelled exists and task owner is the signer of the address, execution proceeds to the `Deliver` method:
+
+```go
+// Deliver cancels delete task if conditions are met
+func (h CancelDeleteArticleTaskHandler) Deliver(ctx weave.Context, store weave.KVStore, tx weave.Tx) (*weave.DeliverResult, error) {
+	msg, err := h.validate(ctx, store, tx)
+	if err != nil {
+		return nil, err
+	}
+
+	if err := h.scheduler.Delete(store, msg.TaskID); err != nil {
+		return nil, errors.Wrapf(err, "cannot delete scheduled task with id %s", msg.TaskID)
+	}
+
+	if err := h.b.Delete(store, msg.TaskID); err != nil {
+		return nil, errors.Wrapf(err, "cannot cancel delete task with id %s", msg.TaskID)
+	}
+
+	return &weave.DeliverResult{Data: msg.TaskID}, nil
+}
+```
+
+First, task gets **descheduled** using the task ID present in the message and then deleted from the task store.
+
+## CRON Stack
+
+As we mentioned before, CRON handlers are no different than regular handlers but they differ in one point: CRON operates in a totally different stack than the application.
+
+We need to define a seperate routes for our CRON stack in the blog module:
+
+```go
+// RegisterCronRoutes registers routes that are not exposed to
+// routers
+func RegisterCronRoutes(
+	r weave.Registry,
+	auth x.Authenticator,
+) {
+	r.Handle(&DeleteArticleMsg{}, newCronDeleteArticleHandler(auth))
+}
+```
+
+And then we need a weave.Handler builder that will wrap the CRON application:
+
+```go
+func CronStack() weave.Handler {
+	rt := app.NewRouter()
+
+	authFn := cron.Authenticator{}
+
+	// Cron is using custom router as not the same handlers are registered.
+	blog.RegisterCronRoutes(rt, authFn)
+
+	decorators := app.ChainDecorators(
+		utils.NewLogging(),
+		utils.NewRecovery(),
+		utils.NewKeyTagger(),
+		utils.NewActionTagger(),
+		// No fee decorators.
+	)
+	return decorators.WithHandler(rt)
+}
+```
+
+And last we need a `Ticker` that will process the scheduled messages:
+
+```go
+ticker := cron.NewTicker(CronStack(), CronTaskMarshaler)
+```
+
+We feed the ticker to the base application:
+
+```go
+// Application constructs a basic ABCI application with
+// the given arguments.
+func Application(name string, h weave.Handler,
+	tx weave.TxDecoder, dbPath string, debug bool) (app.BaseApp, error) {
+
+	ctx := context.Background()
+	kv, err := CommitKVStore(dbPath)
+	if err != nil {
+		return app.BaseApp{}, errors.Wrap(err, "cannot create database instance")
+	}
+	store := app.NewStoreApp(name, kv, QueryRouter(), ctx)
+	base := app.NewBaseApp(store, tx, h, ticker, debug)
+	return base, nil
+}
+```
+
+## Conclusion

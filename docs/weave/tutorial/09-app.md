@@ -150,7 +150,7 @@ func Chain(authFn x.Authenticator, minFee coin.Coin) app.Decorators {
 
 We will dive in to CRON stack and it's use in the next chapters, but there is no harm in giving it a peek.
 
-Cron stack is a minimal application that runs differently from the main decorators that runs scheduled jobs in the background.
+Cron stack is a minimal router that runs differently from the main decorators that runs scheduled jobs in the background.
 
 ```go
 // CronStack wires up a standard router with a cron specific decorator chain.

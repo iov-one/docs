@@ -4,11 +4,16 @@ title: Scheduled Tasks
 sidebar_label: Scheduled Tasks
 ---
 
-In almost every real time software, the need to schedule jobs to be executed at a certain time in future is constant. In blockchain context, this could be sending tokens, distributing revenue, scheduling a proposal, basically anything that could be executed as a transaction(a change in state). One of the functionality missing in older blockchain protocols is assuring the execution time of a transaction precisely is impossible due to the [Probabilistic Finality](../basics/02-consensus.md#probabilistic-finality) nature of the consensus algorithms. One of the wonders of Tendermint Consensus engine is we can approximately predict the execution time of a block thanks to [Immediate Finality](../basics/02-consensus.md#immediate-finality).
+In almost every real time software, the need to schedule jobs to be executed at a certain time in future is constant. In blockchain context, this could be sending tokens, distributing revenue, scheduling a proposal, basically anything that could be executed as a transaction (a change of state). The early generation of blockchain protocols had a hard time assuring the execution time of a transaction precisely is impossible due to the [Probabilistic Finality](../basics/02-consensus.md#probabilistic-finality) nature of the consensus algorithms. One of the wonders of Tendermint Consensus engine is we can approximately predict the execution time of a block thanks to [Immediate Finality](../basics/02-consensus.md#immediate-finality).
 
 A must read gem: [Finality in Blockchain Consensus.](https://medium.com/mechanism-labs/finality-in-blockchain-consensus-d1f83c120a9a)
 
-In Weave, [CRON](https://en.wikipedia.org/wiki/CRON) is no different than a regular message except the fact that CRON tasks are initiated by a ticker and processed by a different handler that is not accesible from the route. This means you cannot access the CRON handler from outside but you can trigger a CRON task by a regular, routed handler.
+[CRON](https://en.wikipedia.org/wiki/CRON) is no different than a regular message except the fact that CRON tasks are initiated by a ticker and processed by a different handler that is not accesible from the route. This means you cannot access the CRON handler from outside but you can trigger a CRON task by a regular, routed handler.
+
+- Executing CRON messages is almost no different from executing a message in the usual flow
+- CRON can use the same or a different router to handle messages and therefore support the same of different set of messages
+- Using different handler allows configuring which messages can be processed the same handler and message can be used both by usual router and cron
+- CRON use a different authentication policy 
 
 ### Scheduler
 
@@ -31,10 +36,10 @@ type Scheduler interface {
 
 **Warning:** Due to the implementation details, transaction is guaranteed to be executed after given time, but not exactly at given time. If another transaction is already scheduled for the exact same time, execution of this transaction is delayed until the next free slot.
 
-**Important Note:** An authentication address, Condition, is passed to the scheduler because: In the usual flow, before processing the message, signature is validated to authenticate and later authorize. In CRON this is not the case, because what a normal message creates a new message that says "CRON do X" and the signature of this message is not present in the context. It is impossible to sign a message for scheduler to without the private key.
-Instead, the signature check step bypassed and conditions must be explicitly present in the context when processing given scheduled message.
+**Important Note:** An authentication address, Condition, is passed to the scheduler because: In the usual flow, before processing the message, signature is validated to authenticate and later authorize. In CRON this is not the case, because what a normal message creates a new message that says "CRON do X" and the signature of this message is not present in the context. It is impossible to sign a message for scheduler without the private key.
+Instead, the signature check step is bypassed and desired conditions are set in the context when processing given scheduled message.
 
-This could be a security hole if developer implements the CRON feature poorly. Happily only code can schedule a CRON task and decide on conditions, so this should never be an issue.
+Absence of signature could be security hole if a developer implements the CRON feature poorly. Happily only code can schedule a CRON task and decide on conditions, so this should never be an issue.
 
 ### Ticker
 
@@ -61,13 +66,11 @@ type Ticker interface {
 }
 ```
 
-Default Ticker implementation processes messages in order of execution time, starting with the oldest, in short words FIFO. But if you require a LIFO task queue you can implement it easily.
-
 ## Tutorial
 
 ### Message
 
-In [CreateArticleMsg](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/codec.proto#L92-L104) we defined a field named as `delete_at` that defines the deletion time of the article that will initated by CRON. During the creation of CreateArticleHandler scheduler is defined as a part of the struct:
+In [CreateArticleMsg](https://github.com/iov-one/blog-tutorial/blob/master/x/blog/codec.proto#L92-L104) we defined a field named as `delete_at` that defines the deletion time of the article that will be initated by CRON. During the creation of CreateArticleHandler scheduler is defined as a part of the struct:
 
 ### Scheduler Handler
 
@@ -89,7 +92,7 @@ _weave.Scheduler_ will be initiated and passed to the handler on the application
 // schedule delete task
 	if msg.DeleteAt != 0 {
 		deleteArticleMsg := &DeleteArticleMsg{
-			Metadata:  msg.Metadata,
+			Metadata:  &weave.Metadata{Schema: 1},
 			ArticleID: article.ID,
 		}
 
@@ -112,7 +115,7 @@ _weave.Scheduler_ will be initiated and passed to the handler on the application
 	}
 ```
 
-If the create message contains a DeleteAt value, `deleteArticleMsg` initiated and scheduled with no condition - the scheduler will not be accesible to the outer world. We want everyone to be able to schedule a article for their own article.
+If the create message contains a DeleteAt value, `deleteArticleMsg` will be initiated and scheduled with no condition. Don't get scared by **with no condition** words, the CRON router will not be accessible to the world anyways.
 
 Let's say we want a message that could be executed only when an **admin's** condition is present in the context. For this, the handler that will execute message must check the if the admin's condition is in the context and then execute accordingly. In order to pass this authentication information to the CRON handler you need to feed the condition to the scheduler:
 

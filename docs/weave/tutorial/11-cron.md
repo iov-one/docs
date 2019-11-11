@@ -8,12 +8,12 @@ In almost every real time software, the need to schedule jobs to be executed at 
 future is constant. In blockchain context, this could be sending tokens, distributing revenue,
 scheduling a proposal, basically anything that could be executed as a transaction (a change of
 state). The early generation of blockchain protocols had a hard time assuring the execution time
-of a transaction precisely is impossible due to the [Probabilistic
-Finality](../basics/02-consensus.md#probabilistic-finality) nature of the consensus algorithms.
-One of the wonders of Tendermint Consensus engine is we can approximately predict the execution
-time of a block thanks to [Immediate Finality](../basics/02-consensus.md#immediate-finality).
-
-A must read gem: [Finality in Blockchain Consensus.](https://medium.com/mechanism-labs/finality-in-blockchain-consensus-d1f83c120a9a)
+of a transaction precisely is impossible due to the indeterministic nature of the consensus algorithms.
+One of the wonders of Tendermint Consensus engine is the ability to roughly approximate the execution time of a
+future block thanks to **BFT Time feature**.
+[Tendermint BFT Time](https://github.com/tendermint/tendermint/blob/v0.32.7/docs/spec/consensus/bft-time.md) 
+document is a very technical and complicated specification, but long story short, execution time of a proposed block is
+get by calculating the median of latest block's commit voting times.
 
 [CRON](https://en.wikipedia.org/wiki/CRON) is no different than a regular message except the fact
 that CRON tasks are initiated by a ticker and processed by a different handler that is not

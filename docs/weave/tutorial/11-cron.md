@@ -4,28 +4,28 @@ title: Scheduled Tasks
 sidebar_label: Scheduled Tasks
 ---
 
-In almost every real time software, the need to schedule jobs to be executed at a certain time in
+In almost every realtime software, the need to schedule jobs to be executed at a certain time in
 future is constant. In blockchain context, this could be sending tokens, distributing revenue,
 scheduling a proposal, basically anything that could be executed as a transaction (a change of
-state). The early generation of blockchain protocols had a hard time assuring the execution time
+state). The early generation of blockchain protocols had a hard time ensuring the execution time
 of a transaction precisely is impossible due to the indeterministic nature of the consensus algorithms.
-One of the wonders of Tendermint Consensus engine is the ability to roughly approximate the execution time of a
-future block thanks to **BFT Time feature**.
+One of the wonders of Tendermint Consensus engine is the ability to approximate the execution time of a
+future block thanks to the **BFT Time feature**.
 [Tendermint BFT Time](https://github.com/tendermint/tendermint/blob/v0.32.7/docs/spec/consensus/bft-time.md) 
 document is a very technical and complicated specification, but long story short, execution time of a proposed block is
-get by calculating the median of latest block's commit voting times.
+obtained by calculating the median of the latest block's commit voting times.
 
-[CRON](https://en.wikipedia.org/wiki/CRON) is no different than a regular message except the fact
+[CRON](https://en.wikipedia.org/wiki/CRON) is no different than a regular message except 
 that CRON tasks are initiated by a ticker and processed by a different handler that is not
 accesible from the route. This means you cannot access the CRON handler from outside but you can
 trigger a CRON task by a regular, routed handler.
 
-- Executing CRON messages is almost no different from executing a message in
+- Executing CRON messages is almost the same as executing a message in
 the usual flow
 - CRON can use the same or a different router to handle
-messages and therefore support the same of different set of messages
-- Using different handler allows configuring which messages can be processed the same
-handler and message can be used both by usual router and cron
+messages and therefore support the same or different set of messages
+- Using different handler allows configuring which messages can be processed by the same
+handler and which message can be used both by the usual router and cron
 - CRON use a different authentication policy
 
 ### Scheduler
@@ -53,16 +53,16 @@ type Scheduler interface {
 given time, but not exactly at given time. If another transaction is already scheduled for the
 exact same time, execution of this transaction is delayed until the next free slot.
 
-**Important Note:** An authentication address, Condition, is passed to the scheduler because: In
+**Important Note:** An authentication address, Condition, is passed to the scheduler because, in
 the usual flow, before processing the message, signature is validated to authenticate and later
-authorize. In CRON this is not the case, because what a normal message creates a new message that
+authorize. In CRON this is not the case, because what a normal message creates is a new message that
 says "CRON do X" and the signature of this message is not present in the context. It is
 impossible to sign a message for scheduler without the private key.
 Instead, the signature check step is bypassed and desired conditions are set in the context when
 processing given scheduled message.
 
 Absence of signature could be security hole if a developer implements the CRON feature poorly.
-Happily only code can schedule a CRON task and decide on conditions, so this should never be an
+Happily, only code can schedule a CRON task and decide on conditions, so this should never be an
 issue.
 
 ### Ticker
@@ -146,17 +146,17 @@ schedules a job to be processed in future is below:
 
 If the create message contains a DeleteAt value, `deleteArticleMsg` will be initiated and
 scheduled with no condition. Don't get scared by **with no condition** words, the CRON router
-will not be accessible to the world anyways.
+will not be accessible to the world anyway.
 
 Let's say we want a message that could be executed only when an **admin's** condition is present
-in the context. For this, the handler that will execute message must check the if the admin's
+in the context. For this, the handler that will execute message must check if the admin's
 condition is in the context and then execute accordingly. In order to pass this authentication
 information to the CRON handler you need to feed the condition to the scheduler:
 
 `taskID, err = h.scheduler.Schedule(store, article.DeleteAt.Time(), adminCond, deleteArticleMsg)`
 
 In the code example above we also defined a `taskID` that will be used to identify the task among
-other deletion tasks, with this information we can delete or modify the task after scheduling
+other deletion tasks; with this information we can delete or modify the task after scheduling
 process is over.
 
 As you can see `deleteArticleTask` is saved to the store with article ID and task owner address
@@ -189,7 +189,7 @@ func (h CronDeleteArticleHandler) Deliver(ctx weave.Context, store weave.KVStore
 }
 ```
 
-As you can see there is no authentication checks, it is because we designed cron handlers to be
+As you can see there is no authentication check, this is because we designed cron handlers to be
 inaccesible to the world via a query so we can implement our execution without any fears of
 exploitation.
 
@@ -198,11 +198,11 @@ article ID data that is passed along with the message.
 
 ## Task Cancellation
 
-If we need the ability to do execution in distant future, we also need the ability to cancel the
+If we need the ability to do execution in the distant future, we also need the ability to cancel the
 same execution. As you remember we saved the scheduled task information to the store to be used
-in various post-submission activities. Deletion is the simplest example of this case. As you read
-many many times, and probably got very used to, every action in Weave goes through an handler. We
-will create a handler that is called `CancelDeleteArticleTaskHandler`.
+in various post-submission activities. Deletion is the simplest example of this case. As you have read
+many many times, and probably got very used to, every action in Weave goes through a handler. We
+will create a handler called `CancelDeleteArticleTaskHandler`.
 
 `validate` method:
 ```go
@@ -228,10 +228,10 @@ func (h CancelDeleteArticleTaskHandler) validate(ctx weave.Context, store weave.
 }
 ```
 
-Since cancellation of tasks requries to be initiated by a user signed message, we need to
-explicitly check if user signature is in the context, same as every other regular handler.
+Since cancellation of tasks must be initiated by a user-signed message, we need to
+check explicitly if the user signature is in the context, same as every other regular handler.
 
-If the task desired to be cancelled exists and task owner is the signer of the address, execution
+If the task you want to cancel exists and the task owner is the signer of the address, execution
 proceeds to the `Deliver` method:
 
 ```go
@@ -254,7 +254,7 @@ func (h CancelDeleteArticleTaskHandler) Deliver(ctx weave.Context, store weave.K
 }
 ```
 
-First, task gets **descheduled** using the task ID present in the message and then deleted from
+First, the task gets **descheduled** using the task ID present in the message and then deleted from
 the task store.
 
 ## CRON Stack
@@ -262,7 +262,7 @@ the task store.
 As we mentioned before, CRON handlers are no different than regular handlers but they differ in
 one point: CRON operates in a totally different stack than the application.
 
-We need to define a seperate routes for our CRON stack in the blog module:
+We need to define a separate route for our CRON stack in the blog module:
 
 ```go
 // RegisterCronRoutes registers routes that are not exposed to

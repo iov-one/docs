@@ -46,7 +46,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=153708dc24ac048f81adbf5cd080a45f334d905d@35.246.190.46:26656 \
+--p2p.seeds=040649e0bba7ab39e7021f1f310d5df23185a426@34.89.253.221:26656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -143,8 +143,8 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://gist.githubusercontent.com/davepuchyr/c0ff3bffa4fba372b2bf6e81b1d7d5de/raw/7d4e36ef3e19d713d0237909031f7cca466ac97e/genesis_testnet.json > config/genesis.json
-sha256sum config/genesis.json | grep be419abe86724533aa4cc3a467cb56fbaf0a7df6196a19bef579d8d3a1c14617 || echo 'BAD GENESIS FILE!'
+curl --fail https://gist.githubusercontent.com/davepuchyr/c0ff3bffa4fba372b2bf6e81b1d7d5de/raw/d615e1571bc5f774e0a676a82942a6bca6137d30/genesis_testnet.json > config/genesis.json
+sha256sum config/genesis.json | grep 7a9108cda20978f042e92a010800ef78d57f53f44b78a30b3d8900986127af7d || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
@@ -184,7 +184,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=153708dc24ac048f81adbf5cd080a45f334d905d@35.246.190.46:26656 \
+--p2p.seeds=040649e0bba7ab39e7021f1f310d5df23185a426@34.89.253.221:26656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

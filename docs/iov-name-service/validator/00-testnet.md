@@ -133,8 +133,6 @@ mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
 wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep d1cba6d3a43a555875421d14a6c8d05660a2f1fd51e6f762707520aed9af10fe && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
 wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
 
-exit # root
-
 # initialize the IOV Name Service
 su - iov
 set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
@@ -158,6 +156,8 @@ exit # iov
 
 journalctl -f | grep iovns & # watch the chain sync
 systemctl start iovns.service
+
+exit # root
 ```
 
 At this point you're running a full-node that can be examined at `http://localhost:16657/status`.
@@ -191,7 +191,7 @@ IMAGE_TM_OPTS="\
 "
 ```
 
-There are a lot more tendermint configuration options available than those shown above.  Customize them as you see fit.
+There are a lot more tendermint configuration options available than those shown above.  Customize them as you see fit and then execute `sudo systemctl restart iovns.service`.
 
 ### Validator configuration
 
@@ -206,6 +206,8 @@ IMAGE_TM_OPTS="\
 --rpc.unsafe=false \
 "
 ```
+
+Execute `sudo systemctl restart iovns.service`
 
 ## Light-up the validator
 

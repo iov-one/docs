@@ -7,7 +7,8 @@
         "label": "Validator",
         "ids": [
           "iov-name-service/validator/rewards",
-          "iov-name-service/validator/setup",
+          "iov-name-service/validator/testnet",
+          "iov-name-service/validator/mainnet",
           "iov-name-service/validator/troubleshooter",
           "iov-name-service/validator/faq"
         ]

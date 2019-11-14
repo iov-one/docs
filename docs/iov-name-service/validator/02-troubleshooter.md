@@ -11,7 +11,7 @@ sidebar_label: Troubleshooter
 - The genesis object is included in a rpc response frame, so it must be extracted from the "result" object.
 
 ```sh
-curl https://rpc.babynet.iov.one/genesis | jq .result.genesis > config/genesis.json
+curl https://SOME_HOST_WITH_RPC_PORT/genesis | jq .result.genesis > config/genesis.json
 ```
 
 ### failed to start a server: listen unix /tendermint/iovns.sock: bind: address already in use

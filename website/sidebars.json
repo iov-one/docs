@@ -20,7 +20,8 @@
           "iov-name-service/clients/iov-core",
           "iov-name-service/clients/rest-api"
         ]
-      }
+      },
+      "iov-name-service/ledger"
     ],
     "IOV Weave SDK": [
       "weave/welcome",

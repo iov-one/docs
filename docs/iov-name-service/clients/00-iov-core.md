@@ -214,10 +214,7 @@ const sendTx = await connection.withDefaultFee<SendTransaction & WithCreator>({
 Now we sign, post and confirm the transaction
 
 ```ts
-const nonce = await connection.getNonce({ pubkey: myIdentity.pubkey });
-const signed = await profile.signTransaction(sendTx, bnsCodec, nonce);
-const response = await connection.postTx(bnsCodec.bytesToPost(signed));
-await response.blockInfo.waitFor(info => !isBlockInfoPending(info));
+await signer.signAndPost(sendTx);
 (await connection.getAccount({ address: myAddress })).balance;
 ```
 

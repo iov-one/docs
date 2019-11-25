@@ -56,11 +56,11 @@ a profile and a connection to IOV testnet
 ```ts
 const profile = new UserProfile();
 const signer = new MultiChainSigner(profile);
-const { connection } = await signer.addChain(bnsConnector("wss://rpc.lovenet.iov.one"));
+const { connection } = await signer.addChain(createBnsConnector("wss://rpc-private-a-x-dancenet.iov.one"));
 const chainId = connection.chainId();
 ```
 
-> *chainId should print ‘iov-lovenet’*
+> *chainId should print ‘iov-dancenet’*
 
 a wallet and an IOV address connected to our profile. we will generate a random mnemonic
 
@@ -86,10 +86,10 @@ tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf
 
 ## Get Some IOV Tokens On My Account
 
-We are connected to iov-lovenet (testnet), so we can use iov faucet to get some tokens
+We are connected to iov-dancenet (testnet), so we can use iov faucet to get some tokens
 
 ```ts
-const faucet = new IovFaucet("https://bns-faucet.lovenet.iov.one/");
+const faucet = new IovFaucet("https://faucet.x-dancenet.iov.one/");
 
 await faucet.credit(myAddress, "IOV" as TokenTicker);
 ```
@@ -142,7 +142,7 @@ const myAccountBNS  = await bnsConnection.getUsernames({ owner: myAddress });
 
 myAccountBNS[0].targets
 
->> [ { chainId: 'iov-lovenet', address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf' }, { chainId: 'cosmos-hub2', address: 'cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn' } ]
+>> [ { chainId: 'iov-dancenet', address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf' }, { chainId: 'cosmos-hub2', address: 'cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn' } ]
 ```
 
 That is it! Welcome to the world of Personalized Names :)
@@ -163,10 +163,10 @@ const recipientData = await bnsConnection.getUsernames({ username: "antoine*iov"
 
 > *YES!! You got it!! We search by username, no need to copy/paste/barcode scan string addresses*
 
-Now that we have the list of addresses registered by the user in `recipientData`, we will search for a specific address in a specific chain (“bns-hugnet” chain in this case)
+Now that we have the list of addresses registered by the user in `recipientData`, we will search for a specific address in a specific chain (“iov-dancenet” chain in this case)
 
 ```ts
-const recipientChainAddressPair = recipientData[0].targets.find(chainaddrPair => chainaddrPair.chainId === 'iov-lovenet');
+const recipientChainAddressPair = recipientData[0].targets.find(chainaddrPair => chainaddrPair.chainId === 'iov-dancenet');
 ```
 
 Create the transaction

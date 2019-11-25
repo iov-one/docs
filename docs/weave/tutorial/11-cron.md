@@ -178,8 +178,6 @@ func (h CronDeleteArticleHandler) Deliver(ctx weave.Context, store weave.KVStore
 }
 ```
 
-As you can see there is no authentication check,
-
 This handler will receive the `DeleteArticleMsg`, delete the article from the store using the
 article ID data that is passed along with the message.
 

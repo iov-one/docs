@@ -1,12 +1,12 @@
 ---
 id: iov-core
-title: IOV-Core
-sidebar_label: IOV-core
+title: IOV Core
+sidebar_label: IOV Core
 ---
 
 When you are building a web-based application, a desktop application or a block explorer, the natural way to connect to the IOV Name Service is to use the multi-package typescript library: [IOV Core](https://github.com/iov-one/iov-core).
 
-## What is IOV-core?
+## What is IOV Core?
 
 [IOV Core](https://github.com/iov-one/iov-core) is a powerful typescript library which contains multiple packages to:
 - manage all your private keys with [iov-keycontrol](https://github.com/iov-one/iov-core/tree/master/packages/iov-keycontrol)
@@ -17,9 +17,9 @@ And also:
 
 - connect to different chains with [iov-multichain](https://github.com/iov-one/iov-core/tree/master/packages/iov-multichain) including Ethereum with [iov-ethereum](https://github.com/iov-one/iov-core/tree/master/packages/iov-ethereum)
 
-## Using IOV-cli From IOV-core To Connect To The IOV Name Service
+## Using iov-cli From IOV Core To Connect To The IOV Name Service
 
-The best way to understand how IOV-core (v. 16.0) works and how you can create a human readable address such as `antoine*iov` which is linked to an Cosmos address for example is to use the [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli) and follow the readme below:
+The best way to understand how IOV Core (v. 16.0) works and how you can create a human readable address such as `antoine*iov` which is linked to an Cosmos address for example is to use the [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli) and follow the readme below:
 
 ## Setup
 
@@ -44,7 +44,7 @@ Is time to start our cli, in the same terminal that we added the package, execut
 ```
 
 Now we have access to our iov terminal session.
-> *You will see a list of functions that are available to use. They are grouped by package and export some of iov-core functionality*
+> *You will see a list of functions that are available to use. They are grouped by package and export some of IOV Core functionality*
 
 ## Initial Configuration
 

@@ -31,7 +31,7 @@ In order to have access to iov-cli, we need to install it, so let's create a sma
 mkdir mycliwallet
 cd mycliwallet
 npm init -yes
-npm install @iov/cli@0.16.0
+npm install @iov/cli
 ```
 
 > *You can also install iov-cli globally, or using yarn, just check [this link](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli#installation-and-first-run) for more details*
@@ -51,18 +51,21 @@ Now we have access to our iov terminal session.
 Time to write some code in our iov terminal.
 If we want to use a cli wallet, we need:
 
-a profile and a connection to IOV testnet
+a profile and a connection to a testnet
 
 ```ts
 const profile = new UserProfile();
 const signer = new MultiChainSigner(profile);
 const { connection } = await signer.addChain(createBnsConnector("wss://rpc-private-a-x-dancenet.iov.one"));
 const chainId = connection.chainId();
+chainId
+```
+yields
+```ts
+>‘iov-dancenet’
 ```
 
-> *chainId should print ‘iov-dancenet’*
-
-a wallet and an IOV address connected to our profile. we will generate a random mnemonic
+a wallet and an IOV address connected to our profile. We will generate a random mnemonic
 
 ```ts
 const randomEntropy = Random.getBytes(32);
@@ -90,7 +93,6 @@ We are connected to iov-dancenet (testnet), so we can use iov faucet to get some
 
 ```ts
 const faucet = new IovFaucet("https://faucet.x-dancenet.iov.one/");
-
 await faucet.credit(myAddress, "IOV" as TokenTicker);
 ```
 
@@ -98,8 +100,10 @@ Check that the account has some tokens now
 
 ```ts
 let myAccount = await connection.getAccount({ address: myAddress });
-
 myAccount
+```
+yeilds
+```ts
 >> { address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf',
   balance:
     [ { quantity: '10000000000',
@@ -116,33 +120,43 @@ First we need to create the transaction body. You can add as many chainId/addres
 > *use your username here, mine is already taken ;)*
 
 ```ts
+.editor // initiate a multi-line editor mode
+
 const registrationTx = await connection.withDefaultFee<RegisterUsernameTx& WithCreator>({
   kind: "bns/register_username",
   creator: myIdentity,
   targets: [
     { chainId: chainId, address: myAddress },
-    { chainId: "cosmos-hub2" as ChainId, address: "cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn" as Address}
+    { chainId: "cosmoshub-3" as ChainId, address: "cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn" as Address}
   ],
   username: "antoine*iov",
 });
+
+^D // Ctrl-d to finish the editor mode
 ```
 
 Now we sign, post and confirm the transaction
 
 ```ts
 await signer.signAndPost(registrationTx);
-
 const bnsConnection = connection as BnsConnection;
-
 const myAccountBNS  = await bnsConnection.getUsernames({ owner: myAddress });
+myAccountBNS
+```
+yields
+```ts
 >> [ { id: 'antoine*iov',
        owner: 'tiov188ayx37py2r86wz5a4a2vrn4ejrwhnnte4n7kc',
        targets: [ [Object], [Object] ]
        }]
-
+```
+and
+```ts
 myAccountBNS[0].targets
-
->> [ { chainId: 'iov-dancenet', address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf' }, { chainId: 'cosmos-hub2', address: 'cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn' } ]
+```
+yields
+```ts
+>> [ { chainId: 'iov-dancenet', address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf' }, { chainId: 'cosmoshub-3', address: 'cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn' } ]
 ```
 
 That is it! Welcome to the world of Personalized Names :)
@@ -151,7 +165,7 @@ That is it! Welcome to the world of Personalized Names :)
 
 To showcase the importance of a human friendly name address, we will send some tokens from a new account, to the Personalized Name previously generated into IOV Name Service
 
-Open a new terminal in mycliwallet and run ./node_modules/.bin/iov-cli
+Open a new terminal in `mycliwallet` and run `./node_modules/.bin/iov-cli`.
 
 Repeat the steps from **Initial Configuration** and **Get some IOV tokens on my account**.
 
@@ -159,6 +173,13 @@ First, we need to get the recipient personalized address (“antoine*iov” in t
 
 ```ts
 const recipientData = await bnsConnection.getUsernames({ username: "antoine*iov" });
+recipientData
+```
+yields
+```ts
+>> [ { id: 'antoine*iov',
+    owner: 'tiov166jr0qk6arhq7rj7acjmfgyx0p48x8vw3zvmry',
+    targets: [ [Object], [Object] ] } ]
 ```
 
 > *YES!! You got it!! We search by username, no need to copy/paste/barcode scan string addresses*
@@ -172,24 +193,31 @@ const recipientChainAddressPair = recipientData[0].targets.find(chainaddrPair =>
 Create the transaction
 
 ```ts
-const sendTx: SendTransaction = {
+.editor // initiate a multi-line editor mode
+
+const sendTx = await connection.withDefaultFee<SendTransaction & WithCreator>({
   kind: "bcp/send",
   creator: myIdentity,
+  sender: bnsCodec.identityToAddress(myIdentity),
   recipient: recipientChainAddressPair.address,
   memo: "My first transaction by username B-)",
-    amount: {
+  amount: {
     quantity: "100000",
     fractionalDigits: 9,
     tokenTicker: "IOV" as TokenTicker,
   }
 });
+
+^D // Ctrl-d to finish the editor mode
 ```
 
 Now we sign, post and confirm the transaction
 
 ```ts
-await signer.signAndPost(sendTx);
-
+const nonce = await connection.getNonce({ pubkey: myIdentity.pubkey });
+const signed = await profile.signTransaction(sendTx, bnsCodec, nonce);
+const response = await connection.postTx(bnsCodec.bytesToPost(signed));
+await response.blockInfo.waitFor(info => !isBlockInfoPending(info));
 (await connection.getAccount({ address: myAddress })).balance;
 ```
 

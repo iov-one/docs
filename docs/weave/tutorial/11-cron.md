@@ -20,9 +20,9 @@ We achieved scheduled tasks functionalies by developing the module called
 is designed to be no different than a regular message except the fact that CRON tasks are initiated by
 a ticker and processed by a different handler that is not accesible from the route. This means CRON
 execution happens in a totally separate stack than [application stack](./09-app.md). Actually
-CRON is an minimal application stack with limited functionality and capabilities. Although this does
-not mean CRON is not accesssible or interactable from application stack. A task could be triggered,
-cancelled, modified, and created by a message routed to an application handler.
+CRON is a minimal application stack with limited functionality and capabilities. Although this does
+not mean CRON routes are not accesssible or interactable from the application stack. A task could be triggered,
+cancelled, modified, and created by a message routed to an request handler.
 
 Differences between application and CRON stack:
 
@@ -31,7 +31,7 @@ the usual flow
 - CRON can use the same or a different router to handle
 messages and therefore support the same or different set of messages
 - Using different handler allows configuring which messages can be processed by the same
-handler and which message can be used both by the usual router and cron
+handler and which message can be used both by the request handler and CRON handler
 - CRON use a different authentication policy
 
 ### Scheduler
@@ -140,8 +140,8 @@ schedules a job to be processed in future is below:
 ```
 
 If the create message contains a DeleteAt value, `deleteArticleMsg` will be initiated and
-scheduled with no condition. Don't get scared by **with no condition** words, the CRON router
-will not be accessible to the world anyway.
+scheduled with no condition. Don't get scared by **with no condition** words, the CRON handler
+is not routed to outer world anyway. Yet you can enable this access with registering the CRON handler to a `QueryHandler`. It is a design and requirement choice.
 
 Let's say we want a message that could be executed only when an **admin's** condition is present
 in the context. For this, the handler that will execute message must check if the admin's

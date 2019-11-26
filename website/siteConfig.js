@@ -8,7 +8,7 @@ const users = [
 ];
 
 const siteConfig = {
-  title: 'IOV Documentations',
+  title: 'IOV Documentation',
   tagline: 'Welcome to IOV docs!',
 
   url: "https://docs.iov.one",
@@ -40,7 +40,7 @@ const siteConfig = {
     primaryColor: '#35c1b3',
     secondaryColor: 'grey',
   },
-  
+
 
   fonts: {
     myFont: [

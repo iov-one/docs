@@ -14,7 +14,7 @@ Enjoy and please send us feedback !
 
 ## How to Get Started
 
-The code of the IOV name Service is in [Weave](/docs/weave/welcome). You can send a transaction or query the IOV Name Service by using our client library [IOV-core](/docs/iov-name-service/clients/iov-core) or by using the [IOVNS-rest-api](/docs/iov-name-service/clients/rest-api).
+The code of the IOV Name Service is in [Weave](/docs/weave/welcome). You can send a transaction or query the IOV Name Service by using our client library [IOV Core](/docs/iov-name-service/clients/iov-core) or by using the [IOVNS-rest-api](/docs/iov-name-service/clients/rest-api).
 
 You're free to explore the GitHub, all feedback is welcome!
 
@@ -28,4 +28,4 @@ We're building an interoperability solution for the blockchain industry that is 
 
 **IOV Weave** is a framework to quickly build your custom ABCI application to power a blockchain based on the best-of-class BFT Proof-of-stake Tendermint consensus engine. We built IOV Name Service using Weave.
 
-**IOV Chrome Extension** is our Google Chrome Extension to connect to different chains and get a human friendly addresses. It connects to the IOV Wallet (web-based) which demonstrates the different features of IOV-core.
+**IOV Chrome Extension** is our Google Chrome Extension to connect to different chains and get a human friendly addresses. It connects to the IOV Wallet (web-based) which demonstrates the different features of IOV Core.

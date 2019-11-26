@@ -4,25 +4,25 @@ title: Scheduled Tasks
 sidebar_label: Scheduled Tasks
 ---
 
-In almost every real-time software, the need to schedule jobs to be executed at a certain time in
-future is constant. In blockchain context, this could be sending tokens, distributing revenue,
+In almost every real-time software, the need to schedule jobs to be executed at a certain time in the
+future is constant. In the blockchain context, this could be sending tokens, distributing revenue,
 scheduling a proposal, basically anything that could be executed as a transaction (a change of
 state). The early generation of blockchain protocols had a hard time assuring the execution time
 of a transaction precisely, and this is due to the indeterministic nature of the consensus algorithms.
 One of the wonders of Tendermint Consensus engine is the ability to roughly approximate the execution time of a
-future block thanks to **BFT Time feature**.
+future block thanks to the **BFT Time feature**.
 [Tendermint BFT Time](https://github.com/tendermint/tendermint/blob/v0.32.7/docs/spec/consensus/bft-time.md)
-document is a very technical and specification, but long story short, execution time of a proposed block is
-get by calculating the median of latest block's commit voting times.
+document is a very technical and specification, but long story short, the execution time of a proposed block is
+get by calculating the median of the latest block's commit voting times.
 
-We achieved scheduled tasks functionalies by developing the module called
+We achieved scheduled tasks functionalities by developing the module called
 [x/cron](https://github.com/iov-one/weave/tree/master/x/cron). [CRON](https://en.wikipedia.org/wiki/CRON)
 is designed to be no different than a regular message except the fact that CRON tasks are initiated by
-a ticker and processed by a different handler that is not accesible from the route. This means CRON
-execution happens in a totally separate stack than [application stack](./09-app.md). Actually
+a ticker and processed by a different handler that is not accessible from the route. This means CRON
+execution happens in a separate stack than the [application stack](./09-app.md). Actually
 CRON is a minimal application stack with limited functionality and capabilities. Although this does
-not mean CRON routes are not accesssible or interactable from the application stack. A task could be triggered,
-cancelled, modified, and created by a message routed to an request handler.
+not mean CRON routes are not accessible or interactable from the application stack. A task could be triggered,
+canceled, modified, and created by a message routed to a request handler.
 
 Differences between application and CRON stack:
 
@@ -37,7 +37,7 @@ handler and which message can be used both by the request handler and CRON handl
 ### Scheduler
 
 [Scheduler interface](https://github.com/iov-one/weave/blob/master/cron.go#L43-L55) defines an
-API to schedule a task for a time in future with the conditions that are eligible to execute the
+API to schedule a task for a time in the future with the conditions that are eligible to execute the
 tasks.
 
 ```go
@@ -55,9 +55,8 @@ type Scheduler interface {
 }
 ```
 
-**Warning:** Due to the implementation details, transaction is guaranteed to be executed after
-given time, but not exactly at given time. If another transaction is already scheduled for the
-exact same time, execution of this transaction is delayed until the next free slot.
+**Warning:** Due to the implementation details, the transaction is guaranteed to be executed after a
+given time, but not exactly at a given time. If another transaction is already scheduled for the same time, the execution of this transaction is delayed until the next free slot.
 
 **Important Note:** An authentication address, Condition, is passed to the scheduler because, in
 the usual flow, before processing the message, signature is validated to authenticate and later
@@ -67,7 +66,7 @@ impossible to sign a message for scheduler without the private key.
 Instead, the signature check step is bypassed and desired conditions are set in the context when
 processing given scheduled message.
 
-Absence of signature could be security hole if a developer implements the CRON feature poorly.
+The absence of a signature could be a security hole if a developer implements the CRON feature poorly.
 Happily, only code can schedule a CRON task and decide on conditions, so this should never be an
 issue.
 
@@ -141,11 +140,11 @@ schedules a job to be processed in future is below:
 
 If the create message contains a DeleteAt value, `deleteArticleMsg` will be initiated and
 scheduled with no condition. Don't get scared by **with no condition** words, the CRON handler
-is not routed to outer world anyway. Yet you can enable this access with registering the CRON handler to a `QueryHandler`. It is a design and requirement choice.
+is not routed to the outer world anyway. Yet you can enable this access with registering the CRON handler to a `QueryHandler`. It is a design and requirement choice.
 
 Let's say we want a message that could be executed only when an **admin's** condition is present
 in the context. For this, the handler that will execute message must check if the admin's
-condition is in the context and then execute accordingly. In order to pass this authentication
+condition is in the context and then execute accordingly. To pass this authentication
 information to the CRON handler you need to feed the condition to the scheduler:
 
 `taskID, err = h.scheduler.Schedule(store, article.DeleteAt.Time(), adminCond, deleteArticleMsg)`
@@ -306,4 +305,4 @@ func Application(name string, h weave.Handler,
 }
 ```
 
-When the application is run, CRON stack will be initialized by `Application` method and will be consuming tasks.
+When the application is run, CRON stack will be initialized by the `Application` method and will be consuming tasks.

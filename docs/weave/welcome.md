@@ -6,7 +6,7 @@ sidebar_label: Welcome
 
 ![image](assets/weave-logo.jpg)
 
-[IOV Weave](https://github.com/iov-one/weave) is a framework for quickly building your custom [ABCI application](https://github.com/tendermint/abci) to power a blockchain based on the best-of-class BFT Proof-of-stake [Tendermint consensus engine](https://tendermint.com). It provides much commonly used functionality that can quickly be imported in your custom chain, as well as a simple framework for adding the custom functionality unique to your project.
+[IOV Weave](https://github.com/iov-one/weave) is a framework for quickly building your custom [ABCI application](https://github.com/tendermint/tendermint/tree/master/abci) to power a blockchain based on the best-of-class BFT Proof-of-stake [Tendermint consensus engine](https://tendermint.com). It provides much commonly used functionality that can quickly be imported in your custom chain, as well as a simple framework for adding the custom functionality unique to your project.
 
 Some of the highlights of Weave include a Merkle-tree-backed data store, a highly configurable extension system that also applies to the core logic, such as fees and signature validation. Weave also brings powerful customizations initialised from the genesis file. In addition there is a simple ORM which sits on top of a key-value store that also has proveable secondary indexes. There is a flexible permissioning system to use contracts as first-class actors, “No empty blocks” for quick synchronizing on quiet chains, and the ability to introduce “product fees” for transactions that need to charge more than the basic anti-spam fees. We have also added support for "migrations" that can switch on modules, or enable logic updates, via on-chain feature switch transactions.
 

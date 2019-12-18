@@ -146,9 +146,11 @@ func Chain(authFn x.Authenticator, minFee coin.Coin) app.Decorators {
 - `cash.NewFeeDecorator`: returns a static fee decorator with the given minimum fee, and all collected fees going to a default address
 - `batch.NewDecorator`: returns a batch transanction decorator
 
-### Cron stack
+### CRON stack
 
-Cron stack is minimal application that runs differently from the main decorators that runs scheduled jobs in the background.
+We will dive into CRON stack and its use in the next chapters, but there is no harm in giving it a peek.
+
+Cron stack is a minimal router that runs differently from the main decorators that runs scheduled jobs in the background.
 
 ```go
 // CronStack wires up a standard router with a cron specific decorator chain.

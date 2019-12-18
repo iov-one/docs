@@ -39,7 +39,7 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/dancenet
 
 # images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.22.0/bnsd-0.22.0-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.24.1/bnsd-0.24.1-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
@@ -130,7 +130,7 @@ systemctl daemon-reload
 
 # download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep e755ba4d8f03a7cc3ccd2ca3347c3952c6a150cd6c06a3bd4aa88dfb92975dc3 && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
+wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 371cfbd791466f6ca3ad090af48fa62ab9eea2f8fd4d0373735913aed97b8e30 && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
 wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
 
 # initialize the IOV Name Service

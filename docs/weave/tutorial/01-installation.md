@@ -1,5 +1,5 @@
 ---
-id: installation 
+id: installation
 title: Installation
 sidebar_label: Installation
 ---
@@ -25,8 +25,8 @@ You can connect to tendermint rpc via various client libraries. We recommend [IO
 
 ### Requirements
 
-* [golang 1.11.4+](https://golang.org/doc/install)
-* [tendermint 0.31.5](https://github.com/tendermint/tendermint/tree/v0.31.5)
+* [Go 1.12.14+](https://golang.org/doc/install)
+* [Tendermint 0.31.11](https://github.com/tendermint/tendermint/tree/v0.31.11)
   * [Installation](https://github.com/tendermint/tendermint/blob/master/docs/introduction/install.md)
 * [weave](https://github.com/iov-one/weave)
   * `go get github.com/iov-one/weave`
@@ -35,9 +35,9 @@ You can connect to tendermint rpc via various client libraries. We recommend [IO
 ## Installing backend applications
 
 * Clone blog app `git clone https://github.com/iov-one/blog-tutorial/`
-* Checkout compatible blog app weave version of tendermint from [compatibility chart](https://github.com/iov-one/weave/blob/master/COMPATIBILITY.md). Blog applications latest version supports tendermint `v0.31.5`. Make sure you are installed the compatible version of tendermint.
+* Checkout compatible blog app weave version of tendermint from [compatibility chart](https://github.com/iov-one/weave/blob/master/COMPATIBILITY.md). Blog applications latest version supports tendermint `v0.31.11`. Make sure you are installed the compatible version of tendermint.
 
-**Note** we use ``go mod`` for dependency management. This is enabled by default in Go 1.12+. If you are running Go 1.11.4+, you must run the following in the terminal (or add to `~/.bashrc`): `export GO111MODULE=on`
+**Note** we use ``go mod`` for dependency management. This is enabled by default in Go 1.12+.
 
 ```sh
 # cd into to your workspace that is not in your $GOPATH

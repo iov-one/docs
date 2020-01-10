@@ -80,14 +80,14 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/dancenet
 
 <span class="hljs-comment"># images</span>
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.24.1/bnsd-0.24.1-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.25.1/bnsd-0.25.1-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=<span class="hljs-string">""</span>
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
 IMAGE_TM_OPTS=<span class="hljs-string">"\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=040649e0bba7ab39e7021f1f310d5df23185a426@34.89.253.221:26656 \
+--p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "</span>
@@ -171,7 +171,7 @@ systemctl daemon-reload
 
 <span class="hljs-comment"># download gitian built binaries; bnsd is the IOV Name Service daemon</span>
 mkdir -p <span class="hljs-variable">${DIR_IOVNS}</span> &amp;&amp; <span class="hljs-built_in">cd</span> <span class="hljs-variable">${DIR_IOVNS}</span>
-wget <span class="hljs-variable">${IMAGE_IOVNS}</span> &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) | grep 371cfbd791466f6ca3ad090af48fa62ab9eea2f8fd4d0373735913aed97b8e30 &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
+wget <span class="hljs-variable">${IMAGE_IOVNS}</span> &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) | grep 9dd8cd8a64f8324b388f9b75d4be8a60df0024e4b55032d43b1d96b69c0c07af &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
 wget <span class="hljs-variable">${IMAGE_TM}</span>    &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_TM</span>)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_TM</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
 
 <span class="hljs-comment"># initialize the IOV Name Service</span>
@@ -182,8 +182,8 @@ mkdir -p <span class="hljs-variable">${DIR_WORK}</span> &amp;&amp; <span class="
 
 <span class="hljs-comment"># initialize tendermint</span>
 <span class="hljs-variable">${DIR_IOVNS}</span>/tendermint init --home=<span class="hljs-variable">${DIR_WORK}</span>
-curl --fail https://gist.githubusercontent.com/davepuchyr/c0ff3bffa4fba372b2bf6e81b1d7d5de/raw/d615e1571bc5f774e0a676a82942a6bca6137d30/genesis_testnet.json &gt; config/genesis.json
-sha256sum config/genesis.json | grep 7a9108cda20978f042e92a010800ef78d57f53f44b78a30b3d8900986127af7d || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD GENESIS FILE!'</span>
+curl --fail https://rpc-private<span class="hljs-_">-a</span>-x-dancenet.iov.one/genesis | jq -r .result.genesis &gt; config/genesis.json
+sha256sum config/genesis.json | grep 54bdd7c6a0a3f7ee359d6e5229b7123ab6f6433b38f1786b81fc93fcec34c2c8 || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD GENESIS FILE!'</span>
 [[ -f ~/node_key.json ]] &amp;&amp; cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] &amp;&amp; cp -av ~/priv_validator_key.json config
 sed --<span class="hljs-keyword">in</span>-place <span class="hljs-string">'s!^timeout_commit .*!timeout_commit = "5s"!'</span> config/config.toml <span class="hljs-comment"># options not available via command line</span>
@@ -224,7 +224,7 @@ systemctl start iovns.service
 <p>In the most rudimentary form, a sentry node is meant to gossip with other nodes but keep its associated validator hidden.  Change <code>/etc/systemd/system/iovns.env</code> so that the node gossips while keeping its validator hidden.  Be mindful of <code>--rpc.unsafe=true</code> below, you might not want that.  <strong>On the validator node</strong>, execute <code>curl -s http://localhost:16657/status | jq -r .result.node_info.id</code> to get the value for <code>VALIDATOR_ID</code>.</p>
 <pre><code class="hljs css language-sh">IMAGE_TM_OPTS=<span class="hljs-string">"\
 --moniker='sentry' \
---p2p.seeds=040649e0bba7ab39e7021f1f310d5df23185a426@34.89.253.221:26656 \
+--p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

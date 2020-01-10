@@ -39,14 +39,14 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/dancenet
 
 # images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.24.1/bnsd-0.24.1-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.25.1/bnsd-0.25.1-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=040649e0bba7ab39e7021f1f310d5df23185a426@34.89.253.221:26656 \
+--p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -130,7 +130,7 @@ systemctl daemon-reload
 
 # download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 371cfbd791466f6ca3ad090af48fa62ab9eea2f8fd4d0373735913aed97b8e30 && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
+wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 9dd8cd8a64f8324b388f9b75d4be8a60df0024e4b55032d43b1d96b69c0c07af && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
 wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
 
 # initialize the IOV Name Service
@@ -141,8 +141,8 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://gist.githubusercontent.com/davepuchyr/c0ff3bffa4fba372b2bf6e81b1d7d5de/raw/d615e1571bc5f774e0a676a82942a6bca6137d30/genesis_testnet.json > config/genesis.json
-sha256sum config/genesis.json | grep 7a9108cda20978f042e92a010800ef78d57f53f44b78a30b3d8900986127af7d || echo 'BAD GENESIS FILE!'
+curl --fail https://rpc-private-a-x-dancenet.iov.one/genesis | jq -r .result.genesis > config/genesis.json
+sha256sum config/genesis.json | grep 54bdd7c6a0a3f7ee359d6e5229b7123ab6f6433b38f1786b81fc93fcec34c2c8 || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
@@ -184,7 +184,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=040649e0bba7ab39e7021f1f310d5df23185a426@34.89.253.221:26656 \
+--p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

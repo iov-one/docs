@@ -46,7 +46,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=55e569c90ac91423f0a243d9cd41fcec52786a55@104.248.100.242:26656 \
+--p2p.seeds=5a9cb80a99725ed4c95b5e8c8135f0343d9d0ad2@167.172.104.185:31806 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -141,8 +141,8 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail http://157.245.20.30:26657/genesis | jq -r .result.genesis > config/genesis.json
-sha256sum config/genesis.json | grep d74339d3164c05328ffe4f6ead759b0cee011d8ffaf2eef8c60b6e3cb855610f || echo 'BAD GENESIS FILE!'
+curl --fail http://167.172.104.185:31140/genesis | jq -r .result.genesis > config/genesis.json
+sha256sum config/genesis.json | grep 876fd677b6f1e6ab7329aaf8eea1ccd9b8fa25ce64a02cd490a1f0329f542f15 || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line

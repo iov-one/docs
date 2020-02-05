@@ -1,29 +1,12 @@
 ---
-id: testnet
-title: Setup A Testnet Validator Node
-sidebar_label: Testnet v1.0.0
+id: testnet-dancenet
+title: Upgrade dancenet to bnsd v1.0.0
+sidebar_label: Testnet (deprecated)
 ---
 
-## Apply to the validator program
-
-Before starting to setup your validator, please <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">apply to the validator program</a> to open a channel of communication with IOV. At the end of the article, you will need to use this channel of communication to give us your pub_key so that we can upgrade your full-node to a validator.
-
-## Familiarize yourself with Gitian
-
-Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artefacts and is the <a href="https://medium.com/iov-internet-of-values/distribute-open-source-software-the-right-and-verifiable-way-fe12f58df062" target="_blank">distribution method</a> chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
+> This document is only for current mainnet validators: **Cosmostation, StateWith.Us, HashQuark, Node A Team, Forbole, 01node.com, Bianjie, ChainLayer, syncnode, and Stake Capital**.
 
 ## Use systemd for running a sentry node or validator
-
-This document is not for beginners.  It assumes that you know how to setup a sentry node architecture for Tendermint nodes.
-
-> Hint: When upgrading from an old testnet to a new one, you can maintain your node id and validator pub_key across testnets by doing the following before performing the upgrade:
-
-```sh
-su - iov
-set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
-cp -av ${DIR_WORK}/config/*_key.json ~
-exit
-```
 
 This document assumes that `basename`, `curl`, `expr`, `grep`, `jq`, `sed`, `sha256sum`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
@@ -209,6 +192,14 @@ IMAGE_TM_OPTS="\
 
 Execute `sudo systemctl restart iovns.service`
 
-## Light-up the validator
+### Update the bnsd binary on all nodes
 
-Once your sentry nodes and validator are sync'ed then the final step to becoming a validator is to submit your validator's pub_key to IOV.  **On your validator node**, execute `curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value` and reply with the resulting 44 character pub_key to the ticket that was issued to you when you applied for <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">the validator program</a>.  (There's no `create-validator` command like in Cosmos; validators are added via governance, which is just IOV on the testnet, for the moment.)
+TODO
+
+### Signal that you're running bnsd v1.0.0
+
+TODO
+
+### Wait for the migration to be triggered
+
+TODO

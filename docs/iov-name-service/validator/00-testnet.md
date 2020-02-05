@@ -10,7 +10,7 @@ Before starting to setup your validator, please <a href="https://support.iov.one
 
 ## Familiarize yourself with Gitian
 
-Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artefacts and is the <a href="https://medium.com/iov-internet-of-values/distribute-open-source-software-the-right-and-verifiable-way-fe12f58df062" target="_blank">distribution method</a> chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
+Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artifacts and is the <a href="https://medium.com/iov-internet-of-values/distribute-open-source-software-the-right-and-verifiable-way-fe12f58df062" target="_blank">distribution method</a> chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
 
 ## Use systemd for running a sentry node or validator
 
@@ -36,17 +36,17 @@ cd /etc/systemd/system
 cat <<__EOF_IOVNS_ENV__ > iovns.env
 # directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
-DIR_WORK=/home/iov/dancenet
+DIR_WORK=/home/iov/exchangenet
 
 # images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.25.1/bnsd-0.25.1-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.0/bnsd-1.0.0-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--p2p.seeds=55e569c90ac91423f0a243d9cd41fcec52786a55@104.248.100.242:26656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -83,8 +83,8 @@ ExecStart=__DIR_IOVNS__/bnsd \
    -bind=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_IOVNS_OPTS
 LimitNOFILE=4096
-Restart=on-failure
-RestartSec=3
+#Restart=on-failure
+#RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns
@@ -110,8 +110,8 @@ ExecStart=__DIR_IOVNS__/tendermint node \
    --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_TM_OPTS
 LimitNOFILE=4096
-Restart=on-failure
-RestartSec=3
+#Restart=on-failure
+#RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns-tm
@@ -130,7 +130,7 @@ systemctl daemon-reload
 
 # download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 9dd8cd8a64f8324b388f9b75d4be8a60df0024e4b55032d43b1d96b69c0c07af && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
+wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep a94ebd686ff9ce66d4960ca282e89ef0c2d4ac9abe4c58cd6967e406cd1af8af && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
 wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
 
 # initialize the IOV Name Service
@@ -141,8 +141,8 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://rpc-private-a-x-dancenet.iov.one/genesis | jq -r .result.genesis > config/genesis.json
-sha256sum config/genesis.json | grep 54bdd7c6a0a3f7ee359d6e5229b7123ab6f6433b38f1786b81fc93fcec34c2c8 || echo 'BAD GENESIS FILE!'
+curl --fail http://157.245.20.30:26657/genesis | jq -r .result.genesis > config/genesis.json
+sha256sum config/genesis.json | grep d74339d3164c05328ffe4f6ead759b0cee011d8ffaf2eef8c60b6e3cb855610f || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line

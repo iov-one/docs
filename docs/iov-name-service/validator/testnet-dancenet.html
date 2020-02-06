@@ -1,0 +1,259 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Upgrade dancenet to bnsd v1.0.0 · IOV Documentations</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&gt; This document is only for current mainnet validators: **Cosmostation, StateWith.Us, HashQuark, Node A Team, Forbole, 01node.com, Bianjie, ChainLayer, syncnode, and Stake Capital**."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Upgrade dancenet to bnsd v1.0.0 · IOV Documentations"/><meta property="og:type" content="website"/><meta property="og:url" content="https://docs.iov.one/"/><meta property="og:description" content="&gt; This document is only for current mainnet validators: **Cosmostation, StateWith.Us, HashQuark, Node A Team, Forbole, 01node.com, Bianjie, ChainLayer, syncnode, and Stake Capital**."/><meta property="og:image" content="https://docs.iov.one/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://docs.iov.one/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="IOV Documentations"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/iov-one" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>Validator</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Introduction<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/intro">Welcome to IOV!</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">IOV Name Service<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Validator</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/rewards">Rewards</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/iov-name-service/validator/testnet-dancenet">Testnet (deprecated)</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/testnet">Testnet v1.0.0</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/mainnet">Mainnet</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/troubleshooter">Troubleshooter</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/faq">FAQ</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Clients</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/iov-core">IOV Core</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/rest-api">REST API</a></li></ul></div></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">IOV Weave SDK<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/weave/welcome">Welcome</a></li><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Basics</h4><ul><li class="navListItem"><a class="navItem" href="/docs/weave/basics/blockchain">Blockchain</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/basics/consensus">Consensus</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/basics/authentication">Authentication</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/basics/state">State Machine</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Design</h4><ul><li class="navListItem"><a class="navItem" href="/docs/weave/design/overview">Guiding Design Principles</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/design/extension">Extension</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/design/transaction-flow">Flow of Transactions</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/design/permissions">Permissions</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/design/queries">Queries</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/design/prototool">Prototool</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Configuration</h4><ul><li class="navListItem"><a class="navItem" href="/docs/weave/configuration/application">Application</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">API specifications</h4><ul><li class="navListItem"><a class="navItem" href="/docs/weave/weave-api-spec/address-derivation">Address Derivation</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/weave-api-spec/weave-transaction-spec">Weave Transactions</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/weave-api-spec/tx-sign-spec">Transaction Signatures</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/weave-api-spec/weave-query-spec">Querying Weave</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/weave-api-spec/modules">Modules</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Tutorial</h4><ul><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/installation">Installation</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/domain">Domain</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/codec">Codec</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/models">Models</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/messages">Messages</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/buckets">Buckets</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/handlers">Handlers</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/app-level-codec">Application Level Codec</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/application">Application</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/batch-txs">Batch Transactions</a></li><li class="navListItem"><a class="navItem" href="/docs/weave/tutorial/cron-tasks">Scheduled Tasks</a></li></ul></div></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">IOV Core<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/iov-core-tutorial/introduction">Introduction</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Upgrade dancenet to bnsd v1.0.0</h1></header><article><div><span><blockquote>
+<p>This document is only for current mainnet validators: <strong>Cosmostation, StateWith.Us, HashQuark, Node A Team, Forbole, 01node.com, Bianjie, ChainLayer, syncnode, and Stake Capital</strong>.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="use-systemd-for-running-a-sentry-node-or-validator"></a><a href="#use-systemd-for-running-a-sentry-node-or-validator" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Use systemd for running a sentry node or validator</h2>
+<p>This document assumes that <code>basename</code>, <code>curl</code>, <code>expr</code>, <code>grep</code>, <code>jq</code>, <code>sed</code>, <code>sha256sum</code>, and <code>wget</code> are installed on your system, and user <code>iov</code> exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.</p>
+<pre><code class="hljs css language-sh">sudo su <span class="hljs-comment"># make life easier for the next ~100 lines</span>
+
+<span class="hljs-built_in">cd</span> /etc/systemd/system
+
+<span class="hljs-comment"># create an environment file for the IOV Name Service services</span>
+cat &lt;&lt;__EOF_IOVNS_ENV__ &gt; iovns.env
+<span class="hljs-comment"># directories (without spaces to ease pain)</span>
+DIR_IOVNS=/opt/iovns/bin
+DIR_WORK=/home/iov/dancenet
+
+<span class="hljs-comment"># images</span>
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.25.1/bnsd-0.25.1-linux-amd64.tar.gz
+IMAGE_IOVNS_OPTS=<span class="hljs-string">""</span>
+IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
+IMAGE_TM_OPTS=<span class="hljs-string">"\
+--consensus.create_empty_blocks=false \
+--moniker='moniker' \
+--p2p.laddr=tcp://0.0.0.0:16656 \
+--p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--rpc.laddr=tcp://127.0.0.1:16657 \
+--rpc.unsafe=false \
+"</span>
+
+<span class="hljs-comment"># socket</span>
+SOCK_TM=iovns.sock
+
+<span class="hljs-comment"># uid/gid</span>
+IOV_GID=$(id iov -g)
+IOV_UID=$(id iov -u)
+__EOF_IOVNS_ENV__
+
+chgrp iov iovns.env
+chmod g+r iovns.env
+
+<span class="hljs-built_in">set</span> -o allexport ; <span class="hljs-built_in">source</span> /etc/systemd/system/iovns.env ; <span class="hljs-built_in">set</span> +o allexport <span class="hljs-comment"># pick-up env vars</span>
+
+<span class="hljs-comment"># create iovns.service</span>
+cat &lt;&lt;<span class="hljs-string">'__EOF_IOVNS_SERVICE__'</span> | sed -e <span class="hljs-string">'s@__DIR_IOVNS__@'</span><span class="hljs-string">"<span class="hljs-variable">$DIR_IOVNS</span>"</span><span class="hljs-string">'@g'</span> &gt; iovns.service
+[Unit]
+Description=IOV Name Service
+After=network-online.target
+Requires=iovns-tm.service
+PartOf=iovns-tm.service
+
+[Service]
+Type=simple
+User=iov
+Group=iov
+EnvironmentFile=/etc/systemd/system/iovns.env
+ExecStart=__DIR_IOVNS__/bnsd \
+   -home=<span class="hljs-variable">${DIR_WORK}</span> \
+   start \
+   -<span class="hljs-built_in">bind</span>=unix://<span class="hljs-variable">${DIR_WORK}</span>/<span class="hljs-variable">${SOCK_TM}</span> \
+   <span class="hljs-variable">$IMAGE_IOVNS_OPTS</span>
+LimitNOFILE=4096
+Restart=on-failure
+RestartSec=3
+StandardError=journal
+StandardOutput=journal
+SyslogIdentifier=iovns
+
+[Install]
+WantedBy=multi-user.target
+__EOF_IOVNS_SERVICE__
+
+<span class="hljs-comment"># create iovns-tm.service</span>
+cat &lt;&lt;<span class="hljs-string">'__EOF_IOVNS_TM_SERVICE__'</span> | sed -e <span class="hljs-string">'s@__DIR_IOVNS__@'</span><span class="hljs-string">"<span class="hljs-variable">$DIR_IOVNS</span>"</span><span class="hljs-string">'@g'</span> &gt; iovns-tm.service
+[Unit]
+Description=Tendermint <span class="hljs-keyword">for</span> IOV Name Service
+After=iovns.service
+Requires=iovns.service
+
+[Service]
+Type=simple
+User=iov
+Group=iov
+EnvironmentFile=/etc/systemd/system/iovns.env
+ExecStart=__DIR_IOVNS__/tendermint node \
+   --home=<span class="hljs-variable">${DIR_WORK}</span> \
+   --proxy_app=unix://<span class="hljs-variable">${DIR_WORK}</span>/<span class="hljs-variable">${SOCK_TM}</span> \
+   <span class="hljs-variable">$IMAGE_TM_OPTS</span>
+LimitNOFILE=4096
+Restart=on-failure
+RestartSec=3
+StandardError=journal
+StandardOutput=journal
+SyslogIdentifier=iovns-tm
+
+[Install]
+WantedBy=multi-user.target iovns.service
+__EOF_IOVNS_TM_SERVICE__
+
+<span class="hljs-comment"># hack around ancient versions of systemd</span>
+expr $(systemctl --version | grep -m 1 -P -o <span class="hljs-string">"\d+"</span>) <span class="hljs-string">'&lt;'</span> 239 &amp;&amp; {
+   sed --<span class="hljs-keyword">in</span>-place <span class="hljs-string">'s!\$IMAGE_IOVNS_OPTS!'</span><span class="hljs-string">"<span class="hljs-variable">$IMAGE_IOVNS_OPTS</span>"</span><span class="hljs-string">'!'</span> /etc/systemd/system/iovns.service
+   sed --<span class="hljs-keyword">in</span>-place <span class="hljs-string">'s!\$IMAGE_TM_OPTS!\'</span><span class="hljs-string">"<span class="hljs-variable">$IMAGE_TM_OPTS</span>"</span><span class="hljs-string">'!'</span> /etc/systemd/system/iovns-tm.service
+}
+
+systemctl daemon-reload
+
+<span class="hljs-comment"># download gitian built binaries; bnsd is the IOV Name Service daemon</span>
+mkdir -p <span class="hljs-variable">${DIR_IOVNS}</span> &amp;&amp; <span class="hljs-built_in">cd</span> <span class="hljs-variable">${DIR_IOVNS}</span>
+wget <span class="hljs-variable">${IMAGE_IOVNS}</span> &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) | grep 9dd8cd8a64f8324b388f9b75d4be8a60df0024e4b55032d43b1d96b69c0c07af &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
+wget <span class="hljs-variable">${IMAGE_TM}</span>    &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_TM</span>)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_TM</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
+
+<span class="hljs-comment"># initialize the IOV Name Service</span>
+su - iov
+<span class="hljs-built_in">set</span> -o allexport ; <span class="hljs-built_in">source</span> /etc/systemd/system/iovns.env ; <span class="hljs-built_in">set</span> +o allexport <span class="hljs-comment"># pick-up env vars</span>
+
+mkdir -p <span class="hljs-variable">${DIR_WORK}</span> &amp;&amp; <span class="hljs-built_in">cd</span> <span class="hljs-variable">${DIR_WORK}</span>
+
+<span class="hljs-comment"># initialize tendermint</span>
+<span class="hljs-variable">${DIR_IOVNS}</span>/tendermint init --home=<span class="hljs-variable">${DIR_WORK}</span>
+curl --fail https://rpc-private<span class="hljs-_">-a</span>-x-dancenet.iov.one/genesis | jq -r .result.genesis &gt; config/genesis.json
+sha256sum config/genesis.json | grep 54bdd7c6a0a3f7ee359d6e5229b7123ab6f6433b38f1786b81fc93fcec34c2c8 || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD GENESIS FILE!'</span>
+[[ -f ~/node_key.json ]] &amp;&amp; cp -av ~/node_key.json config
+[[ -f ~/priv_validator_key.json ]] &amp;&amp; cp -av ~/priv_validator_key.json config
+sed --<span class="hljs-keyword">in</span>-place <span class="hljs-string">'s!^timeout_commit .*!timeout_commit = "5s"!'</span> config/config.toml <span class="hljs-comment"># options not available via command line</span>
+sed --<span class="hljs-keyword">in</span>-place <span class="hljs-string">'s!^create_empty_blocks .*!create_empty_blocks = false!'</span> config/config.toml
+sed --<span class="hljs-keyword">in</span>-place <span class="hljs-string">'s!^create_empty_blocks_interval .*!create_empty_blocks_interval = "300s"!'</span> config/config.toml
+
+<span class="hljs-comment"># initialize IOV Name Service (bnsd)</span>
+<span class="hljs-variable">${DIR_IOVNS}</span>/bnsd -home=<span class="hljs-variable">${DIR_WORK}</span> init -i | grep initialised
+
+<span class="hljs-built_in">exit</span> <span class="hljs-comment"># iov</span>
+
+journalctl -f | grep iovns &amp; <span class="hljs-comment"># watch the chain sync</span>
+systemctl start iovns.service
+
+<span class="hljs-built_in">exit</span> <span class="hljs-comment"># root</span>
+</code></pre>
+<p>At this point you're running a full-node that can be examined at <code>http://localhost:16657/status</code>.</p>
+<blockquote>
+<p>The most important file from the procedure above is <code>/etc/systemd/system/iovns.env</code>.  It defines binaries, the socket that allows <code>iovns.service</code> and <code>iovns-tm.service</code> to communicate with each other, and IOV Name Service and tendermint options.</p>
+</blockquote>
+<p>Using <code>/etc/systemd/system/iovns.env</code>, rather than specifying values directly in the service files, obviates the need to do <code>systemctl daemon-reload</code> on every option change.  Most values in <code>/etc/systemd/system/iovns.env</code> are self explanatory; however, there are a few of note:</p>
+<ul>
+<li>for IOV Name Service
+<ul>
+<li><code>IMAGE_IOVNS_OPTS</code> allows you to customize the anti-spam fee, etc.</li>
+</ul></li>
+<li>for Tendermint
+<ul>
+<li><code>IMAGE_TM_OPTS</code> allows you to customize the configuration of tendermint, including <code>priv_validator_laddr</code>, <code>p2p.pex</code>, <code>p2p.persistent_peers</code>, <code>p2p.private_peer_ids</code>, etc.  <strong>In other words, it's <code>/etc/systemd/system/iovns.env</code> that determines whether the node will act as a sentry or validator based on <code>priv_validator_laddr</code> and <code>p2p.*</code> options.</strong>  Please refer to the <a href="https://tendermint.com/docs/tendermint-core/configuration.html#options" target="blank_">tendermint documentation for the options</a>.</li>
+</ul></li>
+</ul>
+<blockquote>
+<p>Old versions of systemd (CentOs) cannot take advantage of the dynamism of <code>/etc/systemd/system/iovns.env</code> like modern versions can.  Consequently, the service files themselves are where <code>bnsd</code> (IOV Name Service) and <code>tendermint</code> options must be specified.</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="point-the-nodes-at-each-other"></a><a href="#point-the-nodes-at-each-other" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Point the nodes at each other</h2>
+<p>Now that you have sentry node(s) and a validator, they need to be made aware of their role and pointed at each other.</p>
+<h3><a class="anchor" aria-hidden="true" id="sentry-node-configuration"></a><a href="#sentry-node-configuration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sentry node configuration</h3>
+<p>In the most rudimentary form, a sentry node is meant to gossip with other nodes but keep its associated validator hidden.  Change <code>/etc/systemd/system/iovns.env</code> so that the node gossips while keeping its validator hidden.  Be mindful of <code>--rpc.unsafe=true</code> below, you might not want that.  <strong>On the validator node</strong>, execute <code>curl -s http://localhost:16657/status | jq -r .result.node_info.id</code> to get the value for <code>VALIDATOR_ID</code>.</p>
+<pre><code class="hljs css language-sh">IMAGE_TM_OPTS=<span class="hljs-string">"\
+--moniker='sentry' \
+--p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--p2p.pex=true \
+--p2p.private_peer_ids='VALIDATOR_ID' \
+--rpc.unsafe=true \
+"</span>
+</code></pre>
+<p>There are a lot more tendermint configuration options available than those shown above.  Customize them as you see fit and then execute <code>sudo systemctl restart iovns.service</code>.</p>
+<h3><a class="anchor" aria-hidden="true" id="validator-configuration"></a><a href="#validator-configuration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Validator configuration</h3>
+<p>As mentioned, it's <code>/etc/systemd/system/iovns.env</code> that determines whether the node will act as a sentry or validator based on <code>p2p.*</code> options and <code>priv_validator_laddr</code> if you're using an HSM.  Change <code>/etc/systemd/system/iovns.env</code> so that the node gossips with its sentry node(s) only, ie set <strong><code>p2p.pex=false</code></strong> and add an explicit list of <code>p2p.persistent_peers</code>.  Obtain the sentry node ids for <code>p2p.persistent_peers</code> by executing <code>curl -s http://localhost:16657/status | jq -r .result.node_info.id</code> <strong>on each sentry node</strong>.  You know the IP and PORT of the nodes, so include them appropriately.</p>
+<pre><code class="hljs css language-sh">IMAGE_TM_OPTS=<span class="hljs-string">"\
+--moniker='validator' \
+--priv_validator_laddr='tcp://HSM_IP:HSM_PORT' \
+--p2p.persistent_peers='SENTRY_ID0@SENTRY_IP0:SENTRY_PORT0,SENTRY_ID1@SENTRY_IP1:SENTRY_PORT1' \
+--p2p.pex=false \
+--rpc.unsafe=false \
+"</span>
+</code></pre>
+<p>Execute <code>sudo systemctl restart iovns.service</code></p>
+<h3><a class="anchor" aria-hidden="true" id="update-the-bnsd-binary-on-all-nodes"></a><a href="#update-the-bnsd-binary-on-all-nodes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Update the bnsd binary on all nodes</h3>
+<p>TODO</p>
+<h3><a class="anchor" aria-hidden="true" id="signal-that-youre-running-bnsd-v100"></a><a href="#signal-that-youre-running-bnsd-v100" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Signal that you're running bnsd v1.0.0</h3>
+<p>TODO</p>
+<h3><a class="anchor" aria-hidden="true" id="wait-for-the-migration-to-be-triggered"></a><a href="#wait-for-the-migration-to-be-triggered" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Wait for the migration to be triggered</h3>
+<p>TODO</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated by Dave Puchyr</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/iov-name-service/validator/rewards"><span class="arrow-prev">← </span><span>Rewards</span></a><a class="docs-next button" href="/docs/iov-name-service/validator/testnet"><span>Testnet v1.0.0</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#use-systemd-for-running-a-sentry-node-or-validator">Use systemd for running a sentry node or validator</a></li><li><a href="#point-the-nodes-at-each-other">Point the nodes at each other</a><ul class="toc-headings"><li><a href="#sentry-node-configuration">Sentry node configuration</a></li><li><a href="#validator-configuration">Validator configuration</a></li><li><a href="#update-the-bnsd-binary-on-all-nodes">Update the bnsd binary on all nodes</a></li><li><a href="#signal-that-youre-running-bnsd-v100">Signal that you're running bnsd v1.0.0</a></li><li><a href="#wait-for-the-migration-to-be-triggered">Wait for the migration to be triggered</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2020 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '8dc8128a9091306e7bbd0effdaa5241a',
+                indexName: 'iov',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

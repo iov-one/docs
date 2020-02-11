@@ -10,7 +10,7 @@ In this section, we will explain how to sign **transactions**.
 
 To execute desired actions and state changes on the **IOV Name Service**, every transaction must be validated, authenticated and then authorized to perform the action.
 
-Weave uses the `ed25519` signing algorithm to achieve this important feature.
+IOV Name Service uses the `ed25519` signing algorithm to achieve this important feature.
 After following the steps in [Weave transactions](weave/weave-api-spec/02-transaction.md), created **Tx** must be signed. But first Weave _conditions_ role in signing must be explained.
 
 Conditions format defined as `(extension, type, data)` in general.

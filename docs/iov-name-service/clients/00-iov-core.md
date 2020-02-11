@@ -4,22 +4,7 @@ title: IOV Core
 sidebar_label: IOV Core
 ---
 
-When you are building a web-based application, a desktop application or a block explorer, the natural way to connect to the IOV Name Service is to use the multi-package typescript library: [IOV Core](https://github.com/iov-one/iov-core).
-
-## What is IOV Core?
-
-[IOV Core](https://github.com/iov-one/iov-core) is a powerful typescript library which contains multiple packages to:
-- manage all your private keys with [iov-keycontrol](https://github.com/iov-one/iov-core/tree/master/packages/iov-keycontrol)
-- connect to the IOV Name Service with [iov-bns](https://github.com/iov-one/iov-core/tree/master/packages/iov-bns)
-- experiment with all its features using a CLI with [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli)
-
-And also:
-
-- connect to different chains with [iov-multichain](https://github.com/iov-one/iov-core/tree/master/packages/iov-multichain) including Ethereum with [iov-ethereum](https://github.com/iov-one/iov-core/tree/master/packages/iov-ethereum)
-
-## Using iov-cli From IOV Core To Connect To The IOV Name Service
-
-The best way to understand how IOV Core (v. 16.0) works and how you can create a human readable address such as `antoine*iov` which is linked to an Cosmos address for example is to use the [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli) and follow the readme below:
+You can create a human readable address such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core) which is linked to an Cosmos address for example is to use the [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli) and follow the readme below:
 
 ## Setup
 

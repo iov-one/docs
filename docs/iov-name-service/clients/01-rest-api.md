@@ -8,7 +8,7 @@ You can connect to the IOV Name Service to run the [IOV Name Service Rest API](h
 
 ## Getting started
 
-- You need first to setup a full node. You can [check this page](/docs/iov-name-service/validator/testnet) to have all the informaiton needed.
+- You need first to setup a full node. You can [check this page](/docs/iov-name-service/validator/testnet) to have all the information needed.
 - Install the IOV Name Service API Rest on your full node following the [readme information](https://github.com/iov-one/bns/tree/master/cmd/bnsapi)
 
 ## API

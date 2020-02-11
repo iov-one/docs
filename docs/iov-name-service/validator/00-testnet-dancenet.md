@@ -29,7 +29,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -66,8 +66,8 @@ ExecStart=__DIR_IOVNS__/bnsd \
    -bind=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_IOVNS_OPTS
 LimitNOFILE=4096
-Restart=on-failure
-RestartSec=3
+#Restart=on-failure
+#RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns
@@ -93,8 +93,8 @@ ExecStart=__DIR_IOVNS__/tendermint node \
    --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
    $IMAGE_TM_OPTS
 LimitNOFILE=4096
-Restart=on-failure
-RestartSec=3
+#Restart=on-failure
+#RestartSec=3
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns-tm
@@ -167,7 +167,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \
@@ -192,14 +192,20 @@ IMAGE_TM_OPTS="\
 
 Execute `sudo systemctl restart iovns.service`
 
-### Update the bnsd binary on all nodes
+## Get Dave to add your validator to the dancenet validator set
 
-TODO
+**Once your validator node is sync'ed**, execute `curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value` and message Dave on Telegram with the resulting 44 character pub_key.  He'll notify you when your validator is in the validator set.
 
-### Signal that you're running bnsd v1.0.0
+## Update the bnsd binary on all nodes
 
-TODO
+Execute <a href="https://gist.github.com/davepuchyr/6c352a041f5f8225a84b3c134015329d" target="blank_">this</a> script on each dancenet node.
 
-### Wait for the migration to be triggered
+## Signal that you're running bnsd v1.0.0
 
-TODO
+Mention that you're running bnsd v1.0.0 in the IOV Validators Telegram channel.  Once we have 2/3+ of the `voting_power` running bnsd v1.0.0 then we'll trigger the migration to upgrade the network.
+
+## Wait for migration
+
+IOV will upgrade the dancenet network on Tuesday, February 18, 2020 at the latest.  Dave will make an annoucement in the IOV Validators Telegram channel before the upgrade.
+
+> Thank-you **Cosmostation, StateWith.Us, HashQuark, Node A Team, Forbole, 01node.com, Bianjie, ChainLayer, syncnode, and Stake Capital**!

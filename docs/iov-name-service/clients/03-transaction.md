@@ -18,9 +18,9 @@ This line is from [protobuf github repo](https://github.com/protocolbuffers/prot
 
 In a nutshell, protobuf is an effective and easy-to-use serialization format. To use it define protoc definitions(_.proto_) and then compile them to the desired language which protocol buffers [supports](https://developers.google.com/protocol-buffers/docs/tutorials). After these steps, high tech comms is ready to be used in your software.
 
-### Weave proto definitions
+### IOV Name Service proto definitions
 
-_Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/v0.21.0/spec/proto) for easy access and usage. Dive in to _weave/spec/proto_ to get some idea of how _Weave codec_ files are defined and structured.
+_IOV Name Service_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/v0.21.0/spec/proto) for easy access and usage. Dive in to _weave/spec/proto_ to get some idea of how _IOV Name Service codec_ files are defined and structured.
 
 ## IOV Name Service Transactions
 

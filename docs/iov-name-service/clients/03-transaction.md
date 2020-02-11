@@ -102,13 +102,13 @@ message Tx {
 
 `oneof sum` in the _tx message_ means, one of the messages will be sent to _bnsd_. _reference:_ [developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
 
-## Communicating with Weave/bnsd
+## Communicating with the IOV Name Service
 
-To import the required tools to communicate and send transactions to _Weave/bnsd_, follow these steps.
+To import the required tools to communicate and send transactions to _IOV Name Service_, follow these steps.
 
 ### 1 - Import _bnsd_ protobuf definitions
 
-- Copy the entire [weave/spec/proto/](https://github.com/iov-one/weave/tree/v0.21.0/spec/proto) into the repo, as the imports should refer to local files.
+- Copy the entire [weave/spec/proto/](https://github.com/iov-one/weave/tree/master/spec/proto) into the repo, as the imports should refer to local files.
 
 ### 2 - Install your preferred language-specific protoc plugin
 

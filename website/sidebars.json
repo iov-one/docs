@@ -14,6 +14,7 @@
         "type": "subcategory",
         "label": "How to sign transactions",
         "ids": [
+          "iov-name-service/clients/address-derivation",
           "iov-name-service/clients/iov-core"
           
         ]

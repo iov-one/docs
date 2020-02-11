@@ -1,10 +1,10 @@
 ---
 id: address-derivation 
-title: Addresses Derivation
-sidebar_label:  Address Derivation
+title: Generate an IOV address
+sidebar_label:  Generate an IOV address
 ---
 
-IOV uses industry standard technology to derive cryptographic key pairs and
+The IOV Name Service uses industry standard technology to derive cryptographic key pairs and
 blockchain addresses from a secret mnemonic. The first step is to derive an
 Ed25519 key pair from the secret. The address is then derived from the public
 key in a second step.
@@ -39,7 +39,7 @@ mnemonic. Following this standard, we registered the coin index 234 for the IOV
 token in
 [SLIP-0044](https://github.com/satoshilabs/slips/blob/master/slip-0044.md).
 
-Since IOV is an account-based model, our paths follows
+Since the IOV Name Service is an account-based model, our paths follows
 [Trezor's recommendation](https://github.com/trezor/trezor-firmware/tree/master/core/docs/coins)
 that
 

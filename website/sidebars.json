@@ -4,6 +4,22 @@
     "IOV Name Service": [
       {
         "type": "subcategory",
+        "label": "How to query the resolver",
+        "ids": [
+          "iov-name-service/clients/rest-api"
+          
+        ]
+      },
+      {
+        "type": "subcategory",
+        "label": "How to sign transactions",
+        "ids": [
+          "iov-name-service/clients/iov-core"
+          
+        ]
+      },
+      {
+        "type": "subcategory",
         "label": "Validator",
         "ids": [
           "iov-name-service/validator/rewards",
@@ -12,14 +28,6 @@
           "iov-name-service/validator/mainnet",
           "iov-name-service/validator/troubleshooter",
           "iov-name-service/validator/faq"
-        ]
-      },
-      {
-        "type": "subcategory",
-        "label": "Clients",
-        "ids": [
-          "iov-name-service/clients/iov-core",
-          "iov-name-service/clients/rest-api"
         ]
       }
     ],

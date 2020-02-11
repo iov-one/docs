@@ -1,7 +1,7 @@
 ---
 id: tx-sign-spec
-title: Transaction Signatures
-sidebar_label: Transaction Signatures
+title: Sign a transaction
+sidebar_label: Sign a transaction
 ---
 
 In this section, we will explain how to sign **transactions**.

@@ -1,10 +1,10 @@
 ---
 id: weave-transaction-spec
-title: Weave Transactions
-sidebar_label: Weave Transactions
+title: Build a transaction
+sidebar_label: Build a transaction
 ---
 
-_Weave/BNS_ uses protobuf for handling communications.
+IOV Name Service uses protobuf for handling communications.
 
 A good starting point would be to check out the _proto_ files and become familiar with what they are and how they look.
 
@@ -22,7 +22,7 @@ In a nutshell, protobuf is an effective and easy-to-use serialization format. To
 
 _Weave_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/v0.21.0/spec/proto) for easy access and usage. Dive in to _weave/spec/proto_ to get some idea of how _Weave codec_ files are defined and structured.
 
-## Weave/Tx (Transactions)
+## IOV Name Service Transactions
 
 Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/v0.21.0/spec/proto/cmd/bnsd/app/codec.proto).
 

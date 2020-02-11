@@ -77,7 +77,7 @@ IMAGE_TM_OPTS=<span class="hljs-string">"\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "</span>
@@ -114,8 +114,8 @@ ExecStart=__DIR_IOVNS__/bnsd \
    -<span class="hljs-built_in">bind</span>=unix://<span class="hljs-variable">${DIR_WORK}</span>/<span class="hljs-variable">${SOCK_TM}</span> \
    <span class="hljs-variable">$IMAGE_IOVNS_OPTS</span>
 LimitNOFILE=4096
-Restart=on-failure
-RestartSec=3
+<span class="hljs-comment">#Restart=on-failure</span>
+<span class="hljs-comment">#RestartSec=3</span>
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns
@@ -141,8 +141,8 @@ ExecStart=__DIR_IOVNS__/tendermint node \
    --proxy_app=unix://<span class="hljs-variable">${DIR_WORK}</span>/<span class="hljs-variable">${SOCK_TM}</span> \
    <span class="hljs-variable">$IMAGE_TM_OPTS</span>
 LimitNOFILE=4096
-Restart=on-failure
-RestartSec=3
+<span class="hljs-comment">#Restart=on-failure</span>
+<span class="hljs-comment">#RestartSec=3</span>
 StandardError=journal
 StandardOutput=journal
 SyslogIdentifier=iovns-tm
@@ -214,7 +214,7 @@ systemctl start iovns.service
 <p>In the most rudimentary form, a sentry node is meant to gossip with other nodes but keep its associated validator hidden.  Change <code>/etc/systemd/system/iovns.env</code> so that the node gossips while keeping its validator hidden.  Be mindful of <code>--rpc.unsafe=true</code> below, you might not want that.  <strong>On the validator node</strong>, execute <code>curl -s http://localhost:16657/status | jq -r .result.node_info.id</code> to get the value for <code>VALIDATOR_ID</code>.</p>
 <pre><code class="hljs css language-sh">IMAGE_TM_OPTS=<span class="hljs-string">"\
 --moniker='sentry' \
---p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \
@@ -232,13 +232,18 @@ systemctl start iovns.service
 "</span>
 </code></pre>
 <p>Execute <code>sudo systemctl restart iovns.service</code></p>
-<h3><a class="anchor" aria-hidden="true" id="update-the-bnsd-binary-on-all-nodes"></a><a href="#update-the-bnsd-binary-on-all-nodes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Update the bnsd binary on all nodes</h3>
-<p>TODO</p>
-<h3><a class="anchor" aria-hidden="true" id="signal-that-youre-running-bnsd-v100"></a><a href="#signal-that-youre-running-bnsd-v100" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Signal that you're running bnsd v1.0.0</h3>
-<p>TODO</p>
-<h3><a class="anchor" aria-hidden="true" id="wait-for-the-migration-to-be-triggered"></a><a href="#wait-for-the-migration-to-be-triggered" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Wait for the migration to be triggered</h3>
-<p>TODO</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated by Dave Puchyr</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/iov-name-service/validator/rewards"><span class="arrow-prev">← </span><span>Rewards</span></a><a class="docs-next button" href="/docs/iov-name-service/validator/testnet"><span>Testnet v1.0.0</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#use-systemd-for-running-a-sentry-node-or-validator">Use systemd for running a sentry node or validator</a></li><li><a href="#point-the-nodes-at-each-other">Point the nodes at each other</a><ul class="toc-headings"><li><a href="#sentry-node-configuration">Sentry node configuration</a></li><li><a href="#validator-configuration">Validator configuration</a></li><li><a href="#update-the-bnsd-binary-on-all-nodes">Update the bnsd binary on all nodes</a></li><li><a href="#signal-that-youre-running-bnsd-v100">Signal that you're running bnsd v1.0.0</a></li><li><a href="#wait-for-the-migration-to-be-triggered">Wait for the migration to be triggered</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2020 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+<h2><a class="anchor" aria-hidden="true" id="get-dave-to-add-your-validator-to-the-dancenet-validator-set"></a><a href="#get-dave-to-add-your-validator-to-the-dancenet-validator-set" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Get Dave to add your validator to the dancenet validator set</h2>
+<p><strong>Once your validator node is sync'ed</strong>, execute <code>curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value</code> and message Dave on Telegram with the resulting 44 character pub_key.  He'll notify you when your validator is in the validator set.</p>
+<h2><a class="anchor" aria-hidden="true" id="update-the-bnsd-binary-on-all-nodes"></a><a href="#update-the-bnsd-binary-on-all-nodes" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Update the bnsd binary on all nodes</h2>
+<p>Execute <a href="https://gist.github.com/davepuchyr/6c352a041f5f8225a84b3c134015329d" target="blank_">this</a> script on each dancenet node.</p>
+<h2><a class="anchor" aria-hidden="true" id="signal-that-youre-running-bnsd-v100"></a><a href="#signal-that-youre-running-bnsd-v100" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Signal that you're running bnsd v1.0.0</h2>
+<p>Mention that you're running bnsd v1.0.0 in the IOV Validators Telegram channel.  Once we have 2/3+ of the <code>voting_power</code> running bnsd v1.0.0 then we'll trigger the migration to upgrade the network.</p>
+<h2><a class="anchor" aria-hidden="true" id="wait-for-migration"></a><a href="#wait-for-migration" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Wait for migration</h2>
+<p>IOV will upgrade the dancenet network on Tuesday, February 18, 2020 at the latest.  Dave will make an annoucement in the IOV Validators Telegram channel before the upgrade.</p>
+<blockquote>
+<p>Thank-you <strong>Cosmostation, StateWith.Us, HashQuark, Node A Team, Forbole, 01node.com, Bianjie, ChainLayer, syncnode, and Stake Capital</strong>!</p>
+</blockquote>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated by Dave Puchyr</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/iov-name-service/validator/rewards"><span class="arrow-prev">← </span><span>Rewards</span></a><a class="docs-next button" href="/docs/iov-name-service/validator/testnet"><span>Testnet v1.0.0</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#use-systemd-for-running-a-sentry-node-or-validator">Use systemd for running a sentry node or validator</a></li><li><a href="#point-the-nodes-at-each-other">Point the nodes at each other</a><ul class="toc-headings"><li><a href="#sentry-node-configuration">Sentry node configuration</a></li><li><a href="#validator-configuration">Validator configuration</a></li></ul></li><li><a href="#get-dave-to-add-your-validator-to-the-dancenet-validator-set">Get Dave to add your validator to the dancenet validator set</a></li><li><a href="#update-the-bnsd-binary-on-all-nodes">Update the bnsd binary on all nodes</a></li><li><a href="#signal-that-youre-running-bnsd-v100">Signal that you're running bnsd v1.0.0</a></li><li><a href="#wait-for-migration">Wait for migration</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2020 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

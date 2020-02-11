@@ -4,7 +4,7 @@ title: IOV Core
 sidebar_label: IOV Core
 ---
 
-You can create a human readable address such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core) which is linked to an Cosmos address for example is to use the [iov-cli](https://github.com/iov-one/iov-core/tree/master/packages/iov-cli) and follow the readme below:
+You can create a human readable address (a starname) such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core).
 
 ## Setup
 

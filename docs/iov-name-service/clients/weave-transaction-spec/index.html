@@ -66,7 +66,7 @@
 <h3><a class="anchor" aria-hidden="true" id="iov-name-service-proto-definitions"></a><a href="#iov-name-service-proto-definitions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IOV Name Service proto definitions</h3>
 <p><em>IOV Name Service</em> protobuf definitions are kept under <a href="https://github.com/iov-one/weave/tree/v0.21.0/spec/proto">weave/spec/proto</a> for easy access and usage. Dive in to <em>weave/spec/proto</em> to get some idea of how <em>IOV Name Service codec</em> files are defined and structured.</p>
 <h2><a class="anchor" aria-hidden="true" id="iov-name-service-transactions"></a><a href="#iov-name-service-transactions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IOV Name Service Transactions</h2>
-<p>Lets start explaining <a href="https://github.com/iov-one/weave/blob/v0.21.0/spec/proto/cmd/bnsd/app/codec.proto">tx codec</a>.</p>
+<p>Lets start explaining <a href="https://github.com/iov-one/weave/blob/master/spec/proto/cmd/bnsd/app/codec.proto">tx codec</a>.</p>
 <p>All the required <em>proto</em> files for connecting to <code>BNS</code> or any <code>Weave</code> based blockchain is using this <code>tx codec</code>.</p>
 <p>On the first line of the <code>codec.proto</code></p>
 <pre><code class="hljs css language-protobuf">syntax = <span class="hljs-string">"proto3"</span>;
@@ -76,7 +76,12 @@
 <pre><code class="hljs css language-protobuf"><span class="hljs-keyword">package</span> bnsd;
 </code></pre>
 <p>Every codec message that will be used to interact with <code>bnsd</code> is boiled down to this codec file via <em>imports</em></p>
-<pre><code class="hljs css language-protobuf"><span class="hljs-keyword">import</span> <span class="hljs-string">"cmd/bnsd/x/username/codec.proto"</span>;
+<pre><code class="hljs css language-protobuf"><span class="hljs-keyword">import</span> <span class="hljs-string">"cmd/bnsd/x/account/codec.proto"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"cmd/bnsd/x/preregistration/codec.proto"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"cmd/bnsd/x/qualityscore/codec.proto"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"cmd/bnsd/x/termdeposit/codec.proto"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"cmd/bnsd/x/username/codec.proto"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"datamigration/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"migration/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/aswap/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/cash/codec.proto"</span>;
@@ -84,15 +89,19 @@
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/distribution/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/escrow/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/gov/codec.proto"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"x/msgfee/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/multisig/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/sigs/codec.proto"</span>;
+<span class="hljs-keyword">import</span> <span class="hljs-string">"x/txfee/codec.proto"</span>;
 <span class="hljs-keyword">import</span> <span class="hljs-string">"x/validators/codec.proto"</span>;
 </code></pre>
 <h3><a class="anchor" aria-hidden="true" id="tx-message"></a><a href="#tx-message" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Tx message</h3>
 <pre><code class="hljs css language-protobuf"><span class="hljs-class"><span class="hljs-keyword">message</span> <span class="hljs-title">Tx</span> </span>{
   cash.FeeInfo fees = <span class="hljs-number">1</span>;
   <span class="hljs-keyword">repeated</span> sigs.StdSignature signatures = <span class="hljs-number">2</span>;
-  <span class="hljs-comment">// ID of a multisig contract.</span>
+  <span class="hljs-comment">// Multisig contains IDs of multisig contracts.</span>
+  <span class="hljs-comment">// empty array results in multisig being ignored, basically the same behaviour</span>
+  <span class="hljs-comment">// as if it never got supplied.</span>
   <span class="hljs-keyword">repeated</span> <span class="hljs-built_in">bytes</span> multisig = <span class="hljs-number">4</span>;
   <span class="hljs-comment">// msg is a sum type over all allowed messages on this chain.</span>
   <span class="hljs-keyword">oneof</span> sum {
@@ -109,21 +118,48 @@
     username.RegisterTokenMsg username_register_token_msg = <span class="hljs-number">61</span>;
     username.TransferTokenMsg username_transfer_token_msg = <span class="hljs-number">62</span>;
     username.ChangeTokenTargetsMsg username_change_token_targets_msg = <span class="hljs-number">63</span>;
+    username.UpdateConfigurationMsg username_update_configuration_msg = <span class="hljs-number">64</span>;
     distribution.CreateMsg distribution_create_msg = <span class="hljs-number">66</span>;
     distribution.DistributeMsg distribution_msg = <span class="hljs-number">67</span>;
     distribution.ResetMsg distribution_reset_msg = <span class="hljs-number">68</span>;
     migration.UpgradeSchemaMsg migration_upgrade_schema_msg = <span class="hljs-number">69</span>;
     aswap.CreateMsg aswap_create_msg = <span class="hljs-number">70</span>;
     aswap.ReleaseMsg aswap_release_msg = <span class="hljs-number">71</span>;
-    aswap.ReturnSwapMsg aswap_return_msg = <span class="hljs-number">72</span>;
+    aswap.ReturnMsg aswap_return_msg = <span class="hljs-number">72</span>;
     gov.CreateProposalMsg gov_create_proposal_msg = <span class="hljs-number">73</span>;
     gov.DeleteProposalMsg gov_delete_proposal_msg = <span class="hljs-number">74</span>;
     gov.VoteMsg gov_vote_msg = <span class="hljs-number">75</span>;
-    gov.TallyMsg gov_tally_msg = <span class="hljs-number">76</span>;
+    <span class="hljs-comment">// Tally is executed via cron only.</span>
+    <span class="hljs-comment">// gov.TallyMsg gov_tally_msg = 76;</span>
     gov.UpdateElectorateMsg gov_update_electorate_msg = <span class="hljs-number">77</span>;
     gov.UpdateElectionRuleMsg gov_update_election_rule_msg = <span class="hljs-number">78</span>;
     <span class="hljs-comment">// 79 is reserved (see ProposalOptions: TextResolutionMsg)</span>
-
+    msgfee.SetMsgFeeMsg msgfee_set_msg_fee_msg = <span class="hljs-number">80</span>;
+    datamigration.ExecuteMigrationMsg datamigration_execute_migration_msg = <span class="hljs-number">81</span>;
+    account.UpdateConfigurationMsg account_update_configuration_msg = <span class="hljs-number">82</span>;
+    account.RegisterDomainMsg account_register_domain_msg = <span class="hljs-number">83</span>;
+    account.ReplaceAccountMsgFeesMsg account_replace_account_msg_fees_msg = <span class="hljs-number">84</span>;
+    account.TransferDomainMsg account_transfer_domain_msg = <span class="hljs-number">85</span>;
+    account.RenewDomainMsg account_renew_domain_msg = <span class="hljs-number">86</span>;
+    account.DeleteDomainMsg account_delete_domain_msg = <span class="hljs-number">87</span>;
+    account.RegisterAccountMsg account_register_account_msg = <span class="hljs-number">88</span>;
+    account.TransferAccountMsg account_transfer_account_msg = <span class="hljs-number">89</span>;
+    account.ReplaceAccountTargetsMsg account_replace_account_targets_msg = <span class="hljs-number">90</span>;
+    account.DeleteAccountMsg account_delete_account_msg = <span class="hljs-number">91</span>;
+    account.FlushDomainMsg account_flush_domain_msg = <span class="hljs-number">92</span>;
+    account.RenewAccountMsg account_renew_account_msg = <span class="hljs-number">93</span>;
+    account.AddAccountCertificateMsg account_add_account_certificate_msg = <span class="hljs-number">94</span>;
+    account.DeleteAccountCertificateMsg account_delete_account_certificate_msg = <span class="hljs-number">95</span>;
+    preregistration.RegisterMsg preregistration_register_msg = <span class="hljs-number">96</span>;
+    cash.UpdateConfigurationMsg cash_update_configuration_msg = <span class="hljs-number">97</span>;
+    txfee.UpdateConfigurationMsg txfee_update_configuration_msg = <span class="hljs-number">98</span>;
+    termdeposit.CreateDepositContractMsg termdeposit_create_deposit_contract_msg = <span class="hljs-number">99</span>;
+    termdeposit.DepositMsg termdeposit_deposit_msg = <span class="hljs-number">100</span>;
+    termdeposit.ReleaseDepositMsg termdeposit_release_deposit_msg = <span class="hljs-number">101</span>;
+    termdeposit.UpdateConfigurationMsg termdeposit_update_configuration_msg = <span class="hljs-number">102</span>;
+    qualityscore.UpdateConfigurationMsg qualityscore_update_configuration_msg = <span class="hljs-number">103</span>;
+    preregistration.UpdateConfigurationMsg preregistration_update_configuration_msg = <span class="hljs-number">104</span>;
+    msgfee.UpdateConfigurationMsg msgfee_update_configuration_msg = <span class="hljs-number">105</span>;
   }
 }
 </code></pre>

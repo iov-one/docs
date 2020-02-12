@@ -4,26 +4,7 @@ title: Sign a transaction
 sidebar_label: Sign a transaction
 ---
 
-In this section, we will explain how to sign **transactions**.
-
-## Authentication and Authorization
-
-To execute desired actions and state changes on the **IOV Name Service**, every transaction must be validated, authenticated and then authorized to perform the action.
-
-IOV Name Service uses the `ed25519` signing algorithm to achieve this important feature.
-After following the steps in [Weave transactions](weave/weave-api-spec/02-transaction.md), created **Tx** must be signed. But first Weave _conditions_ role in signing must be explained.
-
-Conditions format defined as `(extension, type, data)` in general.
-
-Condition with **ed25519** public key signature could be represented as `("sigs", "ed25519", <address>)`.
-
-Here is the basic Go presentation of condition:
-
-`condition := fmt.Sprintf("%s/%s/%X", extension, type, data)` where **condition** looks something like `sigs/ed25519/636f6e646974696f6e64617461`.
-
-## Signing transactions
-
-After the steps in [Weave transactions](weave/weave-api-spec/02-transaction.md) are followed, the created **Tx** is ready to be signed, authenticated, and authorized by _Weave/bnsd_.
+After the steps in [IOV Name Service transactions](weave/weave-api-spec/03-transaction.md) are followed, the created **Tx** is ready to be signed, authenticated, and authorized by _IOV Name Service_.
 
 Signature input body format is:
 

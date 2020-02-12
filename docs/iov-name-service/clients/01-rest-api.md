@@ -13,6 +13,9 @@ You can connect to the IOV Name Service to run the [IOV Name Service Rest API](h
 
 ## API
 
+You can see the full list of endpoints:
+http://exchangenet-bnsapi.iov.one/docs/index.html
+
 ### General
 
 - `GET /info`: returns information about this instance of `bnsapi`.

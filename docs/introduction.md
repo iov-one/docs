@@ -6,7 +6,7 @@ sidebar_label: Welcome to IOV!
 
 ![image](assets/iov-logo.png)
 
-**IOV** is building a Universal Name Service for Wallets and Dapps.
+**IOV** is building a Universal Name Service for Wallets.
 
 The IOV Name Service is a registry for names used in the blockchain ecosystem. We believe naming things makes them easier to use for everyone.
 

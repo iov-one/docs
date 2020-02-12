@@ -4,7 +4,7 @@ title: Sign a transaction
 sidebar_label: Sign a transaction
 ---
 
-After the steps in [IOV Name Service transactions](weave/weave-api-spec/03-transaction.md) are followed, the created **Tx** is ready to be signed, authenticated, and authorized by _IOV Name Service_.
+After the steps in [IOV Name Service transactions](/docs/iov-name-service/clients/weave-transaction-spec) are followed, the created **Tx** is ready to be signed, authenticated, and authorized by _IOV Name Service_.
 
 Signature input body format is:
 

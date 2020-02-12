@@ -14,4 +14,4 @@ IOV runs validator(s) with higher voting_power on testnets so that the chain doe
 
 ## How do I create an address for IOV tokens?
 
-Install the <a href="https://chrome.google.com/webstore/detail/neuma/gegmganblgchemddleocdoadmljledcj" target="blank_">Neuma</a> browser extension and then browse to <a href="https://wallet.iov.one" target="blank_">https://wallet.iov.one</a>.
+Install the <a href="https://chrome.google.com/webstore/detail/neuma/gegmganblgchemddleocdoadmljledcj" target="blank_">Neuma</a> browser extension and then browse to <a href="https://wallet.iov.one" target="blank_">https://wallet.neuma.io</a>.

@@ -1,14 +1,12 @@
 ---
 id: intro
-title: Welcome to IOV!
-sidebar_label: Welcome to IOV!
+title: How to integrate the IOV Name Service with your wallet
+sidebar_label: How to integrate the IOV Name Service with your wallet
 ---
 
-![image](assets/iov-logo.png)
+**IOV** built the IOV Name Service.
 
-**IOV** is building a Universal Name Service for Wallets.
-
-The IOV Name Service is a registry for names used in the blockchain ecosystem. We believe naming things makes them easier to use for everyone.
+The IOV Name Service is a registry for starnames.
 
 ## How to Get Started
 

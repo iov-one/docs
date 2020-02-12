@@ -4,7 +4,7 @@ title: IOV Core
 sidebar_label: IOV Core
 ---
 
-You can create a human readable address (a starname) such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core).
+In case you are using javascript, you can query, register and edit a starname such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core).
 
 ## Setup
 

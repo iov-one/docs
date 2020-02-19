@@ -8,11 +8,11 @@ sidebar_label: REST API of the IOV Name Service
 The easiest way to query the IOV Name Service is through our REST API. On the IOV Name Service, you can resolve a starname, query a balance of an iov address and many others things.
 
 **For test purposes only**, you can query the Rest API of the IOV Name Service at this URL:
-http://64.225.80.124:8000/
+http://bnsapi.iov.one:8000/
 
 ## List of endpoints
 You can see the full list of endpoints for IOV Name Service Mainnet at this URL:
-http://64.225.80.124:8000/docs/index.html#/
+http://bnsapi.iov.one:8000/docs/index.html#/
 
 ## Running your own node
 Alternatively, you may prefer to run your own node and your own Rest API server. 
@@ -23,7 +23,7 @@ Alternatively, you may prefer to run your own node and your own Rest API server.
 To resolve a starname, you need to query on your Rest API server the endpoint
 - `GET /username/resolve/:mystarname` returns all the information about the specific starname including list of crypto-addresses.
 
-Example on the Rest API for the IOV Name Service mainnet: http://64.225.80.124:8000/username/resolve/fabo*iov
+Example on the Rest API for the IOV Name Service mainnet: http://bnsapi.iov.one:8000/username/resolve/fabo*iov
 
 ## Sending transactions to the IOV Name Service
 The REST API only helps for GETting info from the chain. The next step is for you to be able to send messages to the IOV Name service

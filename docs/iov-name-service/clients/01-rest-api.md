@@ -1,31 +1,35 @@
 ---
 id: rest-api
-title: REST API
-sidebar_label: REST API
+title: REST API of the IOV Name Service
+sidebar_label: REST API of the IOV Name Service
 ---
 
-You can connect to the IOV Name Service to run the [IOV Name Service Rest API](https://github.com/iov-one/bns/tree/master/cmd/bnsapi) on the top of your full node.
-
 ## Getting started
+The easiest way to query the IOV Name Service is through our REST API. On the IOV Name Service, you can resolve a starname, query a balance of an iov address and many others things.
 
-- You need first to setup a full node. You can [check this page](/docs/iov-name-service/validator/testnet) to have all the information needed.
-- Install the IOV Name Service API Rest on your full node following the [readme information](https://github.com/iov-one/bns/tree/master/cmd/bnsapi)
+**For test purposes only**, you can query the Rest API of the IOV Name Service at this URL:
+http://bnsapi.iov.one:8000/
 
-## API
+## List of endpoints
+You can see the full list of endpoints for IOV Name Service Mainnet at this URL:
+http://bnsapi.iov.one:8000/docs/index.html#/
 
-You can see the full list of endpoints:
-http://exchangenet-bnsapi.iov.one/docs/index.html
+## Running your own node
+Alternatively, you may prefer to run your own node and your own Rest API server. 
+1. You can read the [full node set up instructions](/docs/iov-name-service/validator/testnet). 
+2. You can read the [the REST API instructions to setup a Rest API server](https://github.com/iov-one/bns/tree/master/cmd/bnsapi).
 
-### General
+## How to resolve a starname
+To resolve a starname, you need to query on your Rest API server the endpoint
+- `GET /username/resolve/:mystarname` returns all the information about the specific starname including list of crypto-addresses.
 
-- `GET /info`: returns information about this instance of `bnsapi`.
+Example on the Rest API for the IOV Name Service mainnet: http://bnsapi.iov.one:8000/username/resolve/fabo*iov
 
-### Block
+## Sending transactions to the IOV Name Service
+The REST API only helps for GETting info from the chain. The next step is for you to be able to send messages to the IOV Name service
+to register or edit starnames.
+To do this, the short way is to use IOV Core library. IOV Core manages the keys and signatures for the IOV Name Service and other blockchains.
+You can read the [IOV Core documentation](/docs/iov-name-service/clients/00-iov-core.md).
 
-- `GET /block/:height`: returns block details by height
-
-### Starname
-
-- `GET /account/accounts`: returns the list of all starnames.
-- `GET /account/accounts/:owner`: returns a list of all starnames owned by someone.
-- `GET /account/domains`: returns a list of all premium starnames.
+The longer way is to access the IOV Name Service directly and implementing the protobuf messages yourself.
+[You can read how to do that here](/docs/iov-name-service/clients/weave-transaction-spec)

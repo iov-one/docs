@@ -64,8 +64,8 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://gist.githubusercontent.com/webmaster128/9a87d0967fe2caa95d84ee6288c648c2/raw/70c95107b2b4cb8ed3c0d24ae1f3f43a55d81cff/genesis.json > config/genesis.json
-sha256sum config/genesis.json | grep 6c80ea4724726bedd2d36e73bf025007ef898fcb06be17e3ba3e51f32d29b8fa || echo 'BAD GENESIS FILE!'
+curl --fail http://157.245.27.16:16657/genesis | jq -r .result.genesis > config/genesis.json
+sha256sum config/genesis.json | grep f3c2c31b3c9aefabeccb85d8e9f8b265c81cf907ac456737872308df00b600ea || echo 'BAD GENESIS FILE!'
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
 sed --in-place 's!^create_empty_blocks .*!create_empty_blocks = false!' config/config.toml
 sed --in-place 's!^create_empty_blocks_interval .*!create_empty_blocks_interval = "300s"!' config/config.toml

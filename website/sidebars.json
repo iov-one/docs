@@ -7,7 +7,6 @@
         "label": "How to query the resolver",
         "ids": [
           "iov-name-service/clients/rest-api"
-
         ]
       },
       {
@@ -18,7 +17,6 @@
           "iov-name-service/clients/weave-transaction-spec",
           "iov-name-service/clients/tx-sign-spec",
           "iov-name-service/clients/iov-core"
-
         ]
       },
       {

@@ -141,7 +141,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail http://157.245.27.16:16657/genesis | jq -r .result.genesis > config/genesis.json
+curl --fail http://157.245.26.87:16657/genesis | jq -r .result.genesis > config/genesis.json
 sha256sum config/genesis.json | grep 876fd677b6f1e6ab7329aaf8eea1ccd9b8fa25ce64a02cd490a1f0329f542f15 || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config

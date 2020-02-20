@@ -72,7 +72,7 @@ and myAddress:
 tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf
 ```
 
-## Get Some IOV Tokens On My Account
+## Get Some IOV Tokens
 
 We are connected to iov-exchangenet (testnet), so we can use iov faucet to get some tokens
 
@@ -91,31 +91,34 @@ yeilds
 ```ts
 >> { address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf',
   balance:
-    [ { quantity: '10000000000',
+    [ { quantity: '500000000000',
         fractionalDigits: 9,
         tokenTicker: 'IOV' } ],
   pubkey: undefined }
 ```
 
-## Register a Name in IOV Name Service
+## Register a starname in the IOV Name Service
 
-Now is time to use one of the iov value propositions: a human readable address that works as a non fungible token and allows storage of multiple addresses from multiple blockchains
+Now is time to use one of the IOV Name Service's value propositions: a human readable address that works as a non-fungible token and allows storage of multiple addresses from multiple blockchains.
 
-First we need to create the transaction body. You can add as many chainId/address pairs a you like, following the list template below:
-> *use your username here, mine is already taken ;)*
+From a marketing perspective, a starname has multiple [personalities](/docs/intro#what-is-a-starname).  From a technical perspective, a starname consists of a `domain`, which is on the right of the `*`, and `name`, which is on the left of the `*`.  Together `name*domain` are an `account`.  Accounts are created within a domain, so we have to register our domain to get started.
+
+First we need to create the transaction body:
 
 ```ts
 .editor // initiate a multi-line editor mode
 
-const registrationTx = await connection.withDefaultFee<RegisterUsernameTx& WithCreator>({
-  kind: "bns/register_username",
-  creator: myIdentity,
-  targets: [
-    { chainId: chainId, address: myAddress },
-    { chainId: "cosmoshub-3" as ChainId, address: "cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn" as Address}
-  ],
-  username: "antoine*iov",
-});
+const registerDomainTx = await connection.withDefaultFee<RegisterDomainTx>({
+  kind: "bns/register_domain",
+  chainId: chainId,
+  domain: `domain${Math.floor(Math.random()*10e9)}`,
+  admin: myAddress,
+  hasSuperuser: true,
+  msgFees: [],
+  accountRenew: 100,
+  },
+  myAddress,
+);
 
 ^D // Ctrl-d to finish the editor mode
 ```
@@ -123,28 +126,102 @@ const registrationTx = await connection.withDefaultFee<RegisterUsernameTx& WithC
 Now we sign, post and confirm the transaction
 
 ```ts
-await signer.signAndPost(registrationTx);
+await signer.signAndPost(myIdentity, registerDomainTx);
+// wait a few seconds for your transaction to be executed
 const bnsConnection = connection as BnsConnection;
-const myAccountBNS  = await bnsConnection.getUsernames({ owner: myAddress });
-myAccountBNS
+const myDomains = await bnsConnection.getDomains({ admin: myAddress });
+myDomains
 ```
 yields
 ```ts
->> [ { id: 'antoine*iov',
-       owner: 'tiov188ayx37py2r86wz5a4a2vrn4ejrwhnnte4n7kc',
-       targets: [ [Object], [Object] ]
-       }]
+[
+  {
+    domain: 'domain7374968770',
+    admin: 'tiov1f75ge60msmn6p0su9wsp3k7lknfptadjef7f36',
+    validUntil: 1613761734,
+    hasSuperuser: true,
+    msgFees: [],
+    accountRenew: 100
+  }
+]
+
+```
+Now that you have a domain you can register a name within it in order to create an account.  The procedure is effectively identical to that above, but with the `RegisterAccountTx` transaction:
+```ts
+.editor // initiate a multi-line editor mode
+
+const registerAccountTx = await connection.withDefaultFee<RegisterAccountTx>({
+  kind: "bns/register_account",
+  chainId: chainId,
+  domain: myDomains[0].domain,
+  name: "many_accounts_per_domain",
+  owner: myAddress,
+  targets: [
+    {
+      chainId: "cosmos:cosmoshub-3" as ChainId,
+      address: "cosmos1ylz6tqpgz0flpl6h5szmj6mmzyr598rqe3908y" as Address
+    },
+    {
+      chainId: "bip122:000000000019d6689c085ae165831e93" as ChainId, // bitcoin
+      address: "3QJev38iDbvdaM4DoWkGoKyQTYAXv812RY" as Address
+    },
+  ],
+  },
+  myAddress,
+);
+
+^D // Ctrl-d to finish the editor mode
+```
+
+Now we sign, post and confirm the transaction
+
+```ts
+await signer.signAndPost(myIdentity, registerAccountTx);
+// wait a few seconds for your transaction to be executed
+const myAccounts = await bnsConnection.getAccounts({ owner: myAddress });
+myAccounts
+```
+yields
+```ts
+[
+  {
+    domain: 'domain7374968770',
+    name: undefined,
+    owner: 'tiov1f75ge60msmn6p0su9wsp3k7lknfptadjef7f36',
+    validUntil: 1582204234,
+    targets: [],
+    certificates: []
+  },
+  {
+    domain: 'domain7374968770',
+    name: 'many_accounts_per_domain',
+    owner: 'tiov1f75ge60msmn6p0su9wsp3k7lknfptadjef7f36',
+    validUntil: 1582205781,
+    targets: [ [Object], [Object] ],
+    certificates: []
+  }
+]
 ```
 and
 ```ts
-myAccountBNS[0].targets
+myAccounts[1].targets
 ```
 yields
 ```ts
->> [ { chainId: 'iov-exchangenet', address: 'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf' }, { chainId: 'cosmoshub-3', address: 'cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn' } ]
+[
+  {
+    chainId: 'cosmos:cosmoshub-3',
+    address: 'cosmos1ylz6tqpgz0flpl6h5szmj6mmzyr598rqe3908y'
+  },
+  {
+    chainId: 'bip122:000000000019d6689c085ae165831e93',
+    address: '3QJev38iDbvdaM4DoWkGoKyQTYAXv812RY'
+  }
+]
 ```
 
-That is it! Welcome to the world of Personalized Names :)
+
+That is it! Welcome to the world of starnames! :)
 
 ## Extra Mile: Send IOV Tokens to a Personalized Name
 

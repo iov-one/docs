@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>IOV Core · IOV Documentations</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="In case you are using javascript, you can query, register and edit a starname such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core)."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="IOV Core · IOV Documentations"/><meta property="og:type" content="website"/><meta property="og:url" content="https://docs.iov.one/"/><meta property="og:description" content="In case you are using javascript, you can query, register and edit a starname such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core)."/><meta property="og:image" content="https://docs.iov.one/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://docs.iov.one/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="IOV Documentations"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/iov-one" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>How to sign transactions</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Introduction<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/intro">Integrate the IOV Name Service with your wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">IOV Name Service<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">How to query the resolver</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/rest-api">REST API of the IOV Name Service</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">How to sign transactions</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/address-derivation">Generate an IOV address</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/weave-transaction-spec">Build a transaction</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/tx-sign-spec">Sign a transaction</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/iov-name-service/clients/iov-core">IOV Core</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Validator</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/rewards">Rewards</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/testnet-dancenet">Testnet (deprecated)</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/testnet">Testnet v1.0.0</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/mainnet">Mainnet</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/troubleshooter">Troubleshooter</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/faq">FAQ</a></li></ul></div></ul></div></div></section></div><script>
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>IOV Core · IOV Documentations</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="In case you are using javascript, you can query, register and edit a starname such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core)."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="IOV Core · IOV Documentations"/><meta property="og:type" content="website"/><meta property="og:url" content="https://docs.iov.one/"/><meta property="og:description" content="In case you are using javascript, you can query, register and edit a starname such as `antoine*iov` using [IOV Core](https://github.com/iov-one/iov-core)."/><meta property="og:image" content="https://docs.iov.one/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://docs.iov.one/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="IOV Documentations"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/iov-one" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>How to sign transactions</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Introduction<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/intro">Integrate the IOV Name Service with your wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">IOV Name Service<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">How to query the resolver</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/rest-api">REST API of the IOV Name Service</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">How to sign transactions</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/address-derivation">Generate an IOV address</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/weave-transaction-spec">Build a transaction</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/tx-sign-spec">Sign a transaction</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/iov-name-service/clients/iov-core">IOV Core</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Validator</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/rewards">Rewards</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/testnet">Testnet</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/mainnet">Mainnet</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/troubleshooter">Troubleshooter</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/faq">FAQ</a></li></ul></div></ul></div></div></section></div><script>
             var coll = document.getElementsByClassName('collapsible');
             var checkActiveCategory = true;
             for (var i = 0; i < coll.length; i++) {
@@ -82,12 +82,12 @@ If we want to use a cli wallet, we need:</p>
 <p>a profile and a connection to a testnet</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> profile = <span class="hljs-keyword">new</span> UserProfile();
 <span class="hljs-keyword">const</span> signer = <span class="hljs-keyword">new</span> MultiChainSigner(profile);
-<span class="hljs-keyword">const</span> { connection } = <span class="hljs-keyword">await</span> signer.addChain(createBnsConnector(<span class="hljs-string">"wss://rpc-private-a-x-dancenet.iov.one"</span>));
-<span class="hljs-keyword">const</span> chainId = connection.chainId();
+<span class="hljs-keyword">const</span> { connection } = <span class="hljs-keyword">await</span> signer.addChain(createBnsConnector(<span class="hljs-string">"ws://rpc-private-a-x-exchangenet.iov.one:16657"</span>));
+<span class="hljs-keyword">const</span> chainId = connection.chainId;
 chainId
 </code></pre>
 <p>yields</p>
-<pre><code class="hljs css language-ts">&gt;‘iov-dancenet’
+<pre><code class="hljs css language-ts"><span class="hljs-string">'iov-exchangenet'</span>
 </code></pre>
 <p>a wallet and an IOV address connected to our profile. We will generate a random mnemonic</p>
 <pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> randomEntropy = Random.getBytes(<span class="hljs-number">32</span>);
@@ -102,9 +102,9 @@ chainId
 <p>and myAddress:</p>
 <pre><code class="hljs">tiov<span class="hljs-number">1</span>azf<span class="hljs-number">4469</span><span class="hljs-name">g720</span>ea<span class="hljs-number">3</span>pzgtctz<span class="hljs-number">7</span>t<span class="hljs-name">m9</span>ema<span class="hljs-number">7</span>kgft<span class="hljs-number">7</span>pyqf
 </code></pre>
-<h2><a class="anchor" aria-hidden="true" id="get-some-iov-tokens-on-my-account"></a><a href="#get-some-iov-tokens-on-my-account" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Get Some IOV Tokens On My Account</h2>
-<p>We are connected to iov-dancenet (testnet), so we can use iov faucet to get some tokens</p>
-<pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> faucet = <span class="hljs-keyword">new</span> IovFaucet(<span class="hljs-string">"https://faucet.x-dancenet.iov.one/"</span>);
+<h2><a class="anchor" aria-hidden="true" id="get-some-iov-tokens"></a><a href="#get-some-iov-tokens" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Get Some IOV Tokens</h2>
+<p>We are connected to iov-exchangenet (testnet), so we can use iov faucet to get some tokens</p>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> faucet = <span class="hljs-keyword">new</span> IovFaucet(<span class="hljs-string">"http://faucet.x-exchangenet.iov.one:8080/"</span>);
 <span class="hljs-keyword">await</span> faucet.credit(myAddress, <span class="hljs-string">"IOV"</span> <span class="hljs-keyword">as</span> TokenTicker);
 </code></pre>
 <p>Check that the account has some tokens now</p>
@@ -114,93 +114,177 @@ myAccount
 <p>yeilds</p>
 <pre><code class="hljs css language-ts">&gt;&gt; { address: <span class="hljs-string">'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf'</span>,
   balance:
-    [ { quantity: <span class="hljs-string">'10000000000'</span>,
+    [ { quantity: <span class="hljs-string">'500000000000'</span>,
         fractionalDigits: <span class="hljs-number">9</span>,
         tokenTicker: <span class="hljs-string">'IOV'</span> } ],
   pubkey: <span class="hljs-literal">undefined</span> }
 </code></pre>
-<h2><a class="anchor" aria-hidden="true" id="register-a-name-in-iov-name-service"></a><a href="#register-a-name-in-iov-name-service" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Register a Name in IOV Name Service</h2>
-<p>Now is time to use one of the iov value propositions: a human readable address that works as a non fungible token and allows storage of multiple addresses from multiple blockchains</p>
-<p>First we need to create the transaction body. You can add as many chainId/address pairs a you like, following the list template below:</p>
-<blockquote>
-<p><em>use your username here, mine is already taken ;)</em></p>
-</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="register-a-starname-in-the-iov-name-service"></a><a href="#register-a-starname-in-the-iov-name-service" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Register a starname in the IOV Name Service</h2>
+<p>Now is time to use one of the IOV Name Service's value propositions: a human readable address that works as a non-fungible token and allows storage of multiple addresses from multiple blockchains.</p>
+<p>From a marketing perspective, a starname has multiple <a href="/docs/intro#what-is-a-starname">personalities</a>.  From a technical perspective, a starname consists of a <code>domain</code>, which is on the right of the <code>*</code>, and <code>name</code>, which is on the left of the <code>*</code>.  Together <code>name*domain</code> are an <code>account</code>.  Accounts are created within a domain, so we have to register our domain to get started.</p>
+<p>First we need to create the transaction body:</p>
 <pre><code class="hljs css language-ts">.editor <span class="hljs-comment">// initiate a multi-line editor mode</span>
 
-<span class="hljs-keyword">const</span> registrationTx = <span class="hljs-keyword">await</span> connection.withDefaultFee&lt;RegisterUsernameTx&amp; WithCreator&gt;({
-  kind: <span class="hljs-string">"bns/register_username"</span>,
-  creator: myIdentity,
-  targets: [
-    { chainId: chainId, address: myAddress },
-    { chainId: <span class="hljs-string">"cosmoshub-3"</span> <span class="hljs-keyword">as</span> ChainId, address: <span class="hljs-string">"cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn"</span> <span class="hljs-keyword">as</span> Address}
-  ],
-  username: <span class="hljs-string">"antoine*iov"</span>,
-});
+<span class="hljs-keyword">const</span> registerDomainTx = <span class="hljs-keyword">await</span> connection.withDefaultFee&lt;RegisterDomainTx&gt;({
+  kind: <span class="hljs-string">"bns/register_domain"</span>,
+  chainId: chainId,
+  domain: <span class="hljs-string">`domain<span class="hljs-subst">${<span class="hljs-built_in">Math</span>.floor(<span class="hljs-built_in">Math</span>.random()*<span class="hljs-number">10e9</span>)}</span>`</span>,
+  admin: myAddress,
+  hasSuperuser: <span class="hljs-literal">true</span>,
+  msgFees: [],
+  accountRenew: <span class="hljs-number">100</span>,
+  },
+  myAddress,
+);
 
 ^D <span class="hljs-comment">// Ctrl-d to finish the editor mode</span>
 </code></pre>
 <p>Now we sign, post and confirm the transaction</p>
-<pre><code class="hljs css language-ts"><span class="hljs-keyword">await</span> signer.signAndPost(registrationTx);
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">await</span> signer.signAndPost(myIdentity, registerDomainTx);
+<span class="hljs-comment">// wait a few seconds for your transaction to be executed</span>
 <span class="hljs-keyword">const</span> bnsConnection = connection <span class="hljs-keyword">as</span> BnsConnection;
-<span class="hljs-keyword">const</span> myAccountBNS  = <span class="hljs-keyword">await</span> bnsConnection.getUsernames({ owner: myAddress });
-myAccountBNS
+<span class="hljs-keyword">const</span> myDomains = <span class="hljs-keyword">await</span> bnsConnection.getDomains({ admin: myAddress });
+myDomains
 </code></pre>
 <p>yields</p>
-<pre><code class="hljs css language-ts">&gt;&gt; [ { id: <span class="hljs-string">'antoine*iov'</span>,
-       owner: <span class="hljs-string">'tiov188ayx37py2r86wz5a4a2vrn4ejrwhnnte4n7kc'</span>,
-       targets: [ [<span class="hljs-built_in">Object</span>], [<span class="hljs-built_in">Object</span>] ]
-       }]
+<pre><code class="hljs css language-ts">[
+  {
+    domain: <span class="hljs-string">'domain7374968770'</span>,
+    admin: <span class="hljs-string">'tiov1f75ge60msmn6p0su9wsp3k7lknfptadjef7f36'</span>,
+    validUntil: <span class="hljs-number">1613761734</span>,
+    hasSuperuser: <span class="hljs-literal">true</span>,
+    msgFees: [],
+    accountRenew: <span class="hljs-number">100</span>
+  }
+]
+
 </code></pre>
-<p>and</p>
-<pre><code class="hljs css language-ts">myAccountBNS[<span class="hljs-number">0</span>].targets
-</code></pre>
-<p>yields</p>
-<pre><code class="hljs css language-ts">&gt;&gt; [ { chainId: <span class="hljs-string">'iov-dancenet'</span>, address: <span class="hljs-string">'tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf'</span> }, { chainId: <span class="hljs-string">'cosmoshub-3'</span>, address: <span class="hljs-string">'cosmos17w5kw28te7r5vn4qu08hu6a4crcvwrrgzmsrrn'</span> } ]
-</code></pre>
-<p>That is it! Welcome to the world of Personalized Names :)</p>
-<h2><a class="anchor" aria-hidden="true" id="extra-mile-send-iov-tokens-to-a-personalized-name"></a><a href="#extra-mile-send-iov-tokens-to-a-personalized-name" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extra Mile: Send IOV Tokens to a Personalized Name</h2>
-<p>To showcase the importance of a human friendly name address, we will send some tokens from a new account, to the Personalized Name previously generated into IOV Name Service</p>
-<p>Open a new terminal in <code>mycliwallet</code> and run <code>./node_modules/.bin/iov-cli</code>.</p>
-<p>Repeat the steps from <strong>Initial Configuration</strong> and <strong>Get some IOV tokens on my account</strong>.</p>
-<p>First, we need to get the recipient personalized address (“antoine*iov” in this case)</p>
-<pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> recipientData = <span class="hljs-keyword">await</span> bnsConnection.getUsernames({ username: <span class="hljs-string">"antoine*iov"</span> });
-recipientData
-</code></pre>
-<p>yields</p>
-<pre><code class="hljs css language-ts">&gt;&gt; [ { id: <span class="hljs-string">'antoine*iov'</span>,
-    owner: <span class="hljs-string">'tiov166jr0qk6arhq7rj7acjmfgyx0p48x8vw3zvmry'</span>,
-    targets: [ [<span class="hljs-built_in">Object</span>], [<span class="hljs-built_in">Object</span>] ] } ]
-</code></pre>
-<blockquote>
-<p><em>YES!! You got it!! We search by username, no need to copy/paste/barcode scan string addresses</em></p>
-</blockquote>
-<p>Now that we have the list of addresses registered by the user in <code>recipientData</code>, we will search for a specific address in a specific chain (“iov-dancenet” chain in this case)</p>
-<pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> recipientChainAddressPair = recipientData[<span class="hljs-number">0</span>].targets.find(<span class="hljs-function"><span class="hljs-params">chainaddrPair</span> =&gt;</span> chainaddrPair.chainId === <span class="hljs-string">'iov-dancenet'</span>);
-</code></pre>
-<p>Create the transaction</p>
+<p>Now that you have a domain you can register a name within it in order to create an account.  The procedure is effectively identical to that above, but with the <code>RegisterAccountTx</code> transaction:</p>
 <pre><code class="hljs css language-ts">.editor <span class="hljs-comment">// initiate a multi-line editor mode</span>
 
-<span class="hljs-keyword">const</span> sendTx = <span class="hljs-keyword">await</span> connection.withDefaultFee&lt;SendTransaction &amp; WithCreator&gt;({
+<span class="hljs-keyword">const</span> registerAccountTx = <span class="hljs-keyword">await</span> connection.withDefaultFee&lt;RegisterAccountTx&gt;({
+  kind: <span class="hljs-string">"bns/register_account"</span>,
+  chainId: chainId,
+  domain: myDomains[<span class="hljs-number">0</span>].domain,
+  name: <span class="hljs-string">"many_accounts_per_domain"</span>,
+  owner: myAddress,
+  targets: [
+    {
+      chainId: <span class="hljs-string">"cosmos:cosmoshub-3"</span> <span class="hljs-keyword">as</span> ChainId,
+      address: <span class="hljs-string">"cosmos1ylz6tqpgz0flpl6h5szmj6mmzyr598rqe3908y"</span> <span class="hljs-keyword">as</span> Address
+    },
+    {
+      chainId: <span class="hljs-string">"bip122:000000000019d6689c085ae165831e93"</span> <span class="hljs-keyword">as</span> ChainId, <span class="hljs-comment">// bitcoin</span>
+      address: <span class="hljs-string">"3QJev38iDbvdaM4DoWkGoKyQTYAXv812RY"</span> <span class="hljs-keyword">as</span> Address
+    },
+  ],
+  },
+  myAddress,
+);
+
+^D <span class="hljs-comment">// Ctrl-d to finish the editor mode</span>
+</code></pre>
+<p>Now we sign, post and confirm the transaction</p>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">await</span> signer.signAndPost(myIdentity, registerAccountTx);
+<span class="hljs-comment">// wait a few seconds for your transaction to be executed</span>
+<span class="hljs-keyword">const</span> myAccounts = <span class="hljs-keyword">await</span> bnsConnection.getAccounts({ owner: myAddress });
+myAccounts
+</code></pre>
+<p>yields</p>
+<pre><code class="hljs css language-ts">[
+  {
+    domain: <span class="hljs-string">'domain7374968770'</span>,
+    name: <span class="hljs-literal">undefined</span>,
+    owner: <span class="hljs-string">'tiov1f75ge60msmn6p0su9wsp3k7lknfptadjef7f36'</span>,
+    validUntil: <span class="hljs-number">1582204234</span>,
+    targets: [],
+    certificates: []
+  },
+  {
+    domain: <span class="hljs-string">'domain7374968770'</span>,
+    name: <span class="hljs-string">'many_accounts_per_domain'</span>,
+    owner: <span class="hljs-string">'tiov1f75ge60msmn6p0su9wsp3k7lknfptadjef7f36'</span>,
+    validUntil: <span class="hljs-number">1582205781</span>,
+    targets: [ [<span class="hljs-built_in">Object</span>], [<span class="hljs-built_in">Object</span>] ],
+    certificates: []
+  }
+]
+</code></pre>
+<p>and</p>
+<pre><code class="hljs css language-ts">myAccounts[<span class="hljs-number">1</span>].targets
+</code></pre>
+<p>yields</p>
+<pre><code class="hljs css language-ts">[
+  {
+    chainId: <span class="hljs-string">'cosmos:cosmoshub-3'</span>,
+    address: <span class="hljs-string">'cosmos1ylz6tqpgz0flpl6h5szmj6mmzyr598rqe3908y'</span>
+  },
+  {
+    chainId: <span class="hljs-string">'bip122:000000000019d6689c085ae165831e93'</span>,
+    address: <span class="hljs-string">'3QJev38iDbvdaM4DoWkGoKyQTYAXv812RY'</span>
+  }
+]
+</code></pre>
+<p>That is it! Welcome to the world of starnames! :)</p>
+<h2><a class="anchor" aria-hidden="true" id="extra-mile-send-iov-tokens-to-a-starname"></a><a href="#extra-mile-send-iov-tokens-to-a-starname" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extra Mile: Send IOV tokens to a starname</h2>
+<p>To showcase the importance of a starname, we will send some tokens to an existing account.  First, we need to get the recipient's address via starname (kraken*dave in this case)</p>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> daveAccounts = <span class="hljs-keyword">await</span> bnsConnection.getAccounts({ domain: <span class="hljs-string">"dave"</span> });
+<span class="hljs-comment">// if you examine daveAccounts you'll see binance*dave, coinbase*dave, kraken*dave, ...</span>
+<span class="hljs-keyword">const</span> daveKraken = daveAccounts.filter(<span class="hljs-function"><span class="hljs-params">account</span> =&gt;</span> account.name === <span class="hljs-string">"kraken"</span>)[<span class="hljs-number">0</span>];
+daveKraken
+</code></pre>
+<p>yields</p>
+<pre><code class="hljs css language-ts">{
+  domain: <span class="hljs-string">'dave'</span>,
+  name: <span class="hljs-string">'kraken'</span>,
+  owner: <span class="hljs-string">'tiov1c9eprq0gxdmwl9u25j568zj7ylqgc7ajyu8wxr'</span>,
+  validUntil: <span class="hljs-number">1584818986</span>,
+  targets: [
+    {
+      chainId: <span class="hljs-string">'cosmos:iov-exchangenet'</span>,
+      address: <span class="hljs-string">'tiov1qnpaklxv4n6cam7v99hl0tg0dkmu97sh56x6uz'</span>
+    },
+    {
+      chainId: <span class="hljs-string">'bip122:000000000019d6689c085ae165831e93'</span>,
+      address: <span class="hljs-string">'3QJev38iDbvdaM4DoWkGoKyQTYAXv812RY'</span>
+    }
+  ],
+  certificates: []
+}
+</code></pre>
+<blockquote>
+<p><em>YES!! You got it!! We search by starname, no need to copy/paste/barcode scan string addresses!</em></p>
+</blockquote>
+<p>Now that we have the list of addresses registered in <code>daveKraken</code>, we will search for a specific address in a specific chain (&quot;cosmos:iov-exchangenet&quot; chain in this case)</p>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">const</span> chainAddressPair = daveKraken.targets.find(<span class="hljs-function"><span class="hljs-params">target</span> =&gt;</span> target.chainId === <span class="hljs-string">'cosmos:iov-exchangenet'</span>);
+</code></pre>
+<p>Let's see the account balance before we send to it:</p>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">await</span> connection.getAccount({ address: chainAddressPair.address });
+</code></pre>
+<p>And with our <code>chainAddressPair</code> we can create the send transaction</p>
+<pre><code class="hljs css language-ts">.editor <span class="hljs-comment">// initiate a multi-line editor mode</span>
+
+<span class="hljs-keyword">const</span> sendTx = <span class="hljs-keyword">await</span> connection.withDefaultFee&lt;SendTransaction&gt;({
   kind: <span class="hljs-string">"bcp/send"</span>,
-  creator: myIdentity,
-  sender: bnsCodec.identityToAddress(myIdentity),
-  recipient: recipientChainAddressPair.address,
-  memo: <span class="hljs-string">"My first transaction by username B-)"</span>,
+  chainId: chainId,
+  sender: myAddress,
+  recipient: chainAddressPair.address,
+  memo: <span class="hljs-string">"My first send by starname transaction B-)"</span>,
   amount: {
     quantity: <span class="hljs-string">"100000"</span>,
     fractionalDigits: <span class="hljs-number">9</span>,
     tokenTicker: <span class="hljs-string">"IOV"</span> <span class="hljs-keyword">as</span> TokenTicker,
-  }
-});
+  },
+}, myAddress);
 
 ^D <span class="hljs-comment">// Ctrl-d to finish the editor mode</span>
 </code></pre>
-<p>Now we sign, post and confirm the transaction</p>
-<pre><code class="hljs css language-ts"><span class="hljs-keyword">await</span> signer.signAndPost(sendTx);
-(<span class="hljs-keyword">await</span> connection.getAccount({ address: myAddress })).balance;
+<p>Now we sign, post and confirm the transaction, and then check the balance</p>
+<pre><code class="hljs css language-ts"><span class="hljs-keyword">await</span> signer.signAndPost(myIdentity, sendTx);
+<span class="hljs-keyword">await</span> connection.getAccount({ address: chainAddressPair.address });
 </code></pre>
-<p>Your balance should be “9799900000”. And if you just sent IOV tokens to antoine*iov, thank you!</p>
-</span></div></article></div><div class="docLastUpdate"><em>Last updated by Antoine Herzog</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/iov-name-service/clients/tx-sign-spec"><span class="arrow-prev">← </span><span>Sign a transaction</span></a><a class="docs-next button" href="/docs/iov-name-service/validator/rewards"><span>Rewards</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#setup">Setup</a></li><li><a href="#initial-configuration">Initial Configuration</a></li><li><a href="#get-some-iov-tokens-on-my-account">Get Some IOV Tokens On My Account</a></li><li><a href="#register-a-name-in-iov-name-service">Register a Name in IOV Name Service</a></li><li><a href="#extra-mile-send-iov-tokens-to-a-personalized-name">Extra Mile: Send IOV Tokens to a Personalized Name</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2020 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+<p>Thank-you for sending IOV tokens to kraken*dave!</p>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated by Dave Puchyr</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/iov-name-service/clients/tx-sign-spec"><span class="arrow-prev">← </span><span>Sign a transaction</span></a><a class="docs-next button" href="/docs/iov-name-service/validator/rewards"><span>Rewards</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#setup">Setup</a></li><li><a href="#initial-configuration">Initial Configuration</a></li><li><a href="#get-some-iov-tokens">Get Some IOV Tokens</a></li><li><a href="#register-a-starname-in-the-iov-name-service">Register a starname in the IOV Name Service</a></li><li><a href="#extra-mile-send-iov-tokens-to-a-starname">Extra Mile: Send IOV tokens to a starname</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2020 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
                 document.addEventListener('keyup', function(e) {
                   if (e.target !== document.body) {
                     return;

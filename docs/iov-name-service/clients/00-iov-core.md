@@ -47,7 +47,7 @@ chainId
 ```
 yields
 ```ts
->‘iov-exchangenet’
+'iov-exchangenet'
 ```
 
 a wallet and an IOV address connected to our profile. We will generate a random mnemonic
@@ -223,61 +223,75 @@ yields
 
 That is it! Welcome to the world of starnames! :)
 
-## Extra Mile: Send IOV Tokens to a Personalized Name
+## Extra Mile: Send IOV tokens to a starname
 
-To showcase the importance of a human friendly name address, we will send some tokens from a new account, to the Personalized Name previously generated into IOV Name Service
-
-Open a new terminal in `mycliwallet` and run `./node_modules/.bin/iov-cli`.
-
-Repeat the steps from **Initial Configuration** and **Get some IOV tokens on my account**.
-
-First, we need to get the recipient personalized address (“antoine*iov” in this case)
+To showcase the importance of a starname, we will send some tokens to an existing account.  First, we need to get the recipient's address via starname (kraken*dave in this case)
 
 ```ts
-const recipientData = await bnsConnection.getUsernames({ username: "antoine*iov" });
-recipientData
+const daveAccounts = await bnsConnection.getAccounts({ domain: "dave" });
+// if you examine daveAccounts you'll see binance*dave, coinbase*dave, kraken*dave, ...
+const daveKraken = daveAccounts.filter(account => account.name === "kraken")[0];
+daveKraken
 ```
 yields
 ```ts
->> [ { id: 'antoine*iov',
-    owner: 'tiov166jr0qk6arhq7rj7acjmfgyx0p48x8vw3zvmry',
-    targets: [ [Object], [Object] ] } ]
+{
+  domain: 'dave',
+  name: 'kraken',
+  owner: 'tiov1c9eprq0gxdmwl9u25j568zj7ylqgc7ajyu8wxr',
+  validUntil: 1584818986,
+  targets: [
+    {
+      chainId: 'cosmos:iov-exchangenet',
+      address: 'tiov1qnpaklxv4n6cam7v99hl0tg0dkmu97sh56x6uz'
+    },
+    {
+      chainId: 'bip122:000000000019d6689c085ae165831e93',
+      address: '3QJev38iDbvdaM4DoWkGoKyQTYAXv812RY'
+    }
+  ],
+  certificates: []
+}
 ```
 
-> *YES!! You got it!! We search by username, no need to copy/paste/barcode scan string addresses*
+> *YES!! You got it!! We search by starname, no need to copy/paste/barcode scan string addresses!*
 
-Now that we have the list of addresses registered by the user in `recipientData`, we will search for a specific address in a specific chain (“iov-exchangenet” chain in this case)
+Now that we have the list of addresses registered in `daveKraken`, we will search for a specific address in a specific chain ("cosmos:iov-exchangenet" chain in this case)
 
 ```ts
-const recipientChainAddressPair = recipientData[0].targets.find(chainaddrPair => chainaddrPair.chainId === 'iov-exchangenet');
+const chainAddressPair = daveKraken.targets.find(target => target.chainId === 'cosmos:iov-exchangenet');
+```
+Let's see the account balance before we send to it:
+```ts
+await connection.getAccount({ address: chainAddressPair.address });
 ```
 
-Create the transaction
+And with our `chainAddressPair` we can create the send transaction
 
 ```ts
 .editor // initiate a multi-line editor mode
 
-const sendTx = await connection.withDefaultFee<SendTransaction & WithCreator>({
+const sendTx = await connection.withDefaultFee<SendTransaction>({
   kind: "bcp/send",
-  creator: myIdentity,
-  sender: bnsCodec.identityToAddress(myIdentity),
-  recipient: recipientChainAddressPair.address,
-  memo: "My first transaction by username B-)",
+  chainId: chainId,
+  sender: myAddress,
+  recipient: chainAddressPair.address,
+  memo: "My first send by starname transaction B-)",
   amount: {
     quantity: "100000",
     fractionalDigits: 9,
     tokenTicker: "IOV" as TokenTicker,
-  }
-});
+  },
+}, myAddress);
 
 ^D // Ctrl-d to finish the editor mode
 ```
 
-Now we sign, post and confirm the transaction
+Now we sign, post and confirm the transaction, and then check the balance
 
 ```ts
-await signer.signAndPost(sendTx);
-(await connection.getAccount({ address: myAddress })).balance;
+await signer.signAndPost(myIdentity, sendTx);
+await connection.getAccount({ address: chainAddressPair.address });
 ```
 
-Your balance should be “9799900000”. And if you just sent IOV tokens to antoine*iov, thank you!
+Thank-you for sending IOV tokens to kraken*dave!

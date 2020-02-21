@@ -46,7 +46,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=5a9cb80a99725ed4c95b5e8c8135f0343d9d0ad2@157.245.26.87:16656 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -184,7 +184,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=5a9cb80a99725ed4c95b5e8c8135f0343d9d0ad2@157.245.26.87:16656 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

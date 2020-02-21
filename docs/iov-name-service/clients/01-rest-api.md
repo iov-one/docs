@@ -15,8 +15,8 @@ You can see the full list of endpoints for IOV Name Service Mainnet at this URL:
 http://bnsapi.iov.one:8000/docs/index.html#/
 
 ## Running your own node
-Alternatively, you may prefer to run your own node and your own Rest API server. 
-1. You can read the [full node set up instructions](/docs/iov-name-service/validator/testnet). 
+Alternatively, you may prefer to run your own node and your own Rest API server.
+1. You can read the [full node set up instructions](/docs/iov-name-service/validator/testnet).
 2. You can read the [the REST API instructions to setup a Rest API server](https://github.com/iov-one/bns/tree/master/cmd/bnsapi).
 
 ## How to resolve a starname
@@ -29,7 +29,7 @@ Example on the Rest API for the IOV Name Service mainnet: http://bnsapi.iov.one:
 The REST API only helps for GETting info from the chain. The next step is for you to be able to send messages to the IOV Name service
 to register or edit starnames.
 To do this, the short way is to use IOV Core library. IOV Core manages the keys and signatures for the IOV Name Service and other blockchains.
-You can read the [IOV Core documentation](/docs/iov-name-service/clients/00-iov-core.md).
+You can read the [IOV Core documentation](/docs/iov-name-service/clients/iov-core).
 
 The longer way is to access the IOV Name Service directly and implementing the protobuf messages yourself.
-[You can read how to do that here](/docs/iov-name-service/clients/weave-transaction-spec)
+[You can read how to do that here](/docs/iov-name-service/clients/weave-transaction-spec).

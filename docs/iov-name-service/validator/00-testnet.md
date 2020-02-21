@@ -1,7 +1,7 @@
 ---
 id: testnet
 title: Setup A Testnet Validator Node
-sidebar_label: Testnet v1.0.0
+sidebar_label: Testnet
 ---
 
 ## Apply to the validator program
@@ -46,7 +46,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=5a9cb80a99725ed4c95b5e8c8135f0343d9d0ad2@167.172.104.185:31806 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -141,7 +141,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail http://167.172.104.185:31140/genesis | jq -r .result.genesis > config/genesis.json
+curl --fail http://157.245.26.87:16657/genesis | jq -r .result.genesis > config/genesis.json
 sha256sum config/genesis.json | grep 876fd677b6f1e6ab7329aaf8eea1ccd9b8fa25ce64a02cd490a1f0329f542f15 || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
@@ -184,7 +184,7 @@ In the most rudimentary form, a sentry node is meant to gossip with other nodes 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=2cc394bcbb0a5c31f906a92d13efc7326861d08c@34.89.253.221:26656 \
+--p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

@@ -33,7 +33,7 @@ IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.seeds=352ba402a2461020689c86cab599c8a44bd49a33@35.198.191.90:26656,88af4a6c555c058e530c124babfa9f9fb12a01b2@35.234.78.200:26656 \
+--p2p.seeds=75d7ca835b09e665d035ebc11f18276692b86d47@157.245.27.16:16656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -64,8 +64,8 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://gist.githubusercontent.com/webmaster128/9a87d0967fe2caa95d84ee6288c648c2/raw/70c95107b2b4cb8ed3c0d24ae1f3f43a55d81cff/genesis.json > config/genesis.json
-sha256sum config/genesis.json | grep 6c80ea4724726bedd2d36e73bf025007ef898fcb06be17e3ba3e51f32d29b8fa || echo 'BAD GENESIS FILE!'
+curl --fail http://157.245.27.16:16657/genesis | jq -r .result.genesis > config/genesis.json
+sha256sum config/genesis.json | grep f3c2c31b3c9aefabeccb85d8e9f8b265c81cf907ac456737872308df00b600ea || echo 'BAD GENESIS FILE!'
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
 sed --in-place 's!^create_empty_blocks .*!create_empty_blocks = false!' config/config.toml
 sed --in-place 's!^create_empty_blocks_interval .*!create_empty_blocks_interval = "300s"!' config/config.toml
@@ -95,7 +95,7 @@ Change `/etc/systemd/system/iovns.env` so that each of your sentry nodes gossip 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.seeds=352ba402a2461020689c86cab599c8a44bd49a33@35.198.191.90:26656,88af4a6c555c058e530c124babfa9f9fb12a01b2@35.234.78.200:26656 \
+--p2p.seeds=75d7ca835b09e665d035ebc11f18276692b86d47@157.245.27.16:16656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

@@ -7,7 +7,6 @@
         "label": "How to query the resolver",
         "ids": [
           "iov-name-service/clients/rest-api"
-          
         ]
       },
       {
@@ -18,7 +17,6 @@
           "iov-name-service/clients/weave-transaction-spec",
           "iov-name-service/clients/tx-sign-spec",
           "iov-name-service/clients/iov-core"
-          
         ]
       },
       {
@@ -26,7 +24,6 @@
         "label": "Validator",
         "ids": [
           "iov-name-service/validator/rewards",
-          "iov-name-service/validator/testnet-dancenet",
           "iov-name-service/validator/testnet",
           "iov-name-service/validator/mainnet",
           "iov-name-service/validator/troubleshooter",

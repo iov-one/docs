@@ -14,7 +14,7 @@ http://bnsapi.iov.one:8000/
 To resolve a starname, you need to query on your Rest API server the endpoint
 - `GET /username/resolve/:mystarname` returns all the information about the specific starname including list of crypto-addresses.
 
-Example on the Rest API for the IOV Name Service mainnet: http://bnsapi.iov.one:8000/username/resolve/fabo*iov
+Example on the Rest API for the IOV Name Service mainnet: http://bnsapi.iov.one:8000/username/resolve/thematrix*iov
 
 ## List of endpoints
 You can see the full list of endpoints for IOV Name Service Mainnet at this URL:

@@ -8,6 +8,7 @@ sidebar_label: REST API of the IOV Name Service
 The easiest way to query the IOV Name Service is through our REST API. On the IOV Name Service, you can resolve a starname, query a balance of an iov address and many others things.
 
 You can query the REST API of the IOV Name Service at this URL: https://bnsapi.iov.one/.
+
 ## How to resolve a starname
 To resolve a starname, you need to query on your Rest API server the endpoint
 - `GET /username/resolve/:mystarname` returns all the information about the specific starname including list of crypto-addresses.

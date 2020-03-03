@@ -6,7 +6,8 @@
         "type": "subcategory",
         "label": "How to query the resolver",
         "ids": [
-          "iov-name-service/clients/rest-api"
+          "iov-name-service/clients/rest-api",
+          "iov-name-service/clients/chain-ids"
         ]
       },
       {

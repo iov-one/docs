@@ -9,6 +9,7 @@ sidebar_label: Chain-Ids supported by the IOV Name Service
 |   Blockchain Name    |  Chain-ID                                  |
 | -------------        | -------------                              |
 | Bitcoin Mainnet      | bip122-tmp-bitcoin                         |
+| Bitcoin Cash Mainnet | bip122-tmp-bcash                           |
 | Cosmos Hub Mainnet   | cosmos-cosmoshub-3                         |
 | Ethereum Mainnet     | ethereum-eip155-1                          |
 | IOV Mainnet          | iov-mainnet                                |

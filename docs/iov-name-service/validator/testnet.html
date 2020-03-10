@@ -182,7 +182,7 @@ mkdir -p <span class="hljs-variable">${DIR_WORK}</span> &amp;&amp; <span class="
 
 <span class="hljs-comment"># initialize tendermint</span>
 <span class="hljs-variable">${DIR_IOVNS}</span>/tendermint init --home=<span class="hljs-variable">${DIR_WORK}</span>
-curl --fail http://157.245.26.87:16657/genesis | jq -r .result.genesis &gt; config/genesis.json
+curl --fail https://rpc-private<span class="hljs-_">-a</span>-x-exchangenet.iov.one/genesis | jq -r .result.genesis &gt; config/genesis.json
 sha256sum config/genesis.json | grep 876fd677b6f1e6ab7329aaf8eea1ccd9b8fa25ce64a02cd490a1f0329f542f15 || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD GENESIS FILE!'</span>
 [[ -f ~/node_key.json ]] &amp;&amp; cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] &amp;&amp; cp -av ~/priv_validator_key.json config

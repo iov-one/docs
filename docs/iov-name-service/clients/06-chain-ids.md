@@ -8,6 +8,7 @@ sidebar_label: Chain-Ids supported by the IOV Name Service
 
 |   Blockchain Name    |  Chain-ID                                  |
 | -------------        | -------------                              |
+| Binance Chain        | cosmos-binance-chain-tigris                |
 | Bitcoin Mainnet      | bip122-tmp-bitcoin                         |
 | Bitcoin Cash Mainnet | bip122-tmp-bcash                           |
 | Cosmos Hub Mainnet   | cosmos-cosmoshub-3                         |
@@ -18,6 +19,7 @@ sidebar_label: Chain-Ids supported by the IOV Name Service
 | Lisk Mainnet         | lisk-ed14889723                            |
 | Litecoin Mainnet     | bip122-tmp-litecoin                        |
 | Terra Money Mainnet  | cosmos-columbus-3                          |
+| Tezos Mainnet        | tezos-tmp-mainnet                          |
 
 ## You want to add another chain?
 

@@ -64,7 +64,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail http://157.245.27.16:16657/genesis | jq -r .result.genesis > config/genesis.json
+curl --fail https://rpc-private-a-vip-mainnet.iov.one/genesis | jq -r .result.genesis > config/genesis.json
 sha256sum config/genesis.json | grep f3c2c31b3c9aefabeccb85d8e9f8b265c81cf907ac456737872308df00b600ea || echo 'BAD GENESIS FILE!'
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
 sed --in-place 's!^create_empty_blocks .*!create_empty_blocks = false!' config/config.toml

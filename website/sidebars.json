@@ -12,9 +12,10 @@
       },
       {
         "type": "subcategory",
-        "label": "How to sign transactions",
+        "label": "How to send transactions",
         "ids": [
           "iov-name-service/clients/address-derivation",
+          "iov-name-service/clients/protoc-generation-spec",
           "iov-name-service/clients/weave-transaction-spec",
           "iov-name-service/clients/tx-sign-spec",
           "iov-name-service/clients/iov-core"

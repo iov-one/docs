@@ -142,7 +142,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
 curl --fail https://rpc-private-a-x-exchangenet.iov.one/genesis | jq -r .result.genesis > config/genesis.json
-sha256sum config/genesis.json | grep ca8459dda84e6431613394965aa3cae673e13b94f0275368ee27354cdf33f77b || echo 'BAD GENESIS FILE!'
+sha256sum config/genesis.json | grep 53153bfacdd7edf70754734575ca6ace3f93a41e04539d8458623687e940ac2b || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line

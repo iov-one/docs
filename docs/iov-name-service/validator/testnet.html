@@ -80,7 +80,7 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/exchangenet
 
 <span class="hljs-comment"># images</span>
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.0/bnsd-1.0.0-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.2/bnsd-1.0.2-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=<span class="hljs-string">""</span>
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
 IMAGE_TM_OPTS=<span class="hljs-string">"\
@@ -171,7 +171,7 @@ systemctl daemon-reload
 
 <span class="hljs-comment"># download gitian built binaries; bnsd is the IOV Name Service daemon</span>
 mkdir -p <span class="hljs-variable">${DIR_IOVNS}</span> &amp;&amp; <span class="hljs-built_in">cd</span> <span class="hljs-variable">${DIR_IOVNS}</span>
-wget <span class="hljs-variable">${IMAGE_IOVNS}</span> &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) | grep a94ebd686ff9ce66d4960ca282e89ef0c2d4ac9abe4c58cd6967e406cd1af8af &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
+wget <span class="hljs-variable">${IMAGE_IOVNS}</span> &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) | grep 40f2cab1e1082bbf8952274d21507a050e6bd02c9f160d4711958ce4015dbabd &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
 wget <span class="hljs-variable">${IMAGE_TM}</span>    &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_TM</span>)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_TM</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
 
 <span class="hljs-comment"># initialize the IOV Name Service</span>
@@ -183,7 +183,7 @@ mkdir -p <span class="hljs-variable">${DIR_WORK}</span> &amp;&amp; <span class="
 <span class="hljs-comment"># initialize tendermint</span>
 <span class="hljs-variable">${DIR_IOVNS}</span>/tendermint init --home=<span class="hljs-variable">${DIR_WORK}</span>
 curl --fail https://rpc-private<span class="hljs-_">-a</span>-x-exchangenet.iov.one/genesis | jq -r .result.genesis &gt; config/genesis.json
-sha256sum config/genesis.json | grep 876fd677b6f1e6ab7329aaf8eea1ccd9b8fa25ce64a02cd490a1f0329f542f15 || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD GENESIS FILE!'</span>
+sha256sum config/genesis.json | grep 53153bfacdd7edf70754734575ca6ace3f93a41e04539d8458623687e940ac2b || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD GENESIS FILE!'</span>
 [[ -f ~/node_key.json ]] &amp;&amp; cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] &amp;&amp; cp -av ~/priv_validator_key.json config
 sed --<span class="hljs-keyword">in</span>-place <span class="hljs-string">'s!^timeout_commit .*!timeout_commit = "5s"!'</span> config/config.toml <span class="hljs-comment"># options not available via command line</span>

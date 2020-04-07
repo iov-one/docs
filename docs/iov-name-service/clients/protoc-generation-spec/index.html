@@ -1,0 +1,149 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Generate proto code from Weave specification · IOV Documentations</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="IOV Name Service uses protobuf for handling communications."/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Generate proto code from Weave specification · IOV Documentations"/><meta property="og:type" content="website"/><meta property="og:url" content="https://docs.iov.one/"/><meta property="og:description" content="IOV Name Service uses protobuf for handling communications."/><meta property="og:image" content="https://docs.iov.one/img/undraw_online.svg"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://docs.iov.one/img/undraw_tweetstorm.svg"/><link rel="shortcut icon" href="/img/favicon.ico"/><link rel="stylesheet" href="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.css"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><script src="/js/scrollSpy.js"></script><link rel="stylesheet" href="/css/main.css"/><script src="/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/"><img class="logo" src="/img/logo.png" alt="IOV Documentations"/></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="https://github.com/iov-one" target="_self">GitHub</a></li><li class="navSearchWrapper reactNavSearchWrapper"><input type="text" id="search_input_react" placeholder="Search" title="Search"/></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><div class="hamburger-menu"><div class="line1"></div><div class="line2"></div><div class="line3"></div></div></div><h2><i>›</i><span>How to send transactions</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">Introduction<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><li class="navListItem"><a class="navItem" href="/docs/intro">Integrate the IOV Name Service with your wallet</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle collapsible">IOV Name Service<span class="arrow"><svg width="24" height="24" viewBox="0 0 24 24"><path fill="#565656" d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span></h3><ul class="hide"><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">How to query the resolver</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/rest-api">REST API of the IOV Name Service</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">How to send transactions</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/address-derivation">Generate an IOV address</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/docs/iov-name-service/clients/protoc-generation-spec">Generate proto code</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/weave-transaction-spec">Build a transaction</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/tx-sign-spec">Sign a transaction</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/clients/iov-core">IOV Core</a></li></ul></div><div class="navGroup subNavGroup"><h4 class="navGroupSubcategoryTitle">Validator</h4><ul><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/rewards">Rewards</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/testnet">Testnet</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/mainnet">Mainnet</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/troubleshooter">Troubleshooter</a></li><li class="navListItem"><a class="navItem" href="/docs/iov-name-service/validator/faq">FAQ</a></li></ul></div></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              var headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                var el = event.target;
+                while(el !== headings){
+                  if (el.tagName === 'A') {
+                    document.body.classList.remove('tocActive');
+                    break;
+                  } else{
+                    el = el.parentNode;
+                  }
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer docsContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 id="__docusaurus" class="postHeaderTitle">Generate proto code from Weave specification</h1></header><article><div><span><p>IOV Name Service uses protobuf for handling communications.</p>
+<p>A good starting point would be to check out the <em>proto</em> files and become familiar with what they are and how they look.</p>
+<h2><a class="anchor" aria-hidden="true" id="protocol-buffers"></a><a href="#protocol-buffers" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Protocol buffers</h2>
+<p>Let's start with explaining what protobufs are and how to use them:</p>
+<blockquote>
+<p>Protocol Buffers (a.k.a., protobuf) are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data.</p>
+</blockquote>
+<p>In a nutshell, protobuf is an effective and easy-to-use serialization format. To use it define protoc definitions(<em>.proto</em>) and then compile them to the desired language which protocol buffers <a href="https://developers.google.com/protocol-buffers/docs/tutorials">supports</a>. After these steps, high tech comms is ready to be used in your software.</p>
+<p>To connect to Weave based applications, first you need to be able to generate proto code using <a href="https://github.com/iov-one/weave/tree/v1.0.0/spec">Weave spec</a>.</p>
+<p>When you take a look at spec folder you will see multiple directories that serves different purposes</p>
+<ul>
+<li><a href="https://github.com/iov-one/weave/tree/v1.0.0/spec/gogo">spec/gogo</a> contains gogo proto annotations that are pretty useful when generating better shaped go code.</li>
+<li><a href="https://github.com/iov-one/weave/tree/v1.0.0/spec/gogo">spec/proto</a> contains bare proto definitions that could be used to generate code for various languages that has protoc generator or plugin.</li>
+</ul>
+<p>If you are aiming to use go, we are happy with gogo plugin and we advise you use gogo spec folder for proto code generation. Here is an example for this case: <a href="https://github.com/iov-one/blog-tutorial/">blog-tutorial</a>.</p>
+<h2><a class="anchor" aria-hidden="true" id="steps"></a><a href="#steps" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Steps</h2>
+<p>You can see the output of the steps below here: <a href="https://github.com/iov-one/blog-tutorial/">blog-tutorial</a>, <a href="https://github.com/cosmostation/cosmostation-mobile/tree/master/Cosmos-Android/app/src/main/java/wannabit/io/cosmostaion/iov-one/bns">Cosmostation java integration</a>, <a href="https://github.com/cosmostation/cosmostation-mobile/tree/master/Cosmos-IOS/Cosmostation/Cosmostation/IOV/bns">Cosmostation swift integration</a></p>
+<h3><a class="anchor" aria-hidden="true" id="install-protocprototool"></a><a href="#install-protocprototool" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install protoc/prototool</h3>
+<p>Instead of using bare protoc, We recommend using prototool if your language is supported by the project. <a href="https://github.com/uber/prototool/blob/dev/etc/config/example/prototool.yaml#L129-L190">Check it out here</a>. If your language is in the list you are very lucky and saved a lot of manual future work. You can use <a href="https://github.com/iov-one/prototool-docker">prototool docker</a> for more convenient usage. Prototool contains protoc as dependency so no need to install protoc individually. If not, download prototool again but not the docker version. We will need it later.
+You can install protoc compiler <a href="https://github.com/protocolbuffers/protobuf#protocol-compiler-installation">here</a>.</p>
+<h3><a class="anchor" aria-hidden="true" id="download-the-spec-folder"></a><a href="#download-the-spec-folder" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Download the spec folder</h3>
+<p>Downloading for go code is fairly simple. You can take a look at <a href="https://github.com/iov-one/blog-tutorial/blob/master/Makefile#L20">blog-tutorial/makefile</a>. <code>import-spec</code> command gets the spec folder based on the Weave version is based on.</p>
+<p>On the other hand for other languages than go, you have to download the spec manually or by an automated script. We provide spec folder in <a href="https://github.com/iov-one/weave/releases/tag/v1.0.0">releases</a>. You can download it down below in that page.</p>
+<h3><a class="anchor" aria-hidden="true" id="import-prototoolyaml"></a><a href="#import-prototoolyaml" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Import prototool.yaml</h3>
+<p>Even if prototool does not support your language, it is still very useful. Normally with protoc you have to <a href="https://developers.google.com/protocol-buffers/docs/javatutorial#compiling-your-protocol-buffers">feed protoc dependencies</a> with <code>-I</code> argument to protoc. This is pretty much the same in other language plugins. But it is very time consuming to do with hand. So instead of writing this script manually, you can get the protoc commands that are run by prototool in the background with <code>prototool generate --dry-run</code>. After that with some bash string manipulation you are ready to generate code.</p>
+<h3><a class="anchor" aria-hidden="true" id="generating-code"></a><a href="#generating-code" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Generating code</h3>
+<p>With prototool, generation is simple: Go to the folder that contains <code>prototool.yaml</code> (folder you want to generate the code to) and the run <code>prototool generate</code>. You can tweak the prototool configuration (such as generated code directory) to suit your needs.
+But without prototool, it is bit more work. After getting the <code>prototool generate --dry-run</code>, change the <code>--java_out</code> or <code>--go_out</code> to output argument that is used by protoc plugin you choose. Note: there could be more configuration or arguments to make it work. Read the plugin manual :)</p>
+<p>Now as output you should have something like:</p>
+<pre><code class="hljs css language-bash">/Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/bin/protoc -I /spec_folder/IOV/bns/spec/proto -I /Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/include --haskell_out=/spec_folder/IOV/bns/gen/swift /spec_folder/IOV/bns/spec/proto/cmd/bnsd/x/account/codec.proto
+/Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/bin/protoc -I /spec_folder/IOV/bns/spec/proto -I /Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/include --haskell_out=/spec_folder/IOV/bns/gen/swift /spec_folder/IOV/bns/spec/proto/x/sigs/codec.proto
+/Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/bin/protoc -I /spec_folder/IOV/bns/spec/proto -I /Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/include --haskell_out=/spec_folder/IOV/bns/gen/swift /spec_folder/IOV/bns/spec/proto/x/gov/codec.proto /spec_folder/IOV/bns/spec/proto/x/gov/sample_test.proto
+/Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/bin/protoc -I /spec_folder/IOV/bns/spec/proto -I /Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/include --haskell_out=/spec_folder/IOV/bns/gen/swift /spec_folder/IOV/bns/spec/proto/crypto/models.proto
+/Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/bin/protoc -I /spec_folder/IOV/bns/spec/proto -I /Users/username/Library/Caches/prototool/Darwin/x86_64/protobuf/3.7.1/include --haskell_out=/spec_folder/IOV/bns/gen/swift /spec_folder/IOV/bns/spec/proto/x/txfee/codec.proto ....
+...
+</code></pre>
+<p>After copy-pasting this command to terminal, generated Haskell(whatever the language is) code is ready. You can use the generated code to build transactions and use Weave models in your app to reduce the workload.</p>
+<h2><a class="anchor" aria-hidden="true" id="using-go"></a><a href="#using-go" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using go</h2>
+<p>To import the required tools to communicate and send transactions to <em>IOV Name Service</em>, follow these steps.</p>
+<h3><a class="anchor" aria-hidden="true" id="1---import-_bnsd_-protobuf-definitions"></a><a href="#1---import-_bnsd_-protobuf-definitions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1 - Import <em>bnsd</em> protobuf definitions</h3>
+<ul>
+<li>Copy the entire <a href="https://github.com/iov-one/weave/tree/master/spec/proto">weave/spec/proto/</a> into the repo, as the imports should refer to local files.</li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="2---install-your-preferred-language-specific-protoc-plugin"></a><a href="#2---install-your-preferred-language-specific-protoc-plugin" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2 - Install your preferred language-specific protoc plugin</h3>
+<ul>
+<li>Create <em>prototool.yaml</em> under root path.</li>
+<li>reference: <a href="https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml">weave-starter-kit</a></li>
+<li>Import preferred languages plugin under <em>plugins</em> with <em>plugin options</em> such as compilation output.</li>
+<li>reference: <a href="https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml#L22...L25">weave-starter-kit</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="3---import-_appcodecproto_"></a><a href="#3---import-_appcodecproto_" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3 - Import <em>app/codec.proto</em></h3>
+<ul>
+<li>Insert <em>app/codec.proto</em> files path under <code>includes</code> in prototool.yaml</li>
+<li>reference: <a href="https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml#L20">weave-starter-kit</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="4---compile-_proto_-definitions"></a><a href="#4---compile-_proto_-definitions" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4 - Compile <em>.proto</em> definitions</h3>
+<ul>
+<li>If <em>IOV/prototool</em> used, run <code>docker run --rm --user=$(shell id -u):$(shell id -g) -v $(shell pwd):/work iov1/prototool:v0.2.2 prototool generate</code></li>
+<li>Or instead of messing around with long protoc build scripts, include and parameterize this script in a build tool or script such as <a href="https://github.com/iov-one/weave-starter-kit/blob/master/Makefile">weave-starter-kit/Makefile</a></li>
+</ul>
+<h3><a class="anchor" aria-hidden="true" id="5---import-compiled-files-in-your-project"></a><a href="#5---import-compiled-files-in-your-project" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5 - Import compiled files in your project</h3>
+<ul>
+<li>After all these steps, now the <em>weave/bnsd</em> compiled protobuf files are ready. Import and make your dreams come true.</li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="helpful-links"></a><a href="#helpful-links" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Helpful links</h2>
+<p>Golang code reference:</p>
+<ul>
+<li><a href="https://github.com/iov-one/blog-tutorial/">blog-tutorial</a>. See <code>makefile</code>, <code>prototool.yaml</code> and <code>spec</code> folder.</li>
+</ul>
+<p>We collaborated with cosmostation to automate this process. Here are the script for reference:</p>
+<ul>
+<li>Android(Java): <a href="https://github.com/cosmostation/cosmostation-mobile/blob/master/Cosmos-Android/app/src/main/java/wannabit/io/cosmostaion/iov-one/bns/generate_proto.sh">Cosmostation/Cosmos-Android</a></li>
+<li>Swift(IOS): <a href="https://github.com/cosmostation/cosmostation-mobile/blob/master/Cosmos-IOS/Cosmostation/Cosmostation/IOV/bns/generate_proto.sh">Cosmostation/Cosmos-IOS</a></li>
+</ul>
+</span></div></article></div><div class="docLastUpdate"><em>Last updated by orkunkl</em></div><div class="docs-prevnext"><a class="docs-prev button" href="/docs/iov-name-service/clients/address-derivation"><span class="arrow-prev">← </span><span>Generate an IOV address</span></a><a class="docs-next button" href="/docs/iov-name-service/clients/weave-transaction-spec"><span>Build a transaction</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#protocol-buffers">Protocol buffers</a></li><li><a href="#steps">Steps</a><ul class="toc-headings"><li><a href="#install-protocprototool">Install protoc/prototool</a></li><li><a href="#download-the-spec-folder">Download the spec folder</a></li><li><a href="#import-prototoolyaml">Import prototool.yaml</a></li><li><a href="#generating-code">Generating code</a></li></ul></li><li><a href="#using-go">Using go</a><ul class="toc-headings"><li><a href="#1---import-_bnsd_-protobuf-definitions">1 - Import <em>bnsd</em> protobuf definitions</a></li><li><a href="#2---install-your-preferred-language-specific-protoc-plugin">2 - Install your preferred language-specific protoc plugin</a></li><li><a href="#3---import-_appcodecproto_">3 - Import <em>app/codec.proto</em></a></li><li><a href="#4---compile-_proto_-definitions">4 - Compile <em>.proto</em> definitions</a></li><li><a href="#5---import-compiled-files-in-your-project">5 - Import compiled files in your project</a></li></ul></li><li><a href="#helpful-links">Helpful links</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="/" class="nav-home"></a><div><h5>Docs</h5><a href="/docs/iov-name-service/validator/rewards">IOV Name Service</a><a href="/docs/weave/welcome">Weave</a></div><div><h5>Community</h5><a href="https://riot.im/app/#/room/#weave:matrix.org" target="_blank">Riot Chat</a><a href="https://t.me/internetofvalues" target="_blank">Telegram</a><a href="https://twitter.com/iov_official" target="_blank" rel="noreferrer noopener">Twitter</a></div><div><h5>More</h5><a href="https://github.com/iov-one" target="_blank">GitHub</a><a href="https://www.iov.one" target="_blank">Website</a></div></section><section class="copyright">Copyright © 2020 IOV</section></footer></div><script type="text/javascript" src="https://cdn.jsdelivr.net/docsearch.js/1/docsearch.min.js"></script><script>
+                document.addEventListener('keyup', function(e) {
+                  if (e.target !== document.body) {
+                    return;
+                  }
+                  // keyCode for '/' (slash)
+                  if (e.keyCode === 191) {
+                    const search = document.getElementById('search_input_react');
+                    search && search.focus();
+                  }
+                });
+              </script><script>
+              var search = docsearch({
+                
+                apiKey: '8dc8128a9091306e7bbd0effdaa5241a',
+                indexName: 'iov',
+                inputSelector: '#search_input_react'
+              });
+            </script></body></html>

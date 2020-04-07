@@ -39,7 +39,7 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/exchangenet
 
 # images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.0/bnsd-1.0.0-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.2/bnsd-1.0.2-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=""
 IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
@@ -130,7 +130,7 @@ systemctl daemon-reload
 
 # download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep a94ebd686ff9ce66d4960ca282e89ef0c2d4ac9abe4c58cd6967e406cd1af8af && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
+wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 40f2cab1e1082bbf8952274d21507a050e6bd02c9f160d4711958ce4015dbabd && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
 wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
 
 # initialize the IOV Name Service
@@ -142,7 +142,7 @@ mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 # initialize tendermint
 ${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
 curl --fail https://rpc-private-a-x-exchangenet.iov.one/genesis | jq -r .result.genesis > config/genesis.json
-sha256sum config/genesis.json | grep 876fd677b6f1e6ab7329aaf8eea1ccd9b8fa25ce64a02cd490a1f0329f542f15 || echo 'BAD GENESIS FILE!'
+sha256sum config/genesis.json | grep ca8459dda84e6431613394965aa3cae673e13b94f0275368ee27354cdf33f77b || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
 sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line

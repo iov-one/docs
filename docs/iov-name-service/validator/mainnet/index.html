@@ -73,14 +73,14 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/mainnet
 
 <span class="hljs-comment"># images</span>
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v0.21.2/bnsd-0.21.2-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.4/bnsd-1.0.4-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=<span class="hljs-string">""</span>
-IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
+IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.12-iov1/tendermint-0.31.12-linux-amd64.tar.gz
 IMAGE_TM_OPTS=<span class="hljs-string">"\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.persistent_peers=59b6b04d39edaaf5122bfaa01b799ce736da78b3@167.99.194.126:16656 \
+--p2p.persistent_peers=0d8a77eba6dceea0cf5d30758987c90df9a3ca3c@167.99.194.126:16656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "</span>
@@ -100,8 +100,8 @@ chmod g+r iovns.env
 
 <span class="hljs-comment"># download gitian built binaries; bnsd is the IOV Name Service daemon</span>
 mkdir -p <span class="hljs-variable">${DIR_IOVNS}</span> &amp;&amp; <span class="hljs-built_in">cd</span> <span class="hljs-variable">${DIR_IOVNS}</span>
-wget <span class="hljs-variable">${IMAGE_IOVNS}</span> &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) | grep d1cba6d3a43a555875421d14a6c8d05660a2f1fd51e6f762707520aed9af10fe &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
-wget <span class="hljs-variable">${IMAGE_TM}</span>    &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_TM</span>)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_TM</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
+wget <span class="hljs-variable">${IMAGE_IOVNS}</span> &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) | grep 98061912b5476198f6210e35d0c8d82fb7e60c63fdc9846419f9a0369a4b6abe &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_IOVNS</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
+wget <span class="hljs-variable">${IMAGE_TM}</span>    &amp;&amp; sha256sum $(basename <span class="hljs-variable">$IMAGE_TM</span>)    | grep a11a257d7882585ff11b9da0302acd0ba79dc8a5c296123434e50df93f5b8084 &amp;&amp; tar xvf $(basename <span class="hljs-variable">$IMAGE_TM</span>) || <span class="hljs-built_in">echo</span> <span class="hljs-string">'BAD BINARY!'</span>
 
 <span class="hljs-comment"># initialize the IOV Name Service</span>
 su - iov
@@ -136,7 +136,7 @@ systemctl start iovns.service <span class="hljs-comment"># it takes about 30 sec
 <p>Change <code>/etc/systemd/system/iovns.env</code> so that each of your sentry nodes gossip while keeping their validator hidden.  Be mindful of <code>--rpc.unsafe=true</code> below, you might not want that.  <strong>On the validator node</strong>, execute <code>curl -s http://localhost:16657/status | jq -r .result.node_info.id</code> to get the value for <code>VALIDATOR_ID</code>.  Change the <code>IMAGE_TM_OPTS</code> variable to something like</p>
 <pre><code class="hljs css language-sh">IMAGE_TM_OPTS=<span class="hljs-string">"\
 --moniker='sentry' \
---p2p.persistent_peers=59b6b04d39edaaf5122bfaa01b799ce736da78b3@167.99.194.126:16656 \
+--p2p.persistent_peers=0d8a77eba6dceea0cf5d30758987c90df9a3ca3c@167.99.194.126:16656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

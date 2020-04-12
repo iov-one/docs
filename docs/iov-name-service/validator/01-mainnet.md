@@ -26,14 +26,14 @@ DIR_IOVNS=/opt/iovns/bin
 DIR_WORK=/home/iov/mainnet
 
 # images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.1/bnsd-1.0.1-linux-amd64.tar.gz
+IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.4/bnsd-1.0.4-linux-amd64.tar.gz
 IMAGE_IOVNS_OPTS=""
-IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.11-iov1/tendermint-0.31.11-linux-amd64.tar.gz
+IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.12-iov1/tendermint-0.31.12-linux-amd64.tar.gz
 IMAGE_TM_OPTS="\
 --consensus.create_empty_blocks=false \
 --moniker='moniker' \
 --p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.persistent_peers=59b6b04d39edaaf5122bfaa01b799ce736da78b3@167.99.194.126:16656 \
+--p2p.persistent_peers=0d8a77eba6dceea0cf5d30758987c90df9a3ca3c@167.99.194.126:16656 \
 --rpc.laddr=tcp://127.0.0.1:16657 \
 --rpc.unsafe=false \
 "
@@ -53,8 +53,8 @@ set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pic
 
 # download gitian built binaries; bnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 8a7ef3a639ab8064dfe834bf3dc09751dcadf1987d67a3a3dc688578abc05352 && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
-wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep 9d7db111e35408f1b115456f0f7a83a4d516c66a78c4f59b9d84501ba7477bce && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
+wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 98061912b5476198f6210e35d0c8d82fb7e60c63fdc9846419f9a0369a4b6abe && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
+wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep a11a257d7882585ff11b9da0302acd0ba79dc8a5c296123434e50df93f5b8084 && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
 
 # initialize the IOV Name Service
 su - iov
@@ -95,7 +95,7 @@ Change `/etc/systemd/system/iovns.env` so that each of your sentry nodes gossip 
 ```sh
 IMAGE_TM_OPTS="\
 --moniker='sentry' \
---p2p.persistent_peers=59b6b04d39edaaf5122bfaa01b799ce736da78b3@167.99.194.126:16656 \
+--p2p.persistent_peers=0d8a77eba6dceea0cf5d30758987c90df9a3ca3c@167.99.194.126:16656 \
 --p2p.pex=true \
 --p2p.private_peer_ids='VALIDATOR_ID' \
 --rpc.unsafe=true \

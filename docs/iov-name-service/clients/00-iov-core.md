@@ -41,7 +41,7 @@ a profile and a connection to a testnet
 ```ts
 const profile = new UserProfile();
 const signer = new MultiChainSigner(profile);
-const { connection } = await signer.addChain(createBnsConnector("ws://rpc-private-a-x-exchangenet.iov.one:16657"));
+const { connection } = await signer.addChain(createBnsConnector("wss://rpc-private-a-x-exchangenet.iov.one/"));
 const chainId = connection.chainId;
 chainId
 ```
@@ -77,7 +77,7 @@ tiov1azf4469g720ea3pzgtctz7tm9ema7kgft7pyqf
 We are connected to iov-exchangenet (testnet), so we can use iov faucet to get some tokens
 
 ```ts
-const faucet = new IovFaucet("http://faucet.x-exchangenet.iov.one:8080/");
+const faucet = new IovFaucet("https://faucet.x-exchangenet.iov.one/");
 await faucet.credit(myAddress, "IOV" as TokenTicker);
 ```
 

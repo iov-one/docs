@@ -4,24 +4,6 @@ title: Build a transaction
 sidebar_label: Build a transaction
 ---
 
-IOV Name Service uses protobuf for handling communications.
-
-A good starting point would be to check out the _proto_ files and become familiar with what they are and how they look.
-
-## Protocol buffers
-
-Let's start with explaining what protobufs are and how to use them:
-
-> Protocol Buffers (a.k.a., protobuf) are Google's language-neutral, platform-neutral, extensible mechanism for serializing structured data.
-
-This line is from [protobuf github repo](https://github.com/protocolbuffers/protobuf)
-
-In a nutshell, protobuf is an effective and easy-to-use serialization format. To use it define protoc definitions(_.proto_) and then compile them to the desired language which protocol buffers [supports](https://developers.google.com/protocol-buffers/docs/tutorials). After these steps, high tech comms is ready to be used in your software.
-
-### IOV Name Service proto definitions
-
-_IOV Name Service_ protobuf definitions are kept under [weave/spec/proto](https://github.com/iov-one/weave/tree/v0.21.0/spec/proto) for easy access and usage. Dive in to _weave/spec/proto_ to get some idea of how _IOV Name Service codec_ files are defined and structured.
-
 ## IOV Name Service Transactions
 
 Lets start explaining [tx codec](https://github.com/iov-one/weave/blob/master/spec/proto/cmd/bnsd/app/codec.proto).
@@ -137,34 +119,3 @@ message Tx {
 ```
 
 `oneof sum` in the _tx message_ means, one of the messages will be sent to _bnsd_. _reference:_ [developers.google.com/protocol-buffers](https://developers.google.com/protocol-buffers/docs/proto3#oneof)
-
-## Communicating with the IOV Name Service
-
-To import the required tools to communicate and send transactions to _IOV Name Service_, follow these steps.
-
-### 1 - Import _bnsd_ protobuf definitions
-
-- Copy the entire [weave/spec/proto/](https://github.com/iov-one/weave/tree/master/spec/proto) into the repo, as the imports should refer to local files.
-
-### 2 - Install your preferred language-specific protoc plugin
-
-> We recommend using [uber/prototool](https://github.com/uber/prototool) or better [IOV/prototool-docker](https://github.com/iov-one/prototool-docker). Import _prototool-docker_ directly from [docker hub](https://hub.docker.com/r/iov1/prototool)
-
-- Create _prototool.yaml_ under root path.
-- reference: [weave-starter-kit](https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml)
-- Import preferred languages plugin under _plugins_ with _plugin options_ such as compilation output.
-- reference: [weave-starter-kit](https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml#L22...L25)
-
-### 3 - Import _app/codec.proto_
-
-- Insert _app/codec.proto_ files path under `includes` in prototool.yaml
-- reference: [weave-starter-kit](https://github.com/iov-one/weave-starter-kit/blob/master/prototool.yaml#L20)
-
-### 4 - Compile _.proto_ definitions
-
-- If _IOV/prototool_ used, run `docker run --rm --user=$(shell id -u):$(shell id -g) -v $(shell pwd):/work iov1/prototool:v0.2.2 prototool generate`
-- Or instead of messing around with long protoc build scripts, include and parameterize this script in a build tool or script such as [weave-starter-kit/Makefile](https://github.com/iov-one/weave-starter-kit/blob/master/Makefile)
-
-### 5 - Import compiled files in your project
-
-- After all these steps, now the _weave/bnsd_ compiled protobuf files are ready. Import and make your dreams come true.

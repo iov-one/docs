@@ -161,7 +161,7 @@ IMAGE_TM_OPTS="\
 "
 ```
 
-Execute `sudo systemctl restart starname.service`
+Execute `sudo systemctl restart starname.service`.
 
 ### Hardware Security Module (HSM) configuration
 

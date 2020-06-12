@@ -4,10 +4,6 @@ title: Setup A Testnet Validator Node
 sidebar_label: Testnet
 ---
 
-## Apply to the validator program
-
-Before starting to setup your validator, please <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">apply to the validator program</a> to open a channel of communication with IOV. At the end of the article, you will need to use this channel of communication to give us your pub_key so that we can upgrade your full-node to a validator.
-
 ## Familiarize yourself with Gitian
 
 Downloading and running a binary makes most sane people nervous.  <a href="https://gitian.org/" target="_blank">Gitian</a> introduces a level of trust for binary artifacts and is the <a href="https://medium.com/iov-internet-of-values/distribute-open-source-software-the-right-and-verifiable-way-fe12f58df062" target="_blank">distribution method</a> chosen by IOV and other blockchains including Bitcoin and <a href="https://medium.com/tendermint/reproducible-builds-8c2eebb9a486" target="_blank">Cosmos</a>.  We'll use binaries built using gitian and systemd to drive the IOV Name Service blockchain.
@@ -19,159 +15,116 @@ This document is not for beginners.  It assumes that you know how to setup a sen
 > Hint: When upgrading from an old testnet to a new one, you can maintain your node id and validator pub_key across testnets by doing the following before performing the upgrade:
 
 ```sh
-su - iov
-set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
+export USER_IOV=iov # "iov" is not recommended
+
+su - $USER_IOV
+set -o allexport ; source /etc/systemd/system/starname.env ; set +o allexport # pick-up env vars
 cp -av ${DIR_WORK}/config/*_key.json ~
 exit
 ```
 
-This document assumes that `basename`, `curl`, `expr`, `grep`, `jq`, `sed`, `sha256sum`, and `wget` are installed on your system, and user `iov` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
+This document assumes that `basename`, `curl`, `grep`, `jq`, `sed`, `sha256sum`, and `wget` are installed on your system, and user `$USER_IOV` exists.  You should be able to copy-and-paste the following commands into a terminal and end up with a running node.  You'll have to do this procedure on at least two machines to implement a sentry node architecture.
 
 ```sh
 sudo su # make life easier for the next ~100 lines
 
 cd /etc/systemd/system
 
+export USER_IOV=iov # "iov" is not recommended
+
 # create an environment file for the IOV Name Service services
-cat <<__EOF_IOVNS_ENV__ > iovns.env
+cat <<__EOF_IOVNS_ENV__ > starname.env
+# operator variables
+CHAIN_ID=iovns-galaxynet
+MONIKER=$(hostname)
+USER_IOV=${USER_IOV}
+
 # directories (without spaces to ease pain)
 DIR_IOVNS=/opt/iovns/bin
-DIR_WORK=/home/iov/exchangenet
+DIR_WORK=/home/${USER_IOV}/galaxynet
 
-# images
-IMAGE_IOVNS=https://github.com/iov-one/weave/releases/download/v1.0.4/bnsd-1.0.4-linux-amd64.tar.gz
-IMAGE_IOVNS_OPTS=""
-IMAGE_TM=https://github.com/iov-one/tendermint-build/releases/download/v0.31.12-iov1/tendermint-0.31.12-linux-amd64.tar.gz
-IMAGE_TM_OPTS="\
---consensus.create_empty_blocks=false \
---moniker='moniker' \
---p2p.laddr=tcp://0.0.0.0:16656 \
---p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
---rpc.laddr=tcp://127.0.0.1:16657 \
---rpc.unsafe=false \
-"
-
-# socket
-SOCK_TM=iovns.sock
-
-# uid/gid
-IOV_GID=$(id iov -g)
-IOV_UID=$(id iov -u)
+# artifacts
+IOVNS=https://github.com/iov-one/iovns/releases/download/v0.4.1/iovns-0.4.1-linux-amd64.tar.gz
 __EOF_IOVNS_ENV__
 
-chgrp iov iovns.env
-chmod g+r iovns.env
+chgrp ${USER_IOV} starname.env
+chmod g+r starname.env
 
-set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
+set -o allexport ; source /etc/systemd/system/starname.env ; set +o allexport # pick-up env vars
 
-# create iovns.service
-cat <<'__EOF_IOVNS_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovns.service
+# create starname.service
+cat <<__EOF_STARNAME_SERVICE__ > starname.service
 [Unit]
 Description=IOV Name Service
 After=network-online.target
-Requires=iovns-tm.service
-PartOf=iovns-tm.service
+#PartOf=iovnsapi.service
 
 [Service]
 Type=simple
-User=iov
-Group=iov
-EnvironmentFile=/etc/systemd/system/iovns.env
-ExecStart=__DIR_IOVNS__/bnsd \
-   -home=${DIR_WORK} \
-   start \
-   -bind=unix://${DIR_WORK}/${SOCK_TM} \
-   $IMAGE_IOVNS_OPTS
+User=$(id ${USER_IOV} -u -n)
+Group=$(id ${USER_IOV} -g -n)
+EnvironmentFile=/etc/systemd/system/starname.env
+ExecStart=${DIR_IOVNS}/iovnsd.sh
 LimitNOFILE=4096
 #Restart=on-failure
 #RestartSec=3
 StandardError=journal
 StandardOutput=journal
-SyslogIdentifier=iovns
+SyslogIdentifier=iovnsd
 
 [Install]
 WantedBy=multi-user.target
-__EOF_IOVNS_SERVICE__
-
-# create iovns-tm.service
-cat <<'__EOF_IOVNS_TM_SERVICE__' | sed -e 's@__DIR_IOVNS__@'"$DIR_IOVNS"'@g' > iovns-tm.service
-[Unit]
-Description=Tendermint for IOV Name Service
-After=iovns.service
-Requires=iovns.service
-
-[Service]
-Type=simple
-User=iov
-Group=iov
-EnvironmentFile=/etc/systemd/system/iovns.env
-ExecStart=__DIR_IOVNS__/tendermint node \
-   --home=${DIR_WORK} \
-   --proxy_app=unix://${DIR_WORK}/${SOCK_TM} \
-   $IMAGE_TM_OPTS
-LimitNOFILE=4096
-#Restart=on-failure
-#RestartSec=3
-StandardError=journal
-StandardOutput=journal
-SyslogIdentifier=iovns-tm
-
-[Install]
-WantedBy=multi-user.target iovns.service
-__EOF_IOVNS_TM_SERVICE__
-
-# hack around ancient versions of systemd
-expr $(systemctl --version | grep -m 1 -P -o "\d+") '<' 239 && {
-   sed --in-place 's!\$IMAGE_IOVNS_OPTS!'"$IMAGE_IOVNS_OPTS"'!' /etc/systemd/system/iovns.service
-   sed --in-place 's!\$IMAGE_TM_OPTS!\'"$IMAGE_TM_OPTS"'!' /etc/systemd/system/iovns-tm.service
-}
+__EOF_STARNAME_SERVICE__
 
 systemctl daemon-reload
 
-# download gitian built binaries; bnsd is the IOV Name Service daemon
+# download gitian built binaries; iovnsd is the IOV Name Service daemon
 mkdir -p ${DIR_IOVNS} && cd ${DIR_IOVNS}
-wget ${IMAGE_IOVNS} && sha256sum $(basename $IMAGE_IOVNS) | grep 98061912b5476198f6210e35d0c8d82fb7e60c63fdc9846419f9a0369a4b6abe && tar xvf $(basename $IMAGE_IOVNS) || echo 'BAD BINARY!'
-wget ${IMAGE_TM}    && sha256sum $(basename $IMAGE_TM)    | grep a11a257d7882585ff11b9da0302acd0ba79dc8a5c296123434e50df93f5b8084 && tar xvf $(basename $IMAGE_TM) || echo 'BAD BINARY!'
+wget ${IOVNS} && sha256sum $(basename ${IOVNS}) | grep 34e7610bb87fed342d8575f462338aeba45f72ef6654c6dd1fb9829500fb41cf && tar xvf $(basename ${IOVNS}) || echo 'BAD BINARY!'
+
+# create iovnsd.sh, a wrapper for iovnsd
+cat <<__EOF_IOVNSD_SH__ > iovnsd.sh
+#!/bin/bash
+
+exec $PWD/iovnsd start \\
+  --consensus.create_empty_blocks 'false' \\
+  --consensus.create_empty_blocks_interval '300s' \\
+  --home ${DIR_WORK} \\
+  --minimum-gas-prices '10.0uiov' \\
+  --moniker '${MONIKER}' \\
+  --p2p.laddr 'tcp://0.0.0.0:46656' \\
+  --p2p.persistent_peers '55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:46656' \\
+  --rpc.laddr 'tcp://127.0.0.1:46657' \\
+  --rpc.unsafe 'true' \\
+
+__EOF_IOVNSD_SH__
+
+chgrp ${USER_IOV} iovnsd.sh
+chmod a+x iovnsd.sh
 
 # initialize the IOV Name Service
-su - iov
-set -o allexport ; source /etc/systemd/system/iovns.env ; set +o allexport # pick-up env vars
+su - ${USER_IOV}
+set -o allexport ; source /etc/systemd/system/starname.env ; set +o allexport # pick-up env vars
 
 mkdir -p ${DIR_WORK} && cd ${DIR_WORK}
 
-# initialize tendermint
-${DIR_IOVNS}/tendermint init --home=${DIR_WORK}
-curl --fail https://rpc-private-a-x-exchangenet.iov.one/genesis | jq -r .result.genesis > config/genesis.json
-sha256sum config/genesis.json | grep 7209f04c201e6780a337eca796daa444494e80fe8b4bf43bac05ced4a681e6f0 || echo 'BAD GENESIS FILE!'
+# initialize IOV Name Service (iovnsd)
+${DIR_IOVNS}/iovnsd init ${MONIKER} --chain-id ${CHAIN_ID} --home ${DIR_WORK} 2>&1 | jq -r .chain_id
+
+curl --fail https://rpc.cluster-galaxynet.iov.one/genesis | jq -r .result.genesis  > config/genesis.json
+sha256sum config/genesis.json | grep a4a89f3475d767b13945aad48744a675e7de0d056f3439c5aca6807980bd92d2 || echo 'BAD GENESIS FILE!'
 [[ -f ~/node_key.json ]] && cp -av ~/node_key.json config
 [[ -f ~/priv_validator_key.json ]] && cp -av ~/priv_validator_key.json config
-sed --in-place 's!^timeout_commit .*!timeout_commit = "5s"!' config/config.toml # options not available via command line
-sed --in-place 's!^create_empty_blocks .*!create_empty_blocks = false!' config/config.toml
-sed --in-place 's!^create_empty_blocks_interval .*!create_empty_blocks_interval = "300s"!' config/config.toml
 
-# initialize IOV Name Service (bnsd)
-${DIR_IOVNS}/bnsd -home=${DIR_WORK} init -i | grep initialised
+exit # ${USER_IOV}
 
-exit # iov
-
-journalctl -f | grep iovns & # watch the chain sync
-systemctl start iovns.service
+journalctl -f -u starname.service & # watch the chain sync
+systemctl start starname.service
 
 exit # root
 ```
 
-At this point you're running a full-node that can be examined at `http://localhost:16657/status`.
-
-> The most important file from the procedure above is `/etc/systemd/system/iovns.env`.  It defines binaries, the socket that allows `iovns.service` and `iovns-tm.service` to communicate with each other, and IOV Name Service and tendermint options.
-
-Using `/etc/systemd/system/iovns.env`, rather than specifying values directly in the service files, obviates the need to do `systemctl daemon-reload` on every option change.  Most values in `/etc/systemd/system/iovns.env` are self explanatory; however, there are a few of note:
-
-- for IOV Name Service
-  - `IMAGE_IOVNS_OPTS` allows you to customize the anti-spam fee, etc.
-- for Tendermint
-  - `IMAGE_TM_OPTS` allows you to customize the configuration of tendermint, including `priv_validator_laddr`, `p2p.pex`, `p2p.persistent_peers`, `p2p.private_peer_ids`, etc.  **In other words, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `priv_validator_laddr` and `p2p.*` options.**  Please refer to the <a href="https://tendermint.com/docs/tendermint-core/configuration.html#options" target="blank_">tendermint documentation for the options</a>.
-
-> Old versions of systemd (CentOs) cannot take advantage of the dynamism of `/etc/systemd/system/iovns.env` like modern versions can.  Consequently, the service files themselves are where `bnsd` (IOV Name Service) and `tendermint` options must be specified.
+At this point you're running a full-node that can be examined at `http://localhost:46657/status`.  Repeat the above procedure on as many sentry nodes as you have and once more on your validator node.
 
 ## Point the nodes at each other
 
@@ -179,36 +132,78 @@ Now that you have sentry node(s) and a validator, they need to be made aware of 
 
 ### Sentry node configuration
 
-In the most rudimentary form, a sentry node is meant to gossip with other nodes but keep its associated validator hidden.  Change `/etc/systemd/system/iovns.env` so that the node gossips while keeping its validator hidden.  Be mindful of `--rpc.unsafe=true` below, you might not want that.  **On the validator node**, execute `curl -s http://localhost:16657/status | jq -r .result.node_info.id` to get the value for `VALIDATOR_ID`.
+In the most rudimentary form, a sentry node is meant to gossip with other nodes but keep its associated validator hidden.  Change `${DIR_IOVNS}/iovnsd.sh` so that the node gossips while keeping its validator hidden.  Be mindful of `--rpc.unsafe true` below, you might not want that.  **On the validator node**, execute `curl -s http://localhost:46657/status | jq -r .result.node_info.id` to get the value for `VALIDATOR_ID`.
 
 ```sh
-IMAGE_TM_OPTS="\
---moniker='sentry' \
---p2p.persistent_peers=55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:16656 \
---p2p.pex=true \
---p2p.private_peer_ids='VALIDATOR_ID' \
---rpc.unsafe=true \
+exec "$PWD/iovnsd start \
+...
+--moniker 'sentry' \
+--p2p.laddr 'tcp://0.0.0.0:46656' \
+--p2p.persistent_peers '55afc476b4aaeea5ea784f40117ef5a047097116@64.227.40.19:46656' \
+--rpc.laddr 'tcp://127.0.0.1:46657' \
+--rpc.unsafe 'true' \
 "
 ```
 
-There are a lot more tendermint configuration options available than those shown above.  Customize them as you see fit and then execute `sudo systemctl restart iovns.service`.
+There are a lot more tendermint configuration options available than those shown above.  Customize them as you see fit and then execute `sudo systemctl restart starname.service`.
 
 ### Validator configuration
 
-As mentioned, it's `/etc/systemd/system/iovns.env` that determines whether the node will act as a sentry or validator based on `p2p.*` options and `priv_validator_laddr` if you're using an HSM.  Change `/etc/systemd/system/iovns.env` so that the node gossips with its sentry node(s) only, ie set **`p2p.pex=false`** and add an explicit list of `p2p.persistent_peers`.  Obtain the sentry node ids for `p2p.persistent_peers` by executing `curl -s http://localhost:16657/status | jq -r .result.node_info.id` **on each sentry node**.  You know the IP and PORT of the nodes, so include them appropriately.
+As mentioned, it's `${DIR_IOVNS}/iovnsd.sh` that determines whether the node will act as a sentry or validator based on `p2p.*` options and `priv_validator_laddr` if you're using an HSM.  Change `${DIR_IOVNS}/iovnsd.sh` so that the node gossips with its sentry node(s) only, ie set **`p2p.pex false`** and add an explicit list of `p2p.persistent_peers`.  Obtain the sentry node ids for `p2p.persistent_peers` by executing `curl -s http://localhost:46657/status | jq -r .result.node_info.id` **on each sentry node**.  You know the IP and PORT of the nodes, so include them appropriately.
 
 ```sh
 IMAGE_TM_OPTS="\
---moniker='validator' \
---priv_validator_laddr='tcp://HSM_IP:HSM_PORT' \
---p2p.persistent_peers='SENTRY_ID0@SENTRY_IP0:SENTRY_PORT0,SENTRY_ID1@SENTRY_IP1:SENTRY_PORT1' \
---p2p.pex=false \
---rpc.unsafe=false \
+--moniker 'validator' \
+--priv_validator_laddr 'tcp://HSM_IP:HSM_PORT' \
+--p2p.persistent_peers 'SENTRY_ID0@SENTRY_IP0:SENTRY_PORT0,SENTRY_ID1@SENTRY_IP1:SENTRY_PORT1' \
+--p2p.pex 'false' \
+--rpc.unsafe 'false' \
 "
 ```
 
-Execute `sudo systemctl restart iovns.service`
+Execute `sudo systemctl restart starname.service`
+
+### Hardware Security Module (HSM) configuration
+
+Assuming that you're already running `tmkms` for another chain, update your `tmkms.toml` file:
+```sh
+sudo su # make life easier for the next 20 lines
+
+set -o allexport ; source /etc/systemd/system/starname.env ; set +o allexport # pick-up env vars
+
+export ADDR_VALIDATOR="tcp://id@example1.example.com:46658" # or addr = "unix:///path/to/socket"
+export FILE_SECRET=/path/to/secret_connection.key
+export FILE_TMKMS=/path/to/tmkms.toml
+
+grep ${CHAIN_ID} ${FILE_TMKMS} || { cat <<__EOF_TMKMS_UPDATE__ >> ${FILE_TMKMS}
+[[chain]]
+id = "${CHAIN_ID}"
+key_format = { type = "bech32", account_key_prefix = "starpub", consensus_key_prefix = "starvalconspub" }
+state_file = "${DIR_WORK}/config/priv_validator_state.json"
+# state_hook = { cmd = ["/path/to/block/height_script", "--example-arg", "starname network"] }
+
+[[validator]]
+addr = "${ADDR_VALIDATOR}"
+chain_id = "${CHAIN_ID}"
+secret_key = "${FILE_SECRET}"
+protocol_version = "v0.33" # "legacy" is the default
+__EOF_TMKMS_UPDATE__
+
+sed --in-place "s/\(chain_ids.*\)\"/\\1\", \"${CHAIN_ID}\"/" ${FILE_TMKMS}
+}
+
+exit # root
+```
 
 ## Light-up the validator
 
-Once your sentry nodes and validator are sync'ed then the final step to becoming a validator is to submit your validator's pub_key to IOV.  **On your validator node**, execute `curl --silent --fail http://localhost:16657/status | jq -r .result.validator_info.pub_key.value` and reply with the resulting 44 character pub_key to the ticket that was issued to you when you applied for <a href="https://support.iov.one/hc/en-us/requests/new?ticket_form_id=360000417771" target="_blank">the validator program</a>.  (There's no `create-validator` command like in Cosmos; validators are added via governance, which is just IOV on the testnet, for the moment.)
+Once your sentry nodes and validator are sync'ed then the final step to becoming a validator is to execute the `create-validator` command like for any Cosmos-based chain.  We don't have a faucet yet so ping us on the starname channel on discord and we'll send you some tokens.  The testnet's token is denominated in `uvoi`, so your create validator command will look something like
+```sh
+iovnscli tx staking create-validator \
+  --amount 1000000uvoi \
+  --from ${SIGNER} \
+  --gas-prices 500000uvoi \
+  --node https://rpc.cluster-galaxynet.iov.one:443
+```
+
+Happy validating!
